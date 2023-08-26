@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\ExportUsers;
 use App\Imports\ImportUsers;
+use App\Imports\carsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -22,7 +23,7 @@ class ImportExportController extends Controller
 
     public function import() 
     {
-        Excel::import(new ImportUsers, request()->file('file'));
+        Excel::import(new carsImport, request()->file('file'));
             
         return back();
     }

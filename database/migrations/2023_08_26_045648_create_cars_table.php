@@ -23,10 +23,9 @@ return new class extends Migration
             $table->date('bilingdate');
             $table->string('vehicleidno')->unique()->nullable();
             $table->string('engineno')->nullable();
-            $table->imteger('productioncbunumber')->nullable();
-            $table->imteger('bilingdocuments')->nullable();
+            $table->integer('productioncbunumber')->nullable();
+            $table->integer('bilingdocuments')->nullable();
             $table->string('vehiclestockyard')->nullable();
-            $table->timestamp('car_recieve_at')->nullable();
             $table->timestamps();
         });
     }

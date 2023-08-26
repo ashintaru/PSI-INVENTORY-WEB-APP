@@ -5,27 +5,32 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-				<div class="container">
-					<h3>Import Data into Database </h3>
-					<form action="{{ route('import') }}" method="POST" name="importform"
-						enctype="multipart/form-data">
-						@csrf
-						<div class="form-group">
-							<label for="file">File:</label>
-							<input id="file" type="file" name="file" class="form-control">
-						</div>
-						<x-secondary-button>
-		                    {{ __('Import') }}
-						</x-secondary-button>
-
-					</form>
-				</div>`
-                </div>
-            </div>
-        </div>
-    </div>
+	<h6> Import and Export Excel data to
+		database Using Laravel 5.8
+	</h6>
+	<div class="container">
+		<div class="card bg-light mt-3">
+			<div class="card-header">
+				Import and Export Excel data
+				to database Using Laravel 5.8
+			</div>
+			<div class="card-body">
+				<form action="{{ route('import') }}"
+					method="POST"
+					enctype="multipart/form-data">
+					@csrf
+					<input type="file" name="file"
+						class="form-control">
+					<br>
+					<button class="btn btn-success">
+						Import User Data
+					</button>
+					<a class="btn btn-warning"
+					href="{{ route('export') }}">
+							Export User Data
+					</a>
+				</form>
+			</div>
+		</div>
+	</div>
 </x-app-layout>
