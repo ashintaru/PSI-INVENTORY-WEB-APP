@@ -13,6 +13,9 @@ class CarsController extends Controller
     public function index()
     {
         //
+        $data = cars::paginate(25);
+        // return dd($data);
+        return view('recieve',['data'=>$data]);
     }
 
     /**

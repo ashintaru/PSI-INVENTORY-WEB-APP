@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CarsController;
+
 use App\Http\Controllers\ImportExportController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +35,12 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('import_export', 'importExport');
         Route::post('import', 'import')->name('import');
         Route::get('export', 'export')->name('export');
+    });
+
+    Route::controller(CarsController::class)->group(function(){
+        Route::get('recieve', 'index');
+
+
     });
         
 });
