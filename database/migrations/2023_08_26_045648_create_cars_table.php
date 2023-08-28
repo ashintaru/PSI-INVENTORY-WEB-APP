@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('vehicleidno')->unique()->nullable();
             $table->string('engineno')->nullable();
             $table->integer('productioncbunumber')->nullable();
-            $table->integer('bilingdocuments')->nullable();
+            $table->bigInteger('bilingdocuments')->nullable();
             $table->string('vehiclestockyard')->nullable();
             $table->timestamps();
         });

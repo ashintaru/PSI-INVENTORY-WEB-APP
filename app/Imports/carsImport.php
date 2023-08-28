@@ -5,8 +5,9 @@ namespace App\Imports;
 use App\Models\cars;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class carsImport implements ToModel     
+class carsImport implements ToModel,WithBatchInserts     
 {
     /**
     * @param array $row
@@ -32,5 +33,9 @@ class carsImport implements ToModel
             'bilingdocuments'=> $row[11],	
             'vehiclestockyard'=> $row[12],	
         ]);
+    }
+    public function batchSize(): int
+    {
+        return 1000;
     }
 }

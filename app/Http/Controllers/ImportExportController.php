@@ -9,6 +9,8 @@ use App\Imports\carsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exceptions\InvalidOrderException;
 use Redirect;
+use Exception;
+
 
 
 class ImportExportController extends Controller
@@ -42,20 +44,21 @@ class ImportExportController extends Controller
                 $extension = request()->file('file')->extension();
 
                 //checking if the file is an excel
-                if($extension === "xls"){
-                    dd("Approved");
+                if($extension === "xlsx"){
+                    // dd("Approved");
+                    Excel::import(new carsImport, request()->file('file'));
+                    return back()->with(['success' => 'Success:: The data have been upload Properly...']);;
                 }
                 else{
-                    dd("File is disregard");
+                    return Redirect::back()->with(['msg' => 'Error:: File must be in Excel Format']);
                 }
-
             }
             else{
-                return Redirect::back()->withErrors(['msg' => 'The Message']);
+                return Redirect::back()->with(['msg' => 'Error:: Unkown File']);
             }    
         }
-        catch(InvalidOrderException $error){
-            return Redirect::back()->withErrors(['msg' => $error]);
+        catch(Exception  $error){
+            return Redirect::back()->with(['msg' => $error->getMessage()]);
         }
 
 
