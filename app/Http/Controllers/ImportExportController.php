@@ -8,6 +8,8 @@ use App\Imports\ImportUsers;
 use App\Imports\carsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exceptions\InvalidOrderException;
+use Redirect;
+
 
 class ImportExportController extends Controller
 {
@@ -33,20 +35,26 @@ class ImportExportController extends Controller
         //     return back()->withError($exception->getMessage())->withInput();
         // }
         try{
+            //asking if the post method have file 
             if(request()->file('file')){
+
+                //getting the file extension
                 $extension = request()->file('file')->extension();
+
+                //checking if the file is an excel
                 if($extension === "xls"){
                     dd("Approved");
                 }
                 else{
                     dd("File is disregard");
                 }
+
             }
             else{
                 return Redirect::back()->withErrors(['msg' => 'The Message']);
             }    
-            return Redirect::back();
-        }catch(InvalidOrderException $error){
+        }
+        catch(InvalidOrderException $error){
             return Redirect::back()->withErrors(['msg' => $error]);
         }
 
