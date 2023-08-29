@@ -25,36 +25,36 @@
 	</div>
 
     <script>
-        $(function () {
-            $(document).ready(function () {
-                
-                let file = document.getElementById("file").files[0];
-                if($('#file').val()) {
-                    $('#fileUploadForm').ajaxForm({
-                        beforeSend: function () {
-                            var percentage = '0';
-                        },
-                        uploadProgress: function (event, position, total, percentComplete) {
-                            var percentage = percentComplete;
-                            $('#progressBar').css("width", percentage+'%', function() {
-                            return $(this).attr("aria-valuenow", percentage) + "%";
-                            })
-                        },
-                        complete: function (xhr) {
-                            console.log('File has uploaded');
-                        }
-                    });
-                }     
-            });
-        });
+     
         function showFileSize() {
             let file = document.getElementById("file").files[0];
             if(file) {
                 const maxSize = 200000;
-                if(file.size > maxSize){
+                if(file.size > maxSize ){
                     alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes"); 
                     event.preventDefault();
                 }
+                // else{
+                //     $('#fileUploadForm').ajaxForm({
+                //         beforeSend: function () {
+                //             var percentage = '0';
+                //         },
+                //         uploadProgress: function (event, position, total, percentComplete) {
+                //             var percentage = percentComplete;
+                //             $('#progressBar').css("width", percentage+'%', function() {
+                //             return $(this).attr("aria-valuenow", percentage) + "%";
+                                
+                //         })
+                //         },
+                //         complete: function (xhr) {
+                //             if(xhr.responseText)
+                //                 {
+
+                //                 }
+                //         }
+                //     });
+
+                // }
             }
         }
 

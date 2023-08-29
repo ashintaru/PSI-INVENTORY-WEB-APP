@@ -35,8 +35,8 @@ class ImportExportController extends Controller
             ]);
             $extension = request()->file('file')->extension();
             if($extension === "xlsx"){
-                // Excel::import(new carsImport, request()->file('file'));
-                return back()->with(['success' => 'Success:: The data have been upload Properly...']);;
+                Excel::import(new carsImport, request()->file('file'));
+                return response()->json(['success'=>'Successfully uploaded.']);
             }
             else{
                 request()->file('file') == null;
@@ -51,3 +51,4 @@ class ImportExportController extends Controller
 
     }
 }
+ 

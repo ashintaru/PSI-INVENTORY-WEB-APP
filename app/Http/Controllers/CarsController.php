@@ -37,9 +37,17 @@ class CarsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(cars $cars)
+    public function show( Request $req, cars $cars)
     {
-        //
+        $validated = $req->validate([
+            'search' => 'required|min:17',
+        ]);
+
+        $search = $req->search;
+
+        $data = cars::where('vehicleidno', $search)
+        ->first();
+        return view('search-result',['data'=>$data]);
     }
 
     /**
