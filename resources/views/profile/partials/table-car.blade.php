@@ -26,31 +26,7 @@
           </tr>
       </thead>
       <tbody>
-        @if (is_object($data))
-        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-          <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{$data['id']}}
-          </th>
-          <td class="px-6 py-4">
-            {{$data['vehicleidno']}}
-          </td>
-          <td class="px-6 py-4">
-            {{$data['productioncbunumber']}}
-          </td>
-          <td class="px-6 py-4">
-            {{$data['bilingdocuments']}}
-          </td>
-          <td class="px-6 py-4">
-            {{$data['modeldescription']}}
-          </td>
-          <td class="px-6 py-4">
-            {{$data['vehiclestockyard']}}
-          </td>
-          <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-          </td>
-        </tr>
-        @elseif(!is_object($data))
+      
             @foreach($data as $d)
               <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -76,8 +52,6 @@
                 </td>
               </tr>
             @endforeach
-        @endif
-  
       </tbody>
   </table>
 </section>
