@@ -25,37 +25,24 @@ class ImportExportController extends Controller
         return Excel::download(new ExportUsers, 'users.xlsx');
     }
 
-    public function import() 
+    public function import(Request $request) 
     {
-        // try{
-        //     Excel::import(new carsImport, request()->file('file'));
-            
-        //     return back();
-     
-        // }
-        // catch( ModelNotFoundException $exception ){
-        //     return back()->withError($exception->getMessage())->withInput();
-        // }
+
         try{
             //asking if the post method have file 
-            if(request()->file('file')){
-
-                //getting the file extension
-                $extension = request()->file('file')->extension();
-
-                //checking if the file is an excel
-                if($extension === "xlsx"){
-                    // dd("Approved");
-                    Excel::import(new carsImport, request()->file('file'));
-                    return back()->with(['success' => 'Success:: The data have been upload Properly...']);;
-                }
-                else{
-                    return Redirect::back()->with(['msg' => 'Error:: File must be in Excel Format']);
-                }
+            $validated = $request->validate([
+                'file' => 'required|max:2000',
+            ]);
+            $extension = request()->file('file')->extension();
+            if($extension === "xlsx"){
+                // Excel::import(new carsImport, request()->file('file'));
+                return back()->with(['success' => 'Success:: The data have been upload Properly...']);;
             }
             else{
-                return Redirect::back()->with(['msg' => 'Error:: Unkown File']);
-            }    
+                request()->file('file') == null;
+                return Redirect::back()->with(['msg' => 'Error:: File must be in Excel Format']);
+            }   
+
         }
         catch(Exception  $error){
             return Redirect::back()->with(['msg' => $error->getMessage()]);
