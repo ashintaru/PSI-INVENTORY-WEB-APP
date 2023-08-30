@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('extcolorcode');
             $table->string('modeldescription');
             $table->string('exteriorcolor');
-            $table->string('csno')->nullable();
+            $table->string('csno');
             $table->date('bilingdate');
-            $table->string('vehicleidno')->unique()->nullable();
-            $table->string('engineno')->nullable();
-            $table->integer('productioncbunumber')->nullable();
-            $table->bigInteger('bilingdocuments')->nullable();
-            $table->string('vehiclestockyard')->nullable();
+            $table->string('vehicleidno')->unique();
+            $table->string('engineno');
+            $table->integer('productioncbunumber');
+            $table->bigInteger('bilingdocuments');
+            $table->string('vehiclestockyard');
             $table->timestamps();
         });
     }

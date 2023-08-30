@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\cars;
 use Illuminate\Http\Request;
+use App\Models\carstatus;
+use Exception;
+use Redirect;
 
 class CarsController extends Controller
 {
@@ -59,6 +62,29 @@ class CarsController extends Controller
         // return dd($data);
         return view('viewcar',['car'=>$data]);
     }
+    public function approve($carid = null)
+    {
+
+        try {
+            //code...
+            $data = cars::where('cars.vehicleidno', $carid)
+            ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+            ->first();
+            
+            $car = carstatus::where('vehicleidno',$carid)->first();
+            $car->havebeenstored = 1;
+            $car->update();
+            return Redirect::back()->with(['success' => 'success:: the file has been uploaded succesfully...','car'=>$data]);
+    
+        } catch (Exception $err) {
+            //throw $th;
+            return Redirect::back()->with(['msg' => $error->getMessage(),'car'=>$data]);
+        }
+    
+        // return dd($car);
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -83,4 +109,22 @@ class CarsController extends Controller
     {
         //
     }
+    public function delete(Request $request): RedirectResponse
+    {
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
+    }
+
 }

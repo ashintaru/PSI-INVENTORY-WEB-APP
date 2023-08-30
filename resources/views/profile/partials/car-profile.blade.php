@@ -28,16 +28,16 @@
                         <td class="px-6 py-4">
                             {{$car->mmpcmodelcode}}
                         </td>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Have Been Checked
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                            Inventory
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            @if ( $car->havebeenchecked == 0)
+                        <td class="px-6 py-4">
+                            @if ( $car->havebeenstored == 0)
                                 False
                             @else
                                 True
                             @endif
-                        </th>
+                         </td>
                         
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -47,11 +47,12 @@
                         <td class="px-6 py-4">
                             {{$car->vehicleidno}}
                         </td>
+                        
                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Have Been Passed
+                            Have Been Checked
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            @if ( $car->havebeenpassed == 0)
+                            @if ( $car->havebeenchecked == 0)
                                 False
                             @else
                                 True
@@ -65,11 +66,12 @@
                         <td class="px-6 py-4">
                             {{$car->mmpcmodelcode}}
                         </td>
+                        
                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Realeased
+                            Have Been Passed
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            @if ( $car->havebeenreleased == 0)
+                            @if ( $car->havebeenpassed == 0)
                                 False
                             @else
                                 True
@@ -83,6 +85,18 @@
                         <td class="px-6 py-4">
                             {{$car->exteriorcolor}}
                         </td>
+
+                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                            Realeased
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            @if ( $car->havebeenreleased == 0)
+                                False
+                            @else
+                                True
+                            @endif
+                        </th>
+
                     </tr>             
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">

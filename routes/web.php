@@ -41,6 +41,7 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
         Route::get('view/{id}', 'view')->name('view');
+        Route::put('approved-inventory/{id}', 'approve')->name('approve');
 
     });
 
