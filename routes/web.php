@@ -39,9 +39,12 @@ Route::middleware(['auth','web'])->group(function() {
 
     Route::controller(CarsController::class)->group(function(){
         Route::get('recieve', 'index');
-        // Route::post('search', 'show')->name('show');
+        Route::post('search', 'show')->name('search');
+        Route::get('view/{id}', 'view')->name('view');
 
     });
+
+
         
 });
 

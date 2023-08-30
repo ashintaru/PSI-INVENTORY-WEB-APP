@@ -47,7 +47,17 @@ class CarsController extends Controller
 
         $data = cars::where('vehicleidno', $search)
         ->first();
-        return view('search-result',['data'=>$data]);
+        return view('searchResult',['data'=>$data]);
+    }
+    public function view($id = null)
+    {
+        
+
+        $data = cars::where('cars.vehicleidno', $id)
+        ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        ->first();
+        // return dd($data);
+        return view('viewcar',['car'=>$data]);
     }
 
     /**

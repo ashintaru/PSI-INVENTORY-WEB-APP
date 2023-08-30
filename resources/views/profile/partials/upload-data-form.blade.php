@@ -7,7 +7,7 @@ enctype="multipart/form-data">
     @csrf
     <label class="block">
       <span class="sr-only">Choose file to Upload</span>
-      <input type="file" name="file"  id="file" class="block w-full text-sm text-slate-500
+      <input type="file" accept=".xlsx" name="file"  id="file" class="block w-full text-sm text-slate-500
         file:mr-4 file:py-2 file:px-4
         file:rounded-full file:border-0
         file:text-sm file:font-semibold

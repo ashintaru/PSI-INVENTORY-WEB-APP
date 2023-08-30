@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Exports\ExportUsers;
 use App\Imports\ImportUsers;
 use App\Imports\carsImport;
+use App\Imports\carstatusimport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exceptions\InvalidOrderException;
 use Redirect;
@@ -36,6 +37,8 @@ class ImportExportController extends Controller
             $extension = request()->file('file')->extension();
             if($extension === "xlsx"){
                 Excel::import(new carsImport, request()->file('file'));
+                Excel::import(new carstatusimport, request()->file('file'));
+
                 return Redirect::back()->with(['success' => 'success:: the file has been uploaded succesfully...']);
             }
             else{
