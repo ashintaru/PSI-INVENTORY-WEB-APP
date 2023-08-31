@@ -11,13 +11,14 @@ class tool extends Model
 
     protected $table = 'loose_tool';
     protected $fillable = [
+        'vehicleidno',	
         'ownermanual',	
         'warantybooklet',	
         'key',	
         'remotecontrol',
-    	'others'	
+    	'others',
         
-    ]
+    ];
 
 
 }

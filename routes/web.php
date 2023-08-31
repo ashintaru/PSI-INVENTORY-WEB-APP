@@ -40,9 +40,9 @@ Route::middleware(['auth','web'])->group(function() {
     Route::controller(CarsController::class)->group(function(){
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
-        Route::get('view/{id}', 'view')->name('view');
+        Route::get('view/{id}', 'view')->name('show-profile');
         Route::put('approved-inventory/{id}', 'approve')->name('approve');
-        Route::post('loose-item','submitlooseitem');
+        Route::post('loose-item/{id}','submitlooseitem');
 
     });
 
