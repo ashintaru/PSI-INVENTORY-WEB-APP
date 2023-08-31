@@ -13,6 +13,8 @@ class carstatus extends Model
         'vehicleidno',
         'havebeenpassed',
         'havebeenchecked',
-        'havebeenreleased'
+        'havebeenreleased',
+        'havebeenstored',
+        'hasloosetool'
     ];
 }

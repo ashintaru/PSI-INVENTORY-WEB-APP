@@ -20,7 +20,9 @@ class carstatusimport implements ToModel,WithBatchInserts
         'vehicleidno'=>$row[8],
         'havebeenpassed'=>false,
         'havebeenchecked'=>false,
-        'havebeenreleased'=>false
+        'havebeenreleased'=>false,
+        'havebeenstored'=>false,
+        'hasloosetool'=>false
         ]);
     }
     public function batchSize(): int

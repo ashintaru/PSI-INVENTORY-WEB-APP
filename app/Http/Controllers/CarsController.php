@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\cars;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
@@ -16,7 +17,8 @@ class CarsController extends Controller
     public function index()
     {
         //
-        $data = cars::paginate(25);
+        $data = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        ->paginate(25);
         // return dd($data);
         return view('recieve',['data'=>$data]);
     }
@@ -59,24 +61,65 @@ class CarsController extends Controller
         $data = cars::where('cars.vehicleidno', $id)
         ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
         ->first();
+
+          
+        $logs = Log::where('idNum',$id)->get();
+
         // return dd($data);
-        return view('viewcar',['car'=>$data]);
+        return view('viewcar',['car'=>$data,'log'=>$logs]);
     }
-    public function approve($carid = null)
+    public function approve($carid = null,Request $request)
     {
 
         try {
             //code...
+            
             $data = cars::where('cars.vehicleidno', $carid)
             ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
             ->first();
-            
+
             $car = carstatus::where('vehicleidno',$carid)->first();
             $car->havebeenstored = 1;
             $car->update();
-            return Redirect::back()->with(['success' => 'success:: the file has been uploaded succesfully...','car'=>$data]);
+
+            Log::create([
+                'idNum'=>$carid,
+                'logs'=>'Car VI#'. ' '. $carid .' have been approved and moved to the storage by '. $request->user()->name
+            ]);
+            
+            $logs = Log::where('idNum',$carid)->get();
+
+            return Redirect::back()->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....','car'=>$data,'log'=>$logs]);
     
-        } catch (Exception $err) {
+        } catch (Exception $error) {
+            //throw $th;
+            return Redirect::back()->with(['msg' => $error->getMessage(),'car'=>$data]);
+        }
+    
+        // return dd($car);
+
+    }
+    public function submitlooseitem($carid = null,Request $request)
+    {
+
+        try {
+            //code...
+            
+
+            $car = carstatus::where('vehicleidno',$carid)->first();
+            $car->hasloosetool = 1;
+            $car->update();
+
+            Log::create([
+                'idNum'=>$carid,
+                'logs'=>'Car VI#'. ' '. $carid .' have been approved and moved to the storage by '. $request->user()->name
+            ]);
+            
+            $logs = Log::where('idNum',$carid)->get();
+
+            return Redirect::back()->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....','car'=>$data,'log'=>$logs]);
+    
+        } catch (Exception $error) {
             //throw $th;
             return Redirect::back()->with(['msg' => $error->getMessage(),'car'=>$data]);
         }
