@@ -21,7 +21,7 @@
                             @else
                                 <input disabled name="manual" id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             @endif
-    
+
                         </div>
                     </th>
                 </tr>
@@ -45,9 +45,9 @@
                     </th>
                     <td class="px-6 py-4">
                         <div class="flex items-center mr-4">
-                            <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$t->key}}</label>    
+                            <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$t->key}}</label>
                         </div>
-                    </td>                    
+                    </td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
@@ -63,25 +63,30 @@
 
                         </div>
                     </td>
-                    
+
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                        Other 
+                        Other
                     </th>
                     <td class="px-6 py-4">
                         <div class="flex items-center mr-4">
-                            <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$t->others}}</label>                            
-                        </div>                    
+                            <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$t->others}}</label>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td class="px-6 py-4">
                         <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date Updated ::  {{ Carbon\Carbon::parse($t->updated_at)->format('M d Y') }}</label>
                     </td>
+                    <td class="px-6 py-4 ">
+                        <x-edit-button route="edit-loose-tool" id="{{$t->id}}">
+                            {{ __('Edit') }}
+                        </x-edit-button>
+                    </td>
                 </tr>
             </tbody>
-        </table>            
+        </table>
         @endforeach
 
     @endif

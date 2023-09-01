@@ -1,6 +1,6 @@
 <section>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <form method="POST" action="{{URL('set-tool/'.$carid)}}">
+        <form method="POST" action="{{URL('set-tool/'.$data->id)}}">
             @csrf
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead>
@@ -146,5 +146,4 @@
             </table>
         </form>
     </div>
-
 </section>

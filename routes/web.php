@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth','web'])->group(function() {
-    
+
     Route::get('upload', function () {
         return view('welcome');
     });
@@ -42,12 +42,18 @@ Route::middleware(['auth','web'])->group(function() {
         Route::post('search', 'show')->name('search');
         Route::get('view/{id}', 'view')->name('show-profile');
         Route::put('approved-inventory/{id}', 'approve')->name('approve');
+        Route::put('update-loose-item/{id}','updateloosetool');
         Route::post('loose-item/{id}','submitlooseitem');
+        Route::get('view/{id}', 'view')->name('show-profile');
+        Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
+        Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
+
+        Route::post('set-tool/{id}','settool');
 
     });
 
 
-        
+
 });
 
 Route::middleware('auth')->group(function () {
