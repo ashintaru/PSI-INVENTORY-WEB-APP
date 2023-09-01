@@ -43,6 +43,8 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('view/{id}', 'view')->name('show-profile');
         Route::put('approved-inventory/{id}', 'approve')->name('approve');
         Route::put('update-loose-item/{id}','updateloosetool');
+        Route::put('update-set-tool/{id}','updatesettool');
+
         Route::post('loose-item/{id}','submitlooseitem');
         Route::get('view/{id}', 'view')->name('show-profile');
         Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
