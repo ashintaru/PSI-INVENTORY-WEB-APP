@@ -67,10 +67,14 @@ Route::middleware(['auth','web'])->group(function() {
 
 });
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+// server routes
+// https://review42.com/resources/how-to-create-your-server-at-home-for-web-hosting/#:~:text=Hosting%20a%20server%20at%20home,upload%20speed%20for%20residential%20connections.
 require __DIR__.'/auth.php';
