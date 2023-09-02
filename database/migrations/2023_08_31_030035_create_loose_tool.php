@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('loose_tool', function (Blueprint $table) {
             $table->id();
+            $table->string('vehicleidno');
             $table->boolean('ownermanual');
             $table->boolean('warantybooklet');
             $table->string('key');

@@ -35,6 +35,8 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('import_export', 'importExport');
         Route::post('import', 'import')->name('import');
         Route::get('export', 'export')->name('export');
+        Route::get('insert-data','viewcarform');
+        Route::post('insert-car-details','savecardetail')->name('show-car-form');
     });
 
     Route::controller(CarsController::class)->group(function(){
@@ -50,7 +52,14 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
         Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
 
+        Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');
+
+
         Route::post('set-tool/{id}','settool');
+
+        Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car-profile');
+        Route::put('update-car-details/{id}','updatecardetails');
+        Route::post('car-damage/{id}','submitcardamage');
 
     });
 

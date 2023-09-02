@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\cars;
 use App\Models\Log;
 use App\Models\tool;
+use App\Models\damage;
+
 use App\Models\set_tool;
 
 use Illuminate\Http\Request;
@@ -67,10 +69,11 @@ class CarsController extends Controller
 
         $set_tools = set_tool::where('vehicleidno',$id)->get();
         $tools = tool::where('vehicleidno',$id)->get();
+        $damage = damage::where('vehicleidno',$id)->get();
         $logs = Log::where('idNum',$id)->get();
 
         // return dd(json_decode($tools,true) );
-        return view('viewcar',['car'=>$data,'log'=>$logs,'tool'=>$tools,'set_tools'=>$set_tools]);
+        return view('viewcar',['car'=>$data,'log'=>$logs,'tool'=>$tools,'set_tools'=>$set_tools,'damage'=>$damage]);
     }
     public function approve($carid = null,Request $request)
     {
@@ -314,6 +317,111 @@ class CarsController extends Controller
 
     }
 
+    public function editcarprofile($id = null){
+
+        $cars = cars::findorFail($id);
+
+        return view('edit-car-profile',['data'=>$cars]);
+    }
+
+    public function updatecardetails(Request $request, $id = null){
+
+        $validated = $request->validate([
+            'mmpcmodelcode'=> 'required',
+            'mmpcmodelyear'=> 'required',
+            'mmpcoptioncode'=> 'required',
+            'extcolorcode'=> 'required',
+            'modeldescription'=> 'required',
+            'exteriorcolor'=> 'required',
+            'csno'=> 'required',
+            'bilingdate'=> 'required',
+            'vehicleidno'=> 'required',
+            'engineno'=> 'required',
+            'productioncbunumber'=>'required',
+            'bilingdocuments'=> 'required',
+            'vehiclestockyard'=> 'required',
+        ]);
+
+        $inputs = $request->all();
+
+        $modelcode = $inputs['mmpcmodelcode'];
+        $modelyear = $inputs['mmpcmodelyear'];
+        $captioncode = $inputs['mmpcoptioncode'];
+        $colorcode = $inputs['extcolorcode'];
+        $description = $inputs['modeldescription'];
+        $exteriorcolor = $inputs['exteriorcolor'];
+        $csno = $inputs['csno'];
+        $bilingdate = $inputs['bilingdate'];
+        $vehicleidno = $inputs['vehicleidno'];
+        $engineno = $inputs['engineno'];
+        $productionnumber = $inputs['productioncbunumber'];
+        $billingdocuments = $inputs['bilingdocuments'];
+        $vehiclestockyard = $inputs['vehiclestockyard'];
+
+
+        $car = cars::findorFail($id);
+        $car->mmpcmodelcode = $modelcode;
+        $car->mmpcmodelyear = $modelyear;
+        $car->mmpcoptioncode = $captioncode;
+        $car->extcolorcode = $colorcode;
+        $car->modeldescription = $description;
+        $car->exteriorcolor = $exteriorcolor;
+        $car->csno  =$csno;
+        $car->bilingdate = $bilingdate;
+        $car->vehicleidno = $vehicleidno;
+        $car->engineno  = $engineno;
+        $car->productioncbunumber = $productionnumber;
+        $car->bilingdocuments = $billingdocuments;
+        $car->vehiclestockyard = $vehiclestockyard;
+        $car->update();
+
+
+        return back()->with(['success'=>'Success:: the car have been update properly... ']);
+    }
+
+    public function submitcardamage(Request $request , $id = null){
+
+        $inputs = $request->all();
+
+
+        $dents = ($request->has('dents'))?$inputs['dents']:false;
+        $dings = ($request->has('dings'))?$inputs['dings']:false;
+        $scratches = ($request->has('scratches'))?$inputs['scratches']:false;
+        $paintdefects = ($request->has('paintdefects'))?$inputs['paintdefects']:false;
+        $damage = ($request->has('damage'))?$inputs['damage']:false;
+        $other = ($request->has('other'))?$inputs['other']:false;
+
+
+
+        damage::create(
+            [
+                'vehicleidno'=>$id,
+                'dents'=>$dents,
+                'dings'=>$dings,
+                'scratches'=>$scratches,
+                'paintdefects'=>$paintdefects,
+                'damage'=>$damage,
+                'other'=>$other,
+                'remark'=>$inputs['remark']
+            ]
+        );
+
+
+        $carstatus = carstatus::where('vehicleidno',$id)->first();
+        $carstatus->hasdamge= 1;
+        $carstatus->update();
+
+
+        return back()->with(['success'=>'the car have been checked....']);
+    }
+
+
+    public function editdamgecar($id = null){
+
+        $damage = damage::findorFail($id);
+
+        return view('edit-car-damage',['data'=>$damage]);
+    }
 
 
     /**

@@ -38,7 +38,7 @@
                                 True
                             @endif
                          </td>
-                        
+
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
@@ -47,7 +47,7 @@
                         <td class="px-6 py-4">
                             {{$car->vehicleidno}}
                         </td>
-                        
+
                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                             Have Been Checked
                         </th>
@@ -66,7 +66,7 @@
                         <td class="px-6 py-4">
                             {{$car->mmpcmodelcode}}
                         </td>
-                        
+
                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                             Have Been Passed
                         </th>
@@ -97,10 +97,10 @@
                             @endif
                         </th>
 
-                    </tr>             
+                    </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                        
+
                         </th>
                         <td class="px-6 py-4">
                         </td>
@@ -108,8 +108,11 @@
                             Date Update
                         </th>
                         <td class="px-6 py-4">
-                            
+
                             {{ Carbon\Carbon::parse($car->updated_at)->format('M d Y') }}
+                        </td>
+                        <td class="px-6 py-4">
+                           <a href="{{URL('edit-car-profile',$car->id)}}">Edit</a>
                         </td>
                     </tr>
                 </tbody>

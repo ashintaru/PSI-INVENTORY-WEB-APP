@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 
-class carstatusimport implements ToModel,WithBatchInserts  
+class carstatusimport implements ToModel,WithBatchInserts
 {
     /**
     * @param array $row
@@ -22,7 +22,9 @@ class carstatusimport implements ToModel,WithBatchInserts
         'havebeenchecked'=>false,
         'havebeenreleased'=>false,
         'havebeenstored'=>false,
-        'hasloosetool'=>false
+        'hasloosetool'=>false,
+        'hassettool'=>false,
+        'hasdamge'=>false
         ]);
     }
     public function batchSize(): int

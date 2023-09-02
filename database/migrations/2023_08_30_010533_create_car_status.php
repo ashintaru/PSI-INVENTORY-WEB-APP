@@ -19,9 +19,14 @@ return new class extends Migration
             $table->boolean('havebeenpassed');
             $table->boolean('havebeenchecked');
             $table->boolean('havebeenreleased');
+            $table->boolean('havebeenstored');
+            $table->boolean('hasloosetool');
+            $table->boolean('hassettool');
+            $table->boolean('hasdamge');
+
             $table->timestamps();
-    
-            
+
+
         });
     }
 

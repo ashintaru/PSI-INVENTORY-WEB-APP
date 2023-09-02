@@ -1,6 +1,6 @@
 <section>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <form method="POST" action="{{URL('car-damage/'.$carid)}}">
+        <form method="POST" action="{{URL('car-damage/')}}">
             @csrf
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead>

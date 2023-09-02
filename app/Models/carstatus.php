@@ -15,6 +15,8 @@ class carstatus extends Model
         'havebeenchecked',
         'havebeenreleased',
         'havebeenstored',
-        'hasloosetool'
+        'hasloosetool',
+        'hassettool',
+        'hasdamge'
     ];
 }

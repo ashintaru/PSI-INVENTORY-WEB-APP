@@ -18,6 +18,10 @@
                     <x-nav-link :href="URL('import_export')" >
                         {{ __('Import Data') }}
                     </x-nav-link>
+                    <x-nav-link :href="URL('insert-data')" >
+                        {{ __('Insert Data') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="URL('recieve')" >
                         {{ __('Recieved Data') }}
                     </x-nav-link>
