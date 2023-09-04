@@ -4,15 +4,14 @@
             {{ __('Car Profile') }}
         </h2>
     </x-slot>
-
+    <x-alert-error></x-alert-error>
+    <x-alert-success></x-alert-success>
     @if (!is_null($car))
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     @include('profile.partials.car-profile',['car'=>$car])
                 </div>
-                <x-alert-error></x-alert-error>
-                <x-alert-success></x-alert-success>
             </div>
         </div>
         @if ($car->hasloosetool==0)
@@ -21,8 +20,6 @@
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         @include('profile.partials.loose-item-form',['carid'=>$car->vehicleidno])
                     </div>
-                    <x-alert-error></x-alert-error>
-                    <x-alert-success></x-alert-success>
                 </div>
             </div>
         @else
@@ -31,8 +28,6 @@
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     @include('profile.partials.table-tool',['tools'=>$tool])
                 </div>
-                <x-alert-error></x-alert-error>
-                <x-alert-success></x-alert-success>
             </div>
         </div>
         @endif
@@ -43,8 +38,6 @@
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         @include('profile.partials.tool-form',['carid'=>$car->vehicleidno])
                     </div>
-                    <x-alert-error></x-alert-error>
-                    <x-alert-success></x-alert-success>
                 </div>
             </div>
         @else
@@ -53,8 +46,6 @@
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     @include('profile.partials.table-set-tool',['tools'=>$set_tools])
                 </div>
-                <x-alert-error></x-alert-error>
-                <x-alert-success></x-alert-success>
             </div>
         </div>
         @endif
@@ -66,8 +57,6 @@
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         @include('profile.partials.dens-form',['carid'=>$car->vehicleidno])
                     </div>
-                    <x-alert-error></x-alert-error>
-                    <x-alert-success></x-alert-success>
                 </div>
             </div>
         @else
@@ -76,8 +65,6 @@
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     @include('profile.partials.table-damage',['damage'=>$damage])
                 </div>
-                <x-alert-error></x-alert-error>
-                <x-alert-success></x-alert-success>
             </div>
         </div>
         @endif
@@ -85,7 +72,7 @@
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        @include('profile.partials.inventory-form',['carid'=>$car->vehicleidno])
+                        @include('profile.partials.inventory-form',['car'=>$car])
                     </div>
                 </div>
             </div>
@@ -101,7 +88,6 @@
                     </div>
                 </div>
             </div>
-
         @endif
     @endif
 

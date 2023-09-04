@@ -24,7 +24,7 @@
                                 <input disabled id="disabled-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="disabled-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-500">Tool are Intact</label>
                             </div>
-    
+
                         </td>
                     </tr>
                 </thead>
@@ -35,8 +35,12 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <div class="flex items-center mr-4">
-                                <input  name="manual" id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                
+                                <input  name="manual"
+                                @if (old('manual'))
+                                    checked
+                                @endif
+                                id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+
                             </div>
                         </th>
                     </tr>
@@ -46,7 +50,11 @@
                         </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input name="waranty"  id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input name="waranty"
+                                @if (old('waranty'))
+                                    checked
+                                @endif
+                                id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 
                             </div>
                         </td>
@@ -57,19 +65,22 @@
                         </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input  name="key" id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                
+                                <input  name="key"
+                                @if (old('key'))
+                                    checked
+                                @endif
+                                id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+
                             </div>
-                        </td>                    
+                        </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input type="number" name="keyvalue" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                @if($errors->any())
-                                    <span>{{$errors->first()}}</span>
-                                @endif
+                                <input type="number" value="{{old('keyvalue')}}" name="keyvalue" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
-                        </td>                    
-
+                            @if (old("key") && old('keyvalue') == null)
+                                <span class="text-red-500">Error this field should not be empty</span>
+                           @endif
+                        </td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
@@ -77,26 +88,38 @@
                         </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input  name="remote" id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input  name="remote"
+                                @if (old('waranty'))
+                                    checked
+                                @endif
+                                id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                         </td>
-                        
+
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            Other 
+                            Other
                         </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input name="other"  id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                
-                            </div>                    
+
+                                <input name="other"
+                                @if (old('other'))
+                                    checked
+                                @endif
+                                id="red-checkbox" type="checkbox" value="1" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+
+                            </div>
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center mr-4">
-                                <input type="text" name="othervalue" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="text" value="{{old('othervalue')}}" name="othervalue" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
-                        </td>                    
+                            @if (old("other") && old('othervalue') == null)
+                                <span class="text-red-500">Error this field should not be empty</span>
+                             @endif
+                        </td>
 
                     </tr>
                     <tr>
