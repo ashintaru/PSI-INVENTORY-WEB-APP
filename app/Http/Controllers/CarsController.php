@@ -61,7 +61,7 @@ class CarsController extends Controller
 
 
     }
-    public function view($id = null)
+    public function view($id = null,$action = 'null')
     {
         $data = cars::where('cars.vehicleidno', $id)
         ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
@@ -84,17 +84,30 @@ class CarsController extends Controller
             $car = carstatus::where('vehicleidno',$carid)->first();
             $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
             if($result){
-                $car->havebeenchecked = 1;
-                $car->update();
 
-                Log::create([
-                    'idNum'=>$carid,
-                    'logs'=>'Car VI#'. ' '. $carid .' have been approved and moved to the storage by  '. $request->user()->name
+                $validated = $request->validate([
+                    'status' => 'required',
                 ]);
-                return redirect()->route('show-profile',$carid)->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....']);
+                if(!$validated) {
+                    return redirect()->back()->withErrors($validated);
+                }else{
+                    $inputs = $request->all();
+                    $result = ($inputs['status']==1)?1:0;
+                    $car->havebeenchecked = 1;
+                    $car->havebeenpassed = $result;
+                    $car->update();
+
+                    $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
+
+                    Log::create([
+                        'idNum'=>$carid,
+                        'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
+                    ]);
+                    return redirect()->route('show-profile',$carid)->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....']);
+                }
             }
             else{
-                return redirect()->route('show-profile',$carid)->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage....']);
+                return redirect()->route('show-profile',$carid)->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage due to an error pls check all he required form....']);
             }
 
         } catch (Exception $error) {
@@ -428,6 +441,46 @@ class CarsController extends Controller
         return view('edit-car-damage',['data'=>$damage]);
     }
 
+    public function editcarstatus($id = null){
+        $carstatus = carstatus::where('vehicleidno',$id)->first();
+        return view('edit-car-status',['data'=>$carstatus]);
+    }
+    public function updatecarstatus($carid = null , Request $request){
+        try {
+            //code...
+
+            $car = carstatus::where('vehicleidno',$carid)->first();
+            $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
+            if($result){
+
+                $validated = $request->validate([
+                    'status' => 'required',
+                ]);
+                if(!$validated) {
+                    return redirect()->back()->withErrors($validated);
+                }else{
+                    $inputs = $request->all();
+                    $result = ($inputs['status']==1)?1:0;
+                    $car->havebeenpassed = $result;
+                    $car->update();
+                    $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
+                    Log::create([
+                        'idNum'=>$carid,
+                        'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
+                    ]);
+                    return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been UPDATE PROPERLY....']);
+                }
+            }
+            else{
+                return redirect()->back()->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage due to an error pls check all he required form....']);
+            }
+
+        } catch (Exception $error) {
+            //throw $th;
+            return redirect()->route('show-profile',$carid)->with(['msg' => $error->getMessage()]);
+        }
+
+    }
 
     /**
      * Show the form for editing the specified resource.

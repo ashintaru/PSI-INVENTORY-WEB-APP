@@ -7,7 +7,7 @@
 
 
 
-	<div class="py-12">
+	<div class="py-12 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
@@ -25,13 +25,13 @@
 	</div>
 
     <script>
-     
+
         function showFileSize() {
             let file = document.getElementById("file").files[0];
             if(file) {
                 const maxSize = 200000;
                 if(file.size > maxSize ){
-                    alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes"); 
+                    alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes");
                     event.preventDefault();
                 }
                 // else{
@@ -43,7 +43,7 @@
                 //             var percentage = percentComplete;
                 //             $('#progressBar').css("width", percentage+'%', function() {
                 //             return $(this).attr("aria-valuenow", percentage) + "%";
-                                
+
                 //         })
                 //         },
                 //         complete: function (xhr) {

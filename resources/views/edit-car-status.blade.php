@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Edit Loose Tool') }}
+            {{ __('Edit Car Status') }}
         </h2>
     </x-slot>
 
@@ -24,7 +24,7 @@
                           <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                           </svg>
-                          <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Edit Loose Tool</span>
+                          <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Edit Car Status</span>
                         </div>
                       </li>
                     </ol>
@@ -34,7 +34,7 @@
                 <x-alert-success></x-alert-success>
 
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.edit-loose-tool-form',['tools'=>$data])
+                    @include('profile.partials.edit-car-status-form',['data'=>$data])
                 </div>
             </div>
         </div>

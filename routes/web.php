@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarsController;
+use App\Http\Controllers\indexcontroller;
+use App\Http\Controllers\invenotycontroller;
+
 
 use App\Http\Controllers\ImportExportController;
 use Illuminate\Support\Facades\Route;
@@ -21,14 +24,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
 
 Route::middleware(['auth','web'])->group(function() {
 
     Route::get('upload', function () {
         return view('welcome');
+    });
+
+    Route::controller(invenotycontroller::class)->group(function(){
+        Route::get('inventory/{action}', 'index')->name('show-inventory');
     });
 
     Route::controller(ImportExportController::class)->group(function(){
@@ -42,7 +47,7 @@ Route::middleware(['auth','web'])->group(function() {
     Route::controller(CarsController::class)->group(function(){
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
-        Route::get('view/{id}', 'view')->name('show-profile');
+        Route::get('view/{id}/{action}', 'view')->name('show-profile');
         Route::put('approved-inventory/{id}', 'approve')->name('approve');
         Route::put('update-loose-item/{id}','updateloosetool');
         Route::put('update-set-tool/{id}','updatesettool');
@@ -56,6 +61,9 @@ Route::middleware(['auth','web'])->group(function() {
 
 
         Route::post('set-tool/{id}','settool');
+        Route::get('edit-car-status/{id}','editcarstatus');
+
+        Route::put('update-inventory/{id}','updatecarstatus');
 
         Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car-profile');
         Route::put('update-car-details/{id}','updatecardetails');
