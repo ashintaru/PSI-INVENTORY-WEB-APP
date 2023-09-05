@@ -129,6 +129,7 @@ class ImportExportController extends Controller
             'havebeenstored'=>false,
             'hasloosetool'=>false,
             'hassettool'=>false,
+            'hasdamge'=>false
             ]);
 
 

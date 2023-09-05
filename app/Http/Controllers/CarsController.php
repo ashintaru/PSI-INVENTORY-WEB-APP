@@ -425,8 +425,8 @@ class CarsController extends Controller
         $carstatus->update();
 
         Log::create([
-            'idNum'=>$$id,
-            'logs'=>'Car VI#'. ' '. $$id .' have been checked if it have a damage  by '. $request->user()->name
+            'idNum'=>$id,
+            'logs'=>'Car VI#'. ' '. $id .' have been checked if it have a damage  by '. $request->user()->name
         ]);
 
         return back()->with(['success'=>'the car have been checked....']);
