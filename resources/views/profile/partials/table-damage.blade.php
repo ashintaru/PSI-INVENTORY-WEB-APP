@@ -3,13 +3,18 @@
         @foreach ($damage as $d )
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead>
-                <tr>
-                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                        SET OF TOOL'S
-                    </th>
-                </tr>
+                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    Damage
+                </th>
             </thead>
             <tbody>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td scope="col" class="px-6 py-3 flex flex-row-reverse ">
+                        <x-edit-button class="" route="edit-damage-car" id="{{$d->id}}">
+                            {{ __('Edit') }}
+                        </x-edit-button>
+                    </td>
+                </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4">
                         <div class="flex items-center mb-4">
@@ -106,11 +111,7 @@
                     <td class="px-6 py-4">
                         Date Updated ::  {{ Carbon\Carbon::parse($d->updated_at)->format('M d Y') }}
                     </td>
-                    <td class="px-6 py-4 ">
-                        <x-edit-button route="edit-damage-car" id="{{$d->id}}">
-                            {{ __('Edit') }}
-                        </x-edit-button>
-                    </td>
+
                 </tr>
             </tbody>
         </table>

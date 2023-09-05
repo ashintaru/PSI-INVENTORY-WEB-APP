@@ -7,10 +7,16 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                         LOOSE ITEM'S
                     </th>
+                    <td class="px-6 flex flex-row-reverse py-4 ">
+
+                        <x-edit-button route="edit-loose-tool" id="{{$t->id}}">
+                            {{ __('Edit') }}
+                        </x-edit-button>
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                         OWNOER MANUAL
                     </th>
@@ -75,14 +81,9 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4">
                         <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date Updated ::  {{ Carbon\Carbon::parse($t->updated_at)->format('M d Y') }}</label>
-                    </td>
-                    <td class="px-6 py-4 ">
-                        <x-edit-button route="edit-loose-tool" id="{{$t->id}}">
-                            {{ __('Edit') }}
-                        </x-edit-button>
                     </td>
                 </tr>
             </tbody>

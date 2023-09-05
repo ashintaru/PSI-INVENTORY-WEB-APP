@@ -34,6 +34,7 @@ Route::middleware(['auth','web'])->group(function() {
 
     Route::controller(invenotycontroller::class)->group(function(){
         Route::get('inventory/{action}', 'index')->name('show-inventory');
+        Route::post('search/{action}','search');
     });
 
     Route::controller(ImportExportController::class)->group(function(){
@@ -68,7 +69,7 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car-profile');
         Route::put('update-car-details/{id}','updatecardetails');
         Route::post('car-damage/{id}','submitcardamage');
-
+        Route::put('update-car-damage/{id}','updatecardamage');
     });
 
 

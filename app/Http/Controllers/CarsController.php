@@ -52,13 +52,10 @@ class CarsController extends Controller
         $validated = $req->validate([
             'search' => 'required|min:17',
         ]);
-
         $search = $req->search;
-
         $data = cars::where('vehicleidno', $search)
         ->first();
         return view('searchResult',['data'=>$data]);
-
 
     }
     public function view($id = null,$action = 'null')
@@ -70,7 +67,7 @@ class CarsController extends Controller
         $set_tools = set_tool::where('vehicleidno',$id)->get();
         $tools = tool::where('vehicleidno',$id)->get();
         $damage = damage::where('vehicleidno',$id)->get();
-        $logs = Log::where('idNum',$id)->get();
+        $logs = Log::where('idNum',$id)->orderBy('id','desc')->get();
 
         // return dd(json_decode($tools,true) );
         return view('viewcar',['car'=>$data,'log'=>$logs,'tool'=>$tools,'set_tools'=>$set_tools,'damage'=>$damage]);
@@ -97,7 +94,7 @@ class CarsController extends Controller
                     $car->havebeenpassed = $result;
                     $car->update();
 
-                    $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
+                    $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furhter inspection";
 
                     Log::create([
                         'idNum'=>$carid,
@@ -154,7 +151,7 @@ class CarsController extends Controller
                 $car->hasloosetool = 1;
                 $car->update();
 
-                return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....']);
+                return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been checked....']);
 
             }
         } catch (Exception $error) {
@@ -399,8 +396,6 @@ class CarsController extends Controller
     public function submitcardamage(Request $request , $id = null){
 
         $inputs = $request->all();
-
-
         $dents = ($request->has('dents'))?$inputs['dents']:false;
         $dings = ($request->has('dings'))?$inputs['dings']:false;
         $scratches = ($request->has('scratches'))?$inputs['scratches']:false;
@@ -429,6 +424,10 @@ class CarsController extends Controller
         $carstatus->hasdamge= 1;
         $carstatus->update();
 
+        Log::create([
+            'idNum'=>$$id,
+            'logs'=>'Car VI#'. ' '. $$id .' have been checked if it have a damage  by '. $request->user()->name
+        ]);
 
         return back()->with(['success'=>'the car have been checked....']);
     }
@@ -441,6 +440,46 @@ class CarsController extends Controller
         return view('edit-car-damage',['data'=>$damage]);
     }
 
+    public function updatecardamage($id = null, Request $request){
+
+
+        try {
+            //code...
+            $damagecar = damage::findorFail($id);
+
+            $inputs = $request->all();
+            $dents = ($request->has('dents'))?$inputs['dents']:false;
+            $dings = ($request->has('dings'))?$inputs['dings']:false;
+            $scratches = ($request->has('scratches'))?$inputs['scratches']:false;
+            $paintdefects = ($request->has('paintdefects'))?$inputs['paintdefects']:false;
+            $damage = ($request->has('damage'))?$inputs['damage']:false;
+            $other = ($request->has('other'))?$inputs['other']:false;
+            $remark = ($request['remark'])?$request['remark']:'No problem after the checking...';
+
+
+            $damagecar->dents = $dents;
+            $damagecar->dings = $dings;
+            $damagecar->scratches = $scratches;
+            $damagecar->paintdefects = $paintdefects;
+            $damagecar->damage = $damage;
+            $damagecar->other = $other;
+            $damagecar->remark = $remark;
+            $damagecar->update();
+            Log::create([
+                'idNum'=>$damagecar->vehicleidno,
+                'logs'=>'Car VI#'. ' '. $damagecar->vehicleidno.' have been update if it have a damage  by '. $request->user()->name
+            ]);
+
+            return back()->with(['success'=>'the car have been Update....']);
+        } catch (Exception $th) {
+
+            return back()->with(['msg'=>$th]);
+        }
+
+
+
+
+    }
     public function editcarstatus($id = null){
         $carstatus = carstatus::where('vehicleidno',$id)->first();
         return view('edit-car-status',['data'=>$carstatus]);

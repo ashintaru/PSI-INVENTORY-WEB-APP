@@ -8,6 +8,12 @@
                             <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                 SET OF TOOL'S
                             </th>
+                            <td></td>
+                            <td class="px-6 flex flex-row-reverse py-4 ">
+                                <x-edit-button route="edit-set-tool" id="{{$t->id}}">
+                                    {{ __('Edit') }}
+                                </x-edit-button>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,7 +32,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex items-center mb-4">
                                     @if ($t->wheels)
-                                        <input disabled id="default-checkbox" name="4wheels"  type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <input disabled checked id="default-checkbox" name="4wheels"  type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">4 Weels</label>
                                     @else
                                         <input disabled id="default-checkbox" name="4wheels"  type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -207,13 +213,10 @@
                         </tr>
                         <tr>
                             <td class="px-6 py-4">
-                                Date Updated ::  {{ Carbon\Carbon::parse($t->updated_at)->format('M d Y') }}
+                                <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date Updated ::  {{ Carbon\Carbon::parse($t->updated_at)->format('M d Y') }}</label>
+
                             </td>
-                            <td class="px-6 py-4 ">
-                                <x-edit-button route="edit-set-tool" id="{{$t->id}}">
-                                    {{ __('Edit') }}
-                                </x-edit-button>
-                            </td>
+
 
                         </tr>
                     </tbody>
