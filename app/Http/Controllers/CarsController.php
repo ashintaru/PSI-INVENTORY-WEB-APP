@@ -6,7 +6,7 @@ use App\Models\cars;
 use App\Models\Log;
 use App\Models\tool;
 use App\Models\damage;
-
+use App\Models\invoicecount;
 use App\Models\set_tool;
 
 use Illuminate\Http\Request;
@@ -79,6 +79,7 @@ class CarsController extends Controller
             //code...
 
             $car = carstatus::where('vehicleidno',$carid)->first();
+            $cars = cars::where('vehicleidno',$carid)->first();
             $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
             if($result){
 
@@ -93,7 +94,7 @@ class CarsController extends Controller
                     $car->havebeenchecked = 1;
                     $car->havebeenpassed = $result;
                     $car->update();
-
+                    $this->preinvoice($cars->modeldescription);
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furhter inspection";
 
                     Log::create([
@@ -486,7 +487,6 @@ class CarsController extends Controller
     public function updatecarstatus($carid = null , Request $request){
         try {
             //code...
-
             $car = carstatus::where('vehicleidno',$carid)->first();
             $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
             if($result){
@@ -520,6 +520,21 @@ class CarsController extends Controller
 
     }
 
+    public function preinvoice($description = null){
+
+           if(invoicecount::where('modeldescription',$description)->exists()){
+                $invoice = invoicecount::where('modeldescription',$description)->first();
+                $invoice->count = $invoice->count + 1;
+                $invoice->update();
+            }else{
+                invoicecount::create([
+                    'modeldescription'=>$description,
+                    'count'=>1,
+                ]);
+            }
+
+
+    }
     /**
      * Show the form for editing the specified resource.
      */

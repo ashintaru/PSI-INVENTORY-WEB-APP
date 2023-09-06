@@ -34,6 +34,7 @@
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"  rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
@@ -54,5 +55,6 @@
                 {{ $slot }}
             </main>
         </div>
+        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>
 </html>

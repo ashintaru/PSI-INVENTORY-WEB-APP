@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\cars;
+use App\Models\carstatus;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -17,7 +18,8 @@ class carsImport implements ToModel,WithBatchInserts
     public function model(array $row)
     {
 
-        return new cars([
+        return [
+            new cars([
             //
             'mmpcmodelcode'=> $row[0],
             'mmpcmodelyear'=> $row[1] ,
@@ -32,7 +34,18 @@ class carsImport implements ToModel,WithBatchInserts
             'productioncbunumber'=> $row[10],
             'bilingdocuments'=> $row[11],
             'vehiclestockyard'=> $row[12],
-        ]);
+        ]),
+        new carstatus([
+            'vehicleidno'=>$row[8],
+            'havebeenpassed'=>false,
+            'havebeenchecked'=>false,
+            'havebeenreleased'=>false,
+            'havebeenstored'=>false,
+            'hasloosetool'=>false,
+            'hassettool'=>false,
+            'hasdamge'=>false
+            ])
+        ];
     }
     public function batchSize(): int
     {
