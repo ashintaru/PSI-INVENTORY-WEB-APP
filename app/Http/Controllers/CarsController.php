@@ -206,13 +206,14 @@ class CarsController extends Controller
     }
 
 
-    public function settool(Request $request , $carid = null ){
+    public function settool( $carid = null , Request $request ){
 
         try {
             //code...
             $inputs = $request->all();
             if(($request->has('wheelcap') && $request->wheelcapvalue == null)|| ( $request->has('other') && $request->othervalue == null)){
-                return redirect()
+                return
+                redirect()
                 ->back()
                 ->withInput($request->input())
                 ->withErrors(['msg'=>'Error : submit have been failed due to an null field pls check the form']);
@@ -232,8 +233,6 @@ class CarsController extends Controller
                 $slottedscrewdriver = ($request->has('slottedscrewdriver'))?$inputs['slottedscrewdriver']:false;
                 $other = ($request->has('other'))?$inputs['othervalue']:false;
                 $phillipsscewdriver = ($request->has('phillipsscewdriver'))?$inputs['phillipsscewdriver']:false;
-
-
                 set_tool::create([
                     'vehicleidno'=>$carid,
                     'toolbag'=>$toolbag,
