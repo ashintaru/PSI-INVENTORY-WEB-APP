@@ -335,7 +335,7 @@ class CarsController extends Controller
 
         $cars = cars::findorFail($id);
 
-        return view('edit-car-profile',['data'=>$cars]);
+        return response()->json($cars);
     }
 
     public function updatecardetails(Request $request, $id = null){
