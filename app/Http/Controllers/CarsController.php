@@ -8,7 +8,7 @@ use App\Models\tool;
 use App\Models\damage;
 use App\Models\invoicecount;
 use App\Models\set_tool;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
@@ -22,7 +22,8 @@ class CarsController extends Controller
     public function index()
     {
         //
-        $data = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        $data = cars::
+        join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
         ->paginate(25);
         // return dd($data);
         return view('recieve',['data'=>$data]);
@@ -53,9 +54,10 @@ class CarsController extends Controller
             'search' => 'required|min:17',
         ]);
         $search = $req->search;
-        $data = cars::where('vehicleidno', $search)
-        ->first();
-        return view('searchResult',['data'=>$data]);
+        $data = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        ->where('cars.vehicleidno', $search)
+        ->get();
+        return view('recieve',['data'=>$data]);
 
     }
     public function view($id = null,$action = 'null')
@@ -331,11 +333,17 @@ class CarsController extends Controller
 
     }
 
+    public function showcarprofile($id){
+        $cars = cars::findorFail($id);
+        return response()->json($cars);
+
+    }
     public function editcarprofile($id = null){
 
         $cars = cars::findorFail($id);
 
-        return response()->json($cars);
+        return view('edit-car-profile',['data'=>$cars]);
+        // return response()->json($cars);
     }
 
     public function updatecardetails(Request $request, $id = null){
@@ -487,7 +495,8 @@ class CarsController extends Controller
     public function updatecarstatus($carid = null , Request $request){
         try {
             //code...
-            $car = carstatus::where('vehicleidno',$carid)->first();
+            $car = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+            ->where('vehicleidno',$carid)->get();
             $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
             if($result){
 
@@ -501,6 +510,7 @@ class CarsController extends Controller
                     $result = ($inputs['status']==1)?1:0;
                     $car->havebeenpassed = $result;
                     $car->update();
+
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
                     Log::create([
                         'idNum'=>$carid,
@@ -520,20 +530,19 @@ class CarsController extends Controller
 
     }
 
-    public function preinvoice($description = null){
+    public function preinvoice($description){
 
            if(invoicecount::where('modeldescription',$description)->exists()){
                 $invoice = invoicecount::where('modeldescription',$description)->first();
                 $invoice->count = $invoice->count + 1;
                 $invoice->update();
+                return dd($invoice->id);
             }else{
-                invoicecount::create([
-                    'modeldescription'=>$description,
-                    'count'=>1,
-                ]);
+                $invoice = DB::table('invoicecounts')->insertGetId(
+                    [ 'modeldescription' => $description ,'count'=>1]
+                );
+                return dd($invoice);
             }
-
-
     }
     /**
      * Show the form for editing the specified resource.

@@ -60,6 +60,7 @@ Route::middleware(['auth','web'])->group(function() {
 
         Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');
 
+        Route::get('showcarprofile/{id}','showcarprofile');
 
         Route::post('set-tool/{id}','settool');
         Route::get('edit-car-status/{id}','editcarstatus');

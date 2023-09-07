@@ -12,14 +12,12 @@
                         </th>
                         <td></td>
                         <td class="px-6 flex flex-row-reverse py-4">
+                            <x-edit-button route="edit-car-profile" id="{{$car->id}}">
+                                {{ __('Edit') }}
+                            </x-edit-button>
                             {{-- <a  href="{{URL('edit-car-profile',$car->id)}}" class="justify-self-end">
                              <x-edit_icon> Edit</x-edit_icon> EDIT
                              </a> --}}
-
-                             <button id="show-user"  data-url="{{ URL('edit-car-profile',$car->id) }}" data-modal-target="staticModal" data-modal-toggle="staticModal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                Toggle modal
-                              </button>
-
                          </td>
                     </tr>
                 </thead>
@@ -154,7 +152,7 @@
       </div>
   </div>
 
-  <script type="text/javascript">
+  {{-- <script type="text/javascript">
 
     $(document).ready(function () {
 
@@ -163,7 +161,7 @@
           var userURL = $(this).data('url');
           $.get(userURL, function (data) {
                 console.log(data);
-              $('#user-id').text(data.);
+              $('#user-id').text(data.id);
               $('#user-name').text(data.name);
               $('#user-email').text(data.email);
           })
@@ -171,5 +169,5 @@
 
     });
 
-</script>
+</script> --}}
 </section>

@@ -23,23 +23,18 @@
     </div>
 
     <div class="py-1">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             @if ($data)
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.passed-car-table',['data'=>$data])
-                </div>
+                @include('profile.partials.passed-car-table',['data'=>$data])
             @else
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     NO DATA FOUND.....
                 </div>
             @endif
-		</div>
-        <div class="py-12">
+	    <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-
-                           {{-- {{$data->links()}}                              --}}
-                </div>
+                @if (count($data)>1)
+                    {{$data->links()}}
+                @endif
             </div>
         </div>
 	</div>

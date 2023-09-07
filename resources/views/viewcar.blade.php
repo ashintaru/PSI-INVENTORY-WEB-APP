@@ -1,14 +1,7 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Car Profile') }}
-        </h2>
-    </x-slot>
     <x-alert-error></x-alert-error>
     <x-alert-success></x-alert-success>
     @if (!is_null($car))
-
-
         @if ($car->havebeenchecked)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -55,43 +48,32 @@
          @endif
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.car-profile',['car'=>$car])
-                </div>
+                @include('profile.partials.car-profile',['car'=>$car])
             </div>
         </div>
         @if ($car->hasloosetool==0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        @include('profile.partials.loose-item-form',['carid'=>$car->vehicleidno])
-                    </div>
+                    @include('profile.partials.loose-item-form',['carid'=>$car->vehicleidno])
                 </div>
             </div>
         @else
         <div id="loosetool" class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.table-tool',['tools'=>$tool])
-                </div>
+                @include('profile.partials.table-tool',['tools'=>$tool])
             </div>
         </div>
         @endif
-
         @if ($car->hassettool==0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        @include('profile.partials.tool-form',['carid'=>$car->vehicleidno])
-                    </div>
+                    @include('profile.partials.tool-form',['carid'=>$car->vehicleidno])
                 </div>
             </div>
         @else
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.table-set-tool',['tools'=>$set_tools])
-                </div>
+                @include('profile.partials.table-set-tool',['tools'=>$set_tools])
             </div>
         </div>
         @endif
@@ -100,17 +82,13 @@
         @if ($car->hasdamge == 0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        @include('profile.partials.dens-form',['carid'=>$car->vehicleidno])
-                    </div>
+                    @include('profile.partials.dens-form',['carid'=>$car->vehicleidno])
                 </div>
             </div>
         @else
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    @include('profile.partials.table-damage',['damage'=>$damage])
-                </div>
+                @include('profile.partials.table-damage',['damage'=>$damage])
             </div>
         </div>
         @endif
@@ -129,9 +107,7 @@
         @if (!is_null($log))
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        @include('profile.partials.table-log',['car'=>$car,'index'=>$index])
-                    </div>
+                    @include('profile.partials.table-log',['car'=>$car,'index'=>$index])
                 </div>
             </div>
 

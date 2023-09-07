@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\carstatus;
+use App\Models\cars;
 use Exception;
 
 
@@ -15,14 +16,14 @@ class invenotycontroller extends Controller
         try {
             //code...
             if($action == "pass"){
-                $cars = carstatus::
-                where('havebeenchecked',"=",1)
+                $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+                ->where('havebeenchecked',"=",1)
                 ->where('havebeenpassed',"=",1)
                 ->paginate(25);
             }
             if($action == "fail"){
-                $cars = carstatus::
-                where('havebeenchecked',"=",1)
+                $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+                ->where('havebeenchecked',"=",1)
                 ->where('havebeenpassed',"=",0)
                 ->paginate(25);
             }
@@ -63,6 +64,5 @@ class invenotycontroller extends Controller
 
         }
         return view('inventory',['data'=>$cars,'action'=>$action]);
-
     }
 }
