@@ -8,10 +8,13 @@ use App\Models\tool;
 use App\Models\damage;
 use App\Models\invoicecount;
 use App\Models\set_tool;
+use App\Models\invoicelist;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
+use PhpParser\Node\Stmt\Return_;
 use Redirect;
 
 class CarsController extends Controller
@@ -22,9 +25,10 @@ class CarsController extends Controller
     public function index()
     {
         //
-        $data = cars::
-        join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-        ->paginate(25);
+        // $data = cars::
+        // join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        // ->paginate(25);
+        $data = cars::paginate(25);
         // return dd($data);
         return view('recieve',['data'=>$data]);
     }
@@ -63,16 +67,9 @@ class CarsController extends Controller
     public function view($id = null,$action = 'null')
     {
         $data = cars::where('cars.vehicleidno', $id)
-        ->join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
         ->first();
-
-        $set_tools = set_tool::where('vehicleidno',$id)->get();
-        $tools = tool::where('vehicleidno',$id)->get();
-        $damage = damage::where('vehicleidno',$id)->get();
-        $logs = Log::where('idNum',$id)->orderBy('id','desc')->get();
-
         // return dd(json_decode($tools,true) );
-        return view('viewcar',['car'=>$data,'log'=>$logs,'tool'=>$tools,'set_tools'=>$set_tools,'damage'=>$damage]);
+        return view('viewcar',['car'=>$data]);
     }
     public function approve( $carid = null,Request $request)
     {
@@ -95,14 +92,25 @@ class CarsController extends Controller
                     $result = ($inputs['status']==1)?1:0;
                     $car->havebeenchecked = 1;
                     $car->havebeenpassed = $result;
-                    $car->update();
-                    $this->preinvoice($cars->modeldescription);
+                    $invoiceid = $this->preinvoice($cars->modeldescription);
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furhter inspection";
+
+
+
+                    invoicelist::create([
+                        'vehicleidno'=>$cars->vehicleidno,
+                        'idinvoicecount'=>$invoiceid,
+                        'status'=>'pending'
+                    ]);
+
+                    // return dd($invoiceid);
 
                     Log::create([
                         'idNum'=>$carid,
                         'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
                     ]);
+
+                    $car->update();
                     return redirect()->route('show-profile',$carid)->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....']);
                 }
             }
@@ -204,71 +212,68 @@ class CarsController extends Controller
     public function editloosetool($id = null){
 
         $tools = tool::findOrFail($id);
-        return view('edit-loose-tool',['data'=>$tools]);
+
+        return response()->json($tools);
+
+        // return view('edit-loose-tool',['data'=>$tools]);
 
     }
 
 
     public function settool( $carid = null , Request $request ){
 
-        try {
-            //code...
-            $inputs = $request->all();
-            if(($request->has('wheelcap') && $request->wheelcapvalue == null)|| ( $request->has('other') && $request->othervalue == null)){
-                return
-                redirect()
-                ->back()
-                ->withInput($request->input())
-                ->withErrors(['msg'=>'Error : submit have been failed due to an null field pls check the form']);
-            }else{
-                $toolbag = ($request->has('toolbag'))?$inputs['toolbag']:false;
-                $wheels = ($request->has('4wheels'))?$inputs['4wheels']:false;
-                $tirewrench = ($request->has('tirewrench'))?$inputs['tirewrench']:false;
-                $cigarettelighter = ($request->has('cigarettelighter'))?$inputs['cigarettelighter']:false;
-                $jack = ($request->has('jack'))?$inputs['jack']:false;
-                $wheelcap = ($request->has('wheelcap'))?$inputs['wheelcapvalue']:false;
-                $openwrench = ($request->has('openwrench'))?$inputs['openwrench']:false;
-                $jackhandle = ($request->has('jackhandle'))?$inputs['jackhandle']:false;
-                $sparetire = ($request->has('sparetire'))?$inputs['sparetire']:false;
-                $atena = ($request->has('atena'))?$inputs['atena']:false;
-                $towhook = ($request->has('towhook'))?$inputs['towhook']:false;
-                $matting = ($request->has('matting'))?$inputs['matting']:false;
-                $slottedscrewdriver = ($request->has('slottedscrewdriver'))?$inputs['slottedscrewdriver']:false;
-                $other = ($request->has('other'))?$inputs['othervalue']:false;
-                $phillipsscewdriver = ($request->has('phillipsscewdriver'))?$inputs['phillipsscewdriver']:false;
-                set_tool::create([
-                    'vehicleidno'=>$carid,
-                    'toolbag'=>$toolbag,
-                    'tirewrench'=>$tirewrench,
-                    'jack'=>$jack,
-                    'jackhandle'=>$jackhandle,
-                    'openwrench'=>$openwrench,
-                    'towhook'=>$towhook,
-                    'slottedscrewdriver'=>$slottedscrewdriver,
-                    'philipsscrewdriver'=>$phillipsscewdriver,
-                    'wheels'=>$wheels,
-                    'cigarettelighter'=>$cigarettelighter,
-                    'wheelcap'=>$wheelcap,
-                    'sparetire'=>$sparetire,
-                    'antena'=>$atena,
-                    'mating'=>$matting,
-                    'other'=>$other,
-                ]);
+        $inputs = $request->all();
+        if(($request->has('wheelcap') && $request->wheelcapvalue == null)|| ( $request->has('other') && $request->othervalue == null)){
+            return
+            redirect()
+            ->back()
+            ->withInput($request->input())
+            ->withErrors(['msg'=>'Error : submit have been failed due to an null field pls check the form']);
+        }else{
+            $toolbag = ($request->has('toolbag'))?$inputs['toolbag']:false;
+            $wheels = ($request->has('4wheels'))?$inputs['4wheels']:false;
+            $tirewrench = ($request->has('tirewrench'))?$inputs['tirewrench']:false;
+            $cigarettelighter = ($request->has('cigarettelighter'))?$inputs['cigarettelighter']:false;
+            $jack = ($request->has('jack'))?$inputs['jack']:false;
+            $wheelcap = ($request->has('wheelcap'))?$inputs['wheelcapvalue']:false;
+            $openwrench = ($request->has('openwrench'))?$inputs['openwrench']:false;
+            $jackhandle = ($request->has('jackhandle'))?$inputs['jackhandle']:false;
+            $sparetire = ($request->has('sparetire'))?$inputs['sparetire']:false;
+            $atena = ($request->has('atena'))?$inputs['atena']:false;
+            $towhook = ($request->has('towhook'))?$inputs['towhook']:false;
+            $matting = ($request->has('matting'))?$inputs['matting']:false;
+            $slottedscrewdriver = ($request->has('slottedscrewdriver'))?$inputs['slottedscrewdriver']:false;
+            $other = ($request->has('other'))?$inputs['othervalue']:false;
+            $phillipsscewdriver = ($request->has('phillipsscewdriver'))?$inputs['phillipsscewdriver']:false;
+            set_tool::create([
+                'vehicleidno'=>$carid,
+                'toolbag'=>$toolbag,
+                'tirewrench'=>$tirewrench,
+                'jack'=>$jack,
+                'jackhandle'=>$jackhandle,
+                'openwrench'=>$openwrench,
+                'towhook'=>$towhook,
+                'slottedscrewdriver'=>$slottedscrewdriver,
+                'philipsscrewdriver'=>$phillipsscewdriver,
+                'wheels'=>$wheels,
+                'cigarettelighter'=>$cigarettelighter,
+                'wheelcap'=>$wheelcap,
+                'sparetire'=>$sparetire,
+                'antena'=>$atena,
+                'mating'=>$matting,
+                'other'=>$other,
+            ]);
 
-                $carstatus = carstatus::where('vehicleidno',$carid)->first();
-                $carstatus->hassettool = 1;
-                $carstatus->update();
-                Log::create([
-                    'idNum'=>$carid,
-                    'logs'=>'Car VI#'. $carid .' have been check all the tools by'. $request->user()->name
-                ]);
+            $carstatus = carstatus::where('vehicleidno',$carid)->first();
+            $carstatus->hassettool = 1;
+            $carstatus->update();
+            Log::create([
+                'idNum'=>$carid,
+                'logs'=>'Car VI#'. $carid .' have been check all the tools by'. $request->user()->name
+            ]);
 
-                return redirect()->back()->with(['success' => 'success:: the tools  has been update']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with(['msg' => $th]);
+            return redirect()->back()->with(['success' => 'success:: the tools  has been update']);
         }
-
     }
 
     public function editsettool($id = null){
@@ -336,13 +341,12 @@ class CarsController extends Controller
     public function showcarprofile($id){
         $cars = cars::findorFail($id);
         return response()->json($cars);
-
     }
-    public function editcarprofile($id = null){
-
+    public function editcarprofile($id){
         $cars = cars::findorFail($id);
+        return response()->json($cars);
 
-        return view('edit-car-profile',['data'=>$cars]);
+        // return view('edit-car-profile',['data'=>$cars]);
         // return response()->json($cars);
     }
 
@@ -350,7 +354,7 @@ class CarsController extends Controller
 
         $validated = $request->validate([
             'mmpcmodelcode'=> 'required',
-            'mmpcmodelyear'=> 'required',
+            'mmpcmodelyear'=> 'required|numeric|min:2000|max:3000',
             'mmpcoptioncode'=> 'required',
             'extcolorcode'=> 'required',
             'modeldescription'=> 'required',
@@ -380,7 +384,6 @@ class CarsController extends Controller
         $billingdocuments = $inputs['bilingdocuments'];
         $vehiclestockyard = $inputs['vehiclestockyard'];
 
-
         $car = cars::findorFail($id);
         $car->mmpcmodelcode = $modelcode;
         $car->mmpcmodelyear = $modelyear;
@@ -396,7 +399,6 @@ class CarsController extends Controller
         $car->bilingdocuments = $billingdocuments;
         $car->vehiclestockyard = $vehiclestockyard;
         $car->update();
-
 
         return back()->with(['success'=>'Success:: the car have been update properly... ']);
     }
@@ -534,14 +536,15 @@ class CarsController extends Controller
 
            if(invoicecount::where('modeldescription',$description)->exists()){
                 $invoice = invoicecount::where('modeldescription',$description)->first();
+                $id = $invoice->id;
                 $invoice->count = $invoice->count + 1;
                 $invoice->update();
-                return dd($invoice->id);
+                return $id;
             }else{
                 $invoice = DB::table('invoicecounts')->insertGetId(
                     [ 'modeldescription' => $description ,'count'=>1]
                 );
-                return dd($invoice);
+                return $invoice;
             }
     }
     /**

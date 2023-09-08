@@ -19,4 +19,7 @@ class carstatus extends Model
         'hassettool',
         'hasdamge'
     ];
+    public function user(){
+        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+    }
 }

@@ -2,7 +2,7 @@
     <x-alert-error></x-alert-error>
     <x-alert-success></x-alert-success>
     @if (!is_null($car))
-        @if ($car->havebeenchecked)
+        @if ($car->status->havebeenchecked)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="p-1 sm:p-1 sm:rounded-lg">
@@ -51,7 +51,7 @@
                 @include('profile.partials.car-profile',['car'=>$car])
             </div>
         </div>
-        @if ($car->hasloosetool==0)
+        @if ($car->status->hasloosetool==0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     @include('profile.partials.loose-item-form',['carid'=>$car->vehicleidno])
@@ -60,11 +60,11 @@
         @else
         <div id="loosetool" class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                @include('profile.partials.table-tool',['tools'=>$tool])
+                @include('profile.partials.table-tool',['tools'=>$car->loosetools])
             </div>
         </div>
         @endif
-        @if ($car->hassettool==0)
+         @if ($car->status->hassettool==0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     @include('profile.partials.tool-form',['carid'=>$car->vehicleidno])
@@ -73,12 +73,12 @@
         @else
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                @include('profile.partials.table-set-tool',['tools'=>$set_tools])
+                @include('profile.partials.table-set-tool',['tools'=>$car->settools])
             </div>
         </div>
         @endif
 
-
+{{--
         @if ($car->hasdamge == 0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -88,7 +88,7 @@
         @else
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                @include('profile.partials.table-damage',['damage'=>$damage])
+                @include('profile.partials.table-damage',['damage'=>$car->damage])
             </div>
         </div>
         @endif
@@ -104,14 +104,14 @@
         <?php
             $index = 1;
         ?>
-        @if (!is_null($log))
+        @if (!is_null($car->logs))
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     @include('profile.partials.table-log',['car'=>$car,'index'=>$index])
                 </div>
             </div>
 
-        @endif
+        @endif --}}
     @endif
 
 </x-app-layout>

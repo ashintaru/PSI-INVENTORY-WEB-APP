@@ -19,4 +19,7 @@ class damage extends Model
         'other',
         'remark'
     ];
+    public function user(){
+        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+    }
 }

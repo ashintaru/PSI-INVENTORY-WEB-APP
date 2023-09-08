@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\indexcontroller;
 use App\Http\Controllers\invenotycontroller;
-
+use App\Http\Controllers\invoicecontroller;
 
 use App\Http\Controllers\ImportExportController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +45,9 @@ Route::middleware(['auth','web'])->group(function() {
         Route::post('insert-car-details','savecardetail')->name('show-car-form');
     });
 
+    Route::controller(invoicecontroller::class)->group(function(){
+        Route::get('invoice/{id}','index');
+    });
     Route::controller(CarsController::class)->group(function(){
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
@@ -67,7 +70,7 @@ Route::middleware(['auth','web'])->group(function() {
 
         Route::put('update-inventory/{id}','updatecarstatus');
 
-        Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car-profile');
+        Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
         Route::put('update-car-details/{id}','updatecardetails');
         Route::post('car-damage/{id}','submitcardamage');
         Route::put('update-car-damage/{id}','updatecardamage');

@@ -4,7 +4,6 @@
     use App\Models\invoicecount;
 
 
-
     $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
                 ->get();
     $fcars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
@@ -18,6 +17,9 @@
     $carscount = (count($cars)>0)?count($cars):0;
     $failedcars = (count($fcars)>0)?count($fcars):0;
     $passedcars = (count($pcars)>0)?count($pcars):0;
+
+    $invoicecategory = invoicecount::select(['id','modeldescription','count'])->get();
+
   ?>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -102,12 +104,14 @@
                               </svg>
                         </button>
                         <ul id="dropdown-invoice" class="hidden py-2 space-y-2">
-                              <li>
-                                 <a href="{{URL('insert-data')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manual Input</a>
-                              </li>
-                              <li>
-                                 <a href="{{URL('import_export')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Upload Data</a>
-                              </li>
+                            @if ($invoicecategory)
+                                @foreach ($invoicecategory as $category )
+                                <li>
+                                    <a href="{{URL('insert-data')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{$category->modeldescription}}</a>
+                                 </li>
+
+                                @endforeach
+                            @endif
                         </ul>
                      </li>
                      <li>
