@@ -17,8 +17,9 @@ class carstatus extends Model
         'havebeenstored',
         'hasloosetool',
         'hassettool',
-        'hasdamge'
+        'hasdamage'
     ];
+
     public function user(){
         return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
     }

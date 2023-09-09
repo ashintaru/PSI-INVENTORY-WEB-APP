@@ -15,15 +15,14 @@ return new class extends Migration
         Schema::create('carstatus', function (Blueprint $table) {
 
             $table->id();
-            $table->string('vehicleidno')->unique()->nullable();
+            $table->string('vehicleidno')->unique();
             $table->boolean('havebeenpassed');
             $table->boolean('havebeenchecked');
             $table->boolean('havebeenreleased');
             $table->boolean('havebeenstored');
             $table->boolean('hasloosetool');
             $table->boolean('hassettool');
-            $table->boolean('hasdamge');
-
+            $table->boolean('hasdamage');
             $table->timestamps();
 
 

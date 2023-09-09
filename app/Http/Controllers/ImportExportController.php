@@ -22,7 +22,7 @@ class ImportExportController extends Controller
 {
     public function importExport()
     {
-       return view('import');
+       return view('datagathering.import');
     }
 
     public function export()
@@ -66,7 +66,10 @@ class ImportExportController extends Controller
 
 
     public function viewcarform(){
-        return view('insert');
+
+        // return dd();
+        // $fillable =  app(cars::class)->getFillable();
+        return view('datagathering.insert');
     }
 
     public function savecardetail(Request $request){

@@ -13,4 +13,7 @@ class Log extends Model
         'idNum',
         'logs',
     ];
+    public function cars(){
+        return $this->belongsTo(cars::class,'vehicleidno','idNum');
+    }
 }

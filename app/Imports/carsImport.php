@@ -43,7 +43,7 @@ class carsImport implements ToModel,WithBatchInserts
             'havebeenstored'=>false,
             'hasloosetool'=>false,
             'hassettool'=>false,
-            'hasdamge'=>false
+            'hasdamage'=>false
             ])
         ];
     }

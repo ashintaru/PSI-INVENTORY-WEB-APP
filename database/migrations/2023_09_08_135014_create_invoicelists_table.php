@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoicelists', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno');
+            $table->string('vehicleidno')->unique();
             $table->integer('idinvoicecount');
             $table->string('status');
             $table->timestamps();

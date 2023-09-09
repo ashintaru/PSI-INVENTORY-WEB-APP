@@ -5,8 +5,10 @@ use App\Http\Controllers\CarsController;
 use App\Http\Controllers\indexcontroller;
 use App\Http\Controllers\invenotycontroller;
 use App\Http\Controllers\invoicecontroller;
-
+use App\Http\Controllers\looseitems;
 use App\Http\Controllers\ImportExportController;
+use App\Http\Controllers\settools;
+use App\Http\Controllers\damage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,31 +50,35 @@ Route::middleware(['auth','web'])->group(function() {
     Route::controller(invoicecontroller::class)->group(function(){
         Route::get('invoice/{id}','index');
     });
+
+    Route::controller(looseitems::class)->group(function(){
+        Route::post('loose-item/{id}','store');
+        Route::patch('update-loose-item/{id}','update');
+    });
+
+    Route::controller(settools::class)->group(function(){
+        Route::post('set-tool/{id}','store');
+    });
+
+    Route::controller(damage::class)->group(function(){
+        Route::post('car-damage/{id}','store');
+    });
     Route::controller(CarsController::class)->group(function(){
+
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
         Route::get('view/{id}/{action}', 'view')->name('show-profile');
         Route::put('approved-inventory/{id}', 'approve')->name('approve');
-        Route::put('update-loose-item/{id}','updateloosetool');
         Route::put('update-set-tool/{id}','updatesettool');
-
-        Route::post('loose-item/{id}','submitlooseitem');
         Route::get('view/{id}', 'view')->name('show-profile');
         Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
         Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
-
         Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');
-
         Route::get('showcarprofile/{id}','showcarprofile');
-
-        Route::post('set-tool/{id}','settool');
         Route::get('edit-car-status/{id}','editcarstatus');
-
         Route::put('update-inventory/{id}','updatecarstatus');
-
         Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
         Route::put('update-car-details/{id}','updatecardetails');
-        Route::post('car-damage/{id}','submitcardamage');
         Route::put('update-car-damage/{id}','updatecardamage');
     });
 

@@ -6,8 +6,11 @@
     </x-slot>
 
 
+    {{-- @foreach ($fillables as $fillable )
+        <span> {{$fillable}}</span>
+    @endforeach --}}
 
 	<div class="py-12">
-        @include('profile.partials.car-form')
+        @include('datagathering.partials.manualdataform')
 	</div>
 </x-app-layout>

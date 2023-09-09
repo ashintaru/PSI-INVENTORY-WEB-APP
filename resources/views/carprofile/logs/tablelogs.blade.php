@@ -22,8 +22,8 @@
            </tr>
        </thead>
        <tbody>
-           @if (!is_null($log))
-             @foreach($log as $d)
+           @if (!is_null($logs))
+             @foreach($logs as $d)
                @if (!$d->havebeenstored)
                  <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                    <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -35,10 +35,10 @@
                    <td class="px-6 py-4">
                      {{$d->logs}}
                    </td>
-                   <td class="px-6 py-4">              
+                   <td class="px-6 py-4">
                     {{ Carbon\Carbon::parse($d->updated_at)->format('M d Y') }}
-                   </td> 
-                  </tr>                
+                   </td>
+                  </tr>
                @endif
              @endforeach
            @else

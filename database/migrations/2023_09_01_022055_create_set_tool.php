@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('towhook');
             $table->boolean('slottedscrewdriver');
             $table->boolean('philipsscrewdriver');
-            $table->boolean('4wheels');
+            $table->boolean('wheels');
             $table->boolean('cigarettelighter');
             $table->string('wheelcap');
             $table->boolean('sparetire');

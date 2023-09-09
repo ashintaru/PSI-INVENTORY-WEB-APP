@@ -6,7 +6,7 @@
     </div>
 
 	<div class="py-1">
-        @include('profile.partials.table-car',['data'=>$data])
+        @include('data.partials.tablecardata',['data'=>$data])
         <div class="py-12">
             @if (count($data)>1)
                 {{$data->links()}}
