@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\invoce;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class invoice extends Controller
 {
+
+    use WithPagination;
+
     /**
      * Display a listing of the resource.
      */
@@ -14,10 +19,7 @@ class invoice extends Controller
     {
 
         $invoices = invoce::paginate(25);
-
         return view('invoice.invoce',['data'=>$invoices]);
-
-        //
     }
 
     /**
