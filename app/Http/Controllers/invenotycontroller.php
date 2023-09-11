@@ -13,28 +13,6 @@ class invenotycontroller extends Controller
 
     public function index($action = "pass"){
 
-        try {
-            //code...
-            if($action == "pass"){
-                $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-                ->where('havebeenchecked',"=",1)
-                ->where('havebeenpassed',"=",1)
-                ->paginate(25);
-            }
-            if($action == "fail"){
-                $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-                ->where('havebeenchecked',"=",1)
-                ->where('havebeenpassed',"=",0)
-                ->paginate(25);
-            }
-            return view('inventory',['data'=>$cars,'action'=>$action]);
-
-        } catch (Exception $th) {
-            //throw $th;
-            return view('inventory',['data'=>null,'action'=>$action]);
-
-        }
-
 
     }
     //

@@ -253,7 +253,7 @@
               <!-- Modal body -->
               <div class="p-6 space-y-6">
                 <form method="POST" action="{{URL('update-set-tool/'.$tools->id)}}">
-                    @method('PUT')
+                    @method('PATCH')
                     @csrf
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead>

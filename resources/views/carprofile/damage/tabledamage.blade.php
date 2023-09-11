@@ -149,7 +149,7 @@
               <div class="p-6 space-y-6">
                 <form method="POST" action="{{URL('update-car-damage/'.$damage->id)}}">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead>
                             <tr>

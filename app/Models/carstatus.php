@@ -20,7 +20,7 @@ class carstatus extends Model
         'hasdamage'
     ];
 
-    public function user(){
+    public function car(){
         return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
     }
 }

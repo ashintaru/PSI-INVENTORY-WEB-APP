@@ -15,7 +15,7 @@
                                     Inventory
                                 </li>
                                 <li>
-                                    @if ($car->havebeenpassed == 0)
+                                    @if ($car->status->havebeenpassed == 0)
                                         <div class="flex items-center">
                                             <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -77,9 +77,9 @@
             </div>
         </div>
         @endif
-        @if ($car->status->hasdamge == 0)
+        @if ($car->status->hasdamage==0)
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="py-4">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     @include('carprofile.damage.damageform',['carid'=>$car->vehicleidno])
                 </div>
             </div>
@@ -90,7 +90,7 @@
             </div>
         </div>
         @endif
-        @if ($car->havebeenstored==0)
+        @if ($car->status->havebeenstored==0)
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">

@@ -7,15 +7,13 @@ use App\Models\Log;
 use App\Models\tool;
 use App\Models\damage;
 use App\Models\invoicecount;
-use App\Models\set_tool;
 use App\Models\invoicelist;
-
+use App\Models\invoce;
+use App\Models\inventory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
-use PhpParser\Node\Stmt\Return_;
-use Redirect;
 
 class CarsController extends Controller
 {
@@ -24,29 +22,10 @@ class CarsController extends Controller
      */
     public function index()
     {
-        //
-        // $data = cars::
-        // join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-        // ->paginate(25);
         $data = cars::paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -77,13 +56,9 @@ class CarsController extends Controller
     {
 
         try {
-            //code...
-
-            $car = carstatus::where('vehicleidno',$carid)->first();
-            $cars = cars::where('vehicleidno',$carid)->first();
-            $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
+            $car = cars::with('status')->where('vehicleidno',$carid)->first();
+            $result = ($car->status->hasloosetool == 1 && $car->status->hassettool == 1 && $car->status->hasdamage == 1 )?true : false;
             if($result){
-
                 $validated = $request->validate([
                     'status' => 'required',
                 ]);
@@ -91,28 +66,19 @@ class CarsController extends Controller
                     return redirect()->back()->withErrors($validated);
                 }else{
                     $inputs = $request->all();
-                    $result = ($inputs['status']==1)?1:0;
-                    $car->havebeenchecked = 1;
-                    $car->havebeenpassed = $result;
-                    $invoiceid = $this->preinvoice($cars->modeldescription);
+                    $result = ( $inputs['status'] == 1 ) ? 1 : 0 ;
+
+                    $car->status->havebeenchecked = 1;
+                    $car->status->havebeenpassed = $result;
+                    $car->status->update();
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furhter inspection";
-
-
-
-                    invoicelist::create([
-                        'vehicleidno'=>$cars->vehicleidno,
-                        'idinvoicecount'=>$invoiceid,
-                        'status'=>'pending'
-                    ]);
-
-                    // return dd($invoiceid);
-
+                    $this->checkinventory($car,$result);
+                    $this->checkinvoice($car);
                     Log::create([
                         'idNum'=>$carid,
                         'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
                     ]);
 
-                    $car->update();
                     return redirect()->route('show-profile',$carid)->with(['success' => 'success:: the Car '.$carid .' has been moved in the virtual storage....']);
                 }
             }
@@ -124,49 +90,43 @@ class CarsController extends Controller
             //throw $th;
             return redirect()->route('show-profile',$carid)->with(['msg' => $error->getMessage()]);
         }
-
-        // return dd($car);
-
-    }
-    public function submitlooseitem(Request $request , $carid = null)
-    {
-        // return dd($car);
-
     }
 
+    public function checkinvoice( cars $car){
+        if(invoce::where('vehicleidno',$car->vehicleidno)->exists()){
+            $invoice = invoce::where('vehicleidno',$car->vehicleidno)->first();
+            $invoice->status = 0;
+            $invoice->update();
+        }else{
+            invoce::create([
+                'vehicleid'=>$car->id,
+                'vehicleidno'=>$car->vehicleidno,
+                'status'=>0,
+            ]);
 
-    public function updateloosetool( Request $request , $id = null)
-    {
+        }
 
+    }
+    public function  checkinventory(cars $car , $status){
+        if(inventory::where('vehicleidno',$car->vehicleidno)->exists()){
+            $inventory = inventory::where('vehicleidno',$car->vehicleidno)->first();
+            $inventory->invstatus = $status;
+            $inventory->update();
+        }else{
+            inventory::create([
+                'vehicleid'=>$car->id,
+                'vehicleidno'=>$car->vehicleidno,
+                'invstatus'=>$status
+            ]);
+            // return dd($car->vehicleidno);
+        }
     }
 
     public function editloosetool($id = null){
 
         $tools = tool::findOrFail($id);
-
         return response()->json($tools);
-
-        // return view('edit-loose-tool',['data'=>$tools]);
-
     }
-
-
-    public function settool( $carid = null , Request $request ){
-
-
-    }
-
-    public function editsettool($id = null){
-
-        $tools = set_tool::findorFail($id);
-
-        return view('edit-set-tool',['data'=>$tools]);
-    }
-
-    public function updatesettool(Request $request , $id = null ){
-
-    }
-
     public function showcarprofile($id){
         $cars = cars::findorFail($id);
         return response()->json($cars);
@@ -174,9 +134,9 @@ class CarsController extends Controller
     public function editcarprofile($id){
         $cars = cars::findorFail($id);
         return response()->json($cars);
-        // return view('edit-car-profile',['data'=>$cars]);
-        // return response()->json($cars);
     }
+
+
 
     public function updatecardetails(Request $request, $id = null){
 
@@ -230,81 +190,39 @@ class CarsController extends Controller
 
         return back()->with(['success'=>'Success:: the car have been update properly... ']);
     }
-
     public function submitcardamage(Request $request , $id = null){
 
     }
 
 
     public function editdamgecar($id = null){
-
         $damage = damage::findorFail($id);
         return view('edit-car-damage',['data'=>$damage]);
     }
 
-    public function updatecardamage($id = null, Request $request){
-
-
-        try {
-            //code...
-            $damagecar = damage::findorFail($id);
-
-            $inputs = $request->all();
-            $dents = ($request->has('dents'))?$inputs['dents']:false;
-            $dings = ($request->has('dings'))?$inputs['dings']:false;
-            $scratches = ($request->has('scratches'))?$inputs['scratches']:false;
-            $paintdefects = ($request->has('paintdefects'))?$inputs['paintdefects']:false;
-            $damage = ($request->has('damage'))?$inputs['damage']:false;
-            $other = ($request->has('other'))?$inputs['other']:false;
-            $remark = ($request['remark'])?$request['remark']:'No problem after the checking...';
-
-
-            $damagecar->dents = $dents;
-            $damagecar->dings = $dings;
-            $damagecar->scratches = $scratches;
-            $damagecar->paintdefects = $paintdefects;
-            $damagecar->damage = $damage;
-            $damagecar->other = $other;
-            $damagecar->remark = $remark;
-            $damagecar->update();
-            Log::create([
-                'idNum'=>$damagecar->vehicleidno,
-                'logs'=>'Car VI#'. ' '. $damagecar->vehicleidno.' have been update if it have a damage  by '. $request->user()->name
-            ]);
-
-            return back()->with(['success'=>'the car have been Update....']);
-        } catch (Exception $th) {
-
-            return back()->with(['msg'=>$th]);
-        }
-
-
-
-
-    }
     public function editcarstatus($id = null){
         $carstatus = carstatus::where('vehicleidno',$id)->first();
         return view('edit-car-status',['data'=>$carstatus]);
     }
     public function updatecarstatus($carid = null , Request $request){
         try {
-            //code...
-            $car = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-            ->where('vehicleidno',$carid)->get();
-            $result = ($car->hasloosetool == 1 && $car->hassettool == 1 && $car->hasdamge == 1 )?true : false;
+            $car = cars::where('vehicleidno',$carid)->first();
+            $result = ($car->status->hasloosetool == 1 && $car->status->hassettool == 1 && $car->status->hasdamage == 1 )?true : false;
+            // return dd($result);
             if($result){
-
+                $car->status->havebeenchecked = 1;
                 $validated = $request->validate([
                     'status' => 'required',
                 ]);
-                if(!$validated) {
+                if(!$validated){
                     return redirect()->back()->withErrors($validated);
                 }else{
                     $inputs = $request->all();
-                    $result = ($inputs['status']==1)?1:0;
-                    $car->havebeenpassed = $result;
-                    $car->update();
-
+                    $result = ($inputs['status']==1) ? 1 : 0;
+                    $car->status->havebeenpassed = $result;
+                    $car->status->update();
+                    $this->checkinventory($car,$result);
+                    $this->checkinvoice($car);
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
                     Log::create([
                         'idNum'=>$carid,
@@ -318,27 +236,26 @@ class CarsController extends Controller
             }
 
         } catch (Exception $error) {
-            //throw $th;
-            return redirect()->route('show-profile',$carid)->with(['msg' => $error->getMessage()]);
+            return redirect()->back()->with(['msg' => $error->getMessage()]);
         }
 
     }
 
-    public function preinvoice($description){
+    // public function preinvoice($description){
 
-           if(invoicecount::where('modeldescription',$description)->exists()){
-                $invoice = invoicecount::where('modeldescription',$description)->first();
-                $id = $invoice->id;
-                $invoice->count = $invoice->count + 1;
-                $invoice->update();
-                return $id;
-            }else{
-                $invoice = DB::table('invoicecounts')->insertGetId(
-                    [ 'modeldescription' => $description ,'count'=>1]
-                );
-                return $invoice;
-            }
-    }
+    //        if(invoicecount::where('modeldescription',$description)->exists()){
+    //             $invoice = invoicecount::where('modeldescription',$description)->first();
+    //             $id = $invoice->id;
+    //             $invoice->count = $invoice->count + 1;
+    //             $invoice->update();
+    //             return $id;
+    //         }else{
+    //             $invoice = DB::table('invoicecounts')->insertGetId(
+    //                 [ 'modeldescription' => $description ,'count'=>1]
+    //             );
+    //             return $invoice;
+    //         }
+    // }
     /**
      * Show the form for editing the specified resource.
      */

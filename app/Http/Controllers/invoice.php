@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\invoce;
 use Illuminate\Http\Request;
 
 class invoice extends Controller
@@ -11,6 +12,11 @@ class invoice extends Controller
      */
     public function index()
     {
+
+        $invoices = invoce::paginate(25);
+
+        return view('invoice.invoce',['data'=>$invoices]);
+
         //
     }
 

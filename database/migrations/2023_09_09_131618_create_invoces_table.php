@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoces', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno');
-            $table->string('modeldescription');
+            $table->string('id');
             $table->boolean('status');
             $table->timestamps();
         });

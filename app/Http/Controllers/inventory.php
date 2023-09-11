@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\inventory as inbentaryo;
+use Exception;
+
+
 
 class inventory extends Controller
 {
@@ -11,7 +15,16 @@ class inventory extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $inventory = inbentaryo::with(['car'])->paginate(25);
+            // return dd($inventor);
+            return view('inventory.inventory',['data'=>$inventory]);
+        } catch (Exception $th) {
+            //throw $th;
+            return view('inventory.inventory',['data'=>null,'mgs'=>$th]);
+        }
+
     }
 
     /**
@@ -28,14 +41,24 @@ class inventory extends Controller
     public function store(Request $request)
     {
         //
+
+
     }
 
+    public function searchinventory(Request $request){
+        $inventory = inbentaryo::with('car')->where('vehicleidno','LIKE',$request['search'])->get();
+        return view('inventory.inventory',['data'=>$inventory]);
+    }
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $action)
     {
         //
+        $result = ($action == "passed")?1:0;
+        $inventory = inbentaryo::with(['car'])->where('invstatus',$result)->paginate(25);
+        return view('inventory.inventory',['data'=>$inventory]);
+
     }
 
     /**

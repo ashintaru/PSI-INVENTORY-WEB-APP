@@ -52,9 +52,11 @@ class damage extends Controller
                 'remark'=>$remark
             ]
         );
+
         $carstatus = carstatus::where('vehicleidno',$id)->first();
-        $carstatus->hasdamage= 1;
+        $carstatus->hasdamage = 1;
         $carstatus->update();
+        // return dd($carstatus);
         Log::create([
             'idNum'=>$id,
             'logs'=>'Car VI#'. ' '. $id .' have been checked if it have a damage  by '. $request->user()->name
@@ -82,9 +84,39 @@ class damage extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id = null)
     {
         //
+        try {
+            //code...
+            $damagecar = sira::findorFail($id);
+            $inputs = $request->all();
+            $dents = ($request->has('dents'))?$inputs['dents']:false;
+            $dings = ($request->has('dings'))?$inputs['dings']:false;
+            $scratches = ($request->has('scratches'))?$inputs['scratches']:false;
+            $paintdefects = ($request->has('paintdefects'))?$inputs['paintdefects']:false;
+            $damage = ($request->has('damage'))?$inputs['damage']:false;
+            $other = ($request->has('other'))?$inputs['other']:false;
+            $remark = ($request['remark'])?$request['remark']:'No problem after the checking...';
+
+            $damagecar->dents = $dents;
+            $damagecar->dings = $dings;
+            $damagecar->scratches = $scratches;
+            $damagecar->paintdefects = $paintdefects;
+            $damagecar->damage = $damage;
+            $damagecar->other = $other;
+            $damagecar->remark = $remark;
+            $damagecar->update();
+            Log::create([
+                'idNum'=>$damagecar->vehicleidno,
+                'logs'=>'Car VI#'. ' '. $damagecar->vehicleidno.' have been update if it have a damage  by '. $request->user()->name
+            ]);
+
+            return redirect()->back()->with(['success'=>'the car have been Update....']);
+        } catch (Exception $th) {
+            return redirect()->back()->with(['msg'=>$th]);
+        }
+
     }
 
     /**

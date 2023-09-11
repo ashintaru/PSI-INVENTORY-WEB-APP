@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\set_tool;
 use App\Models\Log;
 use App\Models\carstatus;
+use Exception;
+
 
 
 class settools extends Controller
@@ -86,7 +88,7 @@ class settools extends Controller
                 return redirect()->back()->with(['success' => 'success:: the tools  has been update']);
             }
         }
-        catch (\Throwable $th) {
+        catch (Exception $th) {
             return redirect()->back()->with(['msg' => $th]);
         }
     }
@@ -110,7 +112,7 @@ class settools extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id = null)
     {
         try {
             $inputs = $request->all();
@@ -156,9 +158,8 @@ class settools extends Controller
                 ]);
                 return redirect()->back()->with(['success' => 'success:: the tools  has been update']);
             }
-
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (Exception $th) {
+            return redirect()->back()->with(['msg' => $th]);
         }
     }
 

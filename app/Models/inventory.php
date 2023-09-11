@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class inventory extends Model
 {
     use HasFactory;
-    protected $fillable =  ['vehicleidno'];
+    protected $fillable =  ['vehicleid','vehicleidno','invstatus'];
 
     public function car(){
-        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
+        return $this->belongsTo(cars::class,'vehicleid','id');
     }
 }

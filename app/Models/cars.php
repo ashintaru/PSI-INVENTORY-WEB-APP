@@ -43,6 +43,9 @@ class cars extends Model
         return $this->hasMany(Log::class,'idNum','vehicleidno');
     }
     public function inventory(){
-        return $this->hasOne(inventory::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(inventory::class,'vehicleid','id');
+    }
+    public function invoice(){
+        return $this->hasOne(invoce::class,'vehicleid','id');
     }
 }
