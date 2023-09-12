@@ -38,7 +38,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"  rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @livewireStyles
     </head>
     <body class="font-sans antialiased">
         {{--  --}}
@@ -168,6 +167,6 @@
         {{-- <x-footer></x-footer> --}}
 
         {{--  --}}
-        @livewireScripts
+        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>
 </html>

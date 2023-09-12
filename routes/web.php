@@ -11,7 +11,6 @@ use App\Http\Controllers\damage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
-use App\Livewire\Invoicetable;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,8 +76,6 @@ Route::middleware(['auth','web'])->group(function() {
     Route::controller(invoice::class)->group(function(){
         Route::get('invoice','index');
     });
-
-    Route::get('invoice',Invoicetable::class);
 
 
 
