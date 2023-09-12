@@ -75,6 +75,8 @@ Route::middleware(['auth','web'])->group(function() {
 
     Route::controller(invoice::class)->group(function(){
         Route::get('invoice','index');
+        Route::get('invoice-get/{id}','show');
+
     });
 
 

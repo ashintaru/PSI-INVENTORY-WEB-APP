@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cars;
 use App\Models\invoce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class invoice extends Controller
 {
@@ -13,9 +16,17 @@ class invoice extends Controller
     public function index()
     {
 
+
+
+        $data  = DB::table('cars')
+                 ->join('invoces','cars.vehicleidno','invoces.vehicleidno')
+                 ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
+                 ->groupBy('modeldescription')
+                 ->get();
         $invoices = invoce::paginate(25);
 
-        return view('invoice.invoce',['data'=>$invoices]);
+        // return dd($data);
+        return view('invoice.invoce',['data'=>$invoices,'data1'=>$data]);
 
         //
     }
@@ -39,9 +50,11 @@ class invoice extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id = null)
     {
         //
+        $data = invoce::with('car')->findOrFail($id);
+        return view('invoice.invoiceprofile',['data'=>$data]);
     }
 
     /**

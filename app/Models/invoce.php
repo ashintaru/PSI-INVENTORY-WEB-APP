@@ -13,6 +13,9 @@ class invoce extends Model
     ];
 
     public function car(){
-        return $this->belongsTo(cars::class,'id','vehicleid');
+        return $this->belongsTo(cars::class,'vehicleid','id');
+    }
+    public function invoicedata(){
+        return $this->hasOne(invoicedata::class,'invoiceid','id');
     }
 }
