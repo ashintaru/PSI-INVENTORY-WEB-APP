@@ -11,6 +11,8 @@ use App\Http\Controllers\damage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
+use App\Http\Controllers\account;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,18 +29,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
 
-Route::middleware(['auth','web'])->group(function() {
 
-    Route::get('upload', function () {
-        return view('welcome');
-    });
-
-    Route::controller(invenotycontroller::class)->group(function(){
-        Route::post('search/{action}','search');
-    });
-
+Route::middleware(['auth','web','areAdmin'])->group(function() {
     Route::controller(ImportExportController::class)->group(function(){
         Route::get('import_export', 'importExport');
         Route::post('import', 'import')->name('import');
@@ -46,46 +41,34 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('insert-data','viewcarform');
         Route::post('insert-car-details','savecardetail')->name('show-car-form');
     });
-
-
     Route::controller(invoicecontroller::class)->group(function(){
         Route::get('invoice/{id}','index');
     });
-
     Route::controller(looseitems::class)->group(function(){
         Route::post('loose-item/{id}','store');
         Route::patch('update-loose-item/{id}','update');
     });
-
     Route::controller(settools::class)->group(function(){
         Route::post('set-tool/{id}','store');
         Route::patch('update-set-tool/{id}','update');
     });
-
     Route::controller(damage::class)->group(function(){
         Route::post('car-damage/{id}','store');
         Route::patch('update-car-damage/{id}','update');
     });
-
     Route::controller(inventory::class)->group(function(){
         Route::get('inventory', 'index')->name('show-inventory');
         Route::post('searchinventory','searchinventory');
         Route::get('viewinventory/{action}','show');
     });
+    Route::controller(invoice::class)->group(function(){
+        Route::get('invoice','index');
+        Route::get('invoice-get/{id}','show');
 
-    // Route::controller(invoice::class)->group(function(){
-    //     Route::get('invoice','index');
-    //     Route::get('invoice-get/{id}','show');
-
-    // });
-
-
-
+    });
     Route::controller(CarsController::class)->group(function(){
         Route::patch('approved-inventory/{id}', 'approve')->name('approve');
         Route::patch('update-inventory/{id}','updatecarstatus');
-
-
         Route::get('recieve', 'index');
         Route::post('search', 'show')->name('search');
         Route::get('view/{id}/{action}', 'view')->name('show-profile');
@@ -98,13 +81,17 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
         Route::put('update-car-details/{id}','updatecardetails');
     });
-
-
-
 });
 
 Route::group(['middleware' => ['status']], function (){
-    Route::get('invoice', [invoice::class, 'index']);
+    Route::get('account', [account::class, 'index']);
+    Route::post('create-account', [account::class, 'store']);
+    Route::get('profile/{id}', [account::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('profile/{id}', [account::class, 'update'])->name('admin.profile.update');
+    Route::put('password/{id}', [account::class, 'updatepassword'])->name('admin.password.update');
+    Route::patch('updaterole/{id}',[account::class,'updaterole'])->name('admin.role.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
  });
 
 Route::middleware('auth')->group(function () {
@@ -112,6 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 
 // server routes
