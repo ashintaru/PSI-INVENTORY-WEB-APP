@@ -73,11 +73,11 @@ Route::middleware(['auth','web'])->group(function() {
         Route::get('viewinventory/{action}','show');
     });
 
-    Route::controller(invoice::class)->group(function(){
-        Route::get('invoice','index');
-        Route::get('invoice-get/{id}','show');
+    // Route::controller(invoice::class)->group(function(){
+    //     Route::get('invoice','index');
+    //     Route::get('invoice-get/{id}','show');
 
-    });
+    // });
 
 
 
@@ -103,6 +103,9 @@ Route::middleware(['auth','web'])->group(function() {
 
 });
 
+Route::group(['middleware' => ['status']], function (){
+    Route::get('invoice', [invoice::class, 'index']);
+ });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
