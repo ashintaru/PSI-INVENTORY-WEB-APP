@@ -140,6 +140,16 @@
                            <span class="ml-3">Block management</span>
                         </a>
                      </li>
+                     <li>
+                        <a href="{{URL('health')}}" target=”_blank”  class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
+                                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                              </svg>
+
+                           <span class="ml-3">Sytem Health Report</span>
+                        </a>
+                     </li>
                      @endif
                      <li>
                        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

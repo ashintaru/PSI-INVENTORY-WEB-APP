@@ -13,6 +13,7 @@ use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
 use App\Http\Controllers\account;
 use App\Http\Controllers\blocks;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 
 /*
@@ -69,6 +70,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
     Route::controller(blocks::class)->group(function(){
         Route::get('blocks','index');
+        Route::post('savedblock','store');
     });
 
     Route::controller(CarsController::class)->group(function(){
@@ -96,7 +98,7 @@ Route::group(['middleware' => ['status']], function (){
     Route::put('password/{id}', [account::class, 'updatepassword'])->name('admin.password.update');
     Route::patch('updaterole/{id}',[account::class,'updaterole'])->name('admin.role.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('health', HealthCheckResultsController::class);
  });
 
 Route::middleware('auth')->group(function () {
