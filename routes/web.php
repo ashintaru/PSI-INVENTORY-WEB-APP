@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
 use App\Http\Controllers\account;
+use App\Http\Controllers\blocks;
 
 
 /*
@@ -64,8 +65,12 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
     Route::controller(invoice::class)->group(function(){
         Route::get('invoice','index');
         Route::get('invoice-get/{id}','show');
-
     });
+
+    Route::controller(blocks::class)->group(function(){
+        Route::get('blocks','index');
+    });
+
     Route::controller(CarsController::class)->group(function(){
         Route::patch('approved-inventory/{id}', 'approve')->name('approve');
         Route::patch('update-inventory/{id}','updatecarstatus');
