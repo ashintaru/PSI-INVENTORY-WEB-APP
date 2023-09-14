@@ -13,6 +13,7 @@ use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
 use App\Http\Controllers\account;
 use App\Http\Controllers\blocks;
+use App\Http\Controllers\track;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 
@@ -31,6 +32,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware(['auth'])->group(function(){
+    Route::controller(track::class)->group(function(){
+        Route::get('track','index');
+        Route::post('trackproduct','show');
+    });
+});
+
 
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
 
@@ -43,6 +51,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('insert-data','viewcarform');
         Route::post('insert-car-details','savecardetail')->name('show-car-form');
     });
+
+
+
+
     Route::controller(invoicecontroller::class)->group(function(){
         Route::get('invoice/{id}','index');
     });
@@ -88,6 +100,11 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
         Route::put('update-car-details/{id}','updatecardetails');
     });
+
+
+
+
+
 });
 
 Route::group(['middleware' => ['status']], function (){
