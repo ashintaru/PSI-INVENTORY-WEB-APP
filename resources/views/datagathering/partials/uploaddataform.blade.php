@@ -15,7 +15,7 @@
                 <input id="file" accept=".xlsx" name="file" type="file"  class="hidden"/>
             </label>
         </div>
-    <button type="submit" onclick="showFileSize()"  class="mr-4 py-2 px-4 w-1/5   rounded-full file:border-0 text-sm file:font-semibold hover:bg-green-100 bg-green-50 text-green-700 ">
+    <button type="submit" id="submit" onclick="showFileSize()"  class="mr-4 py-2 px-4 w-1/5   rounded-full file:border-0 text-sm file:font-semibold hover:bg-green-100 bg-green-50 text-green-700 ">
         Import
     </button>
 </form>
