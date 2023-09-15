@@ -22,7 +22,7 @@ class ImportExportController extends Controller
 {
     public function importExport()
     {
-       return view('datagathering.import');
+       return view('datagathering.import',[ 'pr'=>""]);
     }
 
     public function export()
@@ -47,7 +47,7 @@ class ImportExportController extends Controller
                         'idNum'=>$request->user()->id,
                         'logs'=>$request->user()->name.' upload Data into the Database'
                     ]);
-                    return back()->with(['success' => 'success:: the file has been uploaded succesfully...']);
+                    return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
                 }
                 else{
                     request()->file('file') == null;

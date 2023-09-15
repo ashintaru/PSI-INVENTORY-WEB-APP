@@ -12,7 +12,7 @@ class invoce extends Model
         'vehicleid','vehicleidno','status'
     ];
     public function car(){
-        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
+        return $this->belongsTo(cars::class,'vehicleid','id');
     }
     public function invoicedata(){
         return $this->hasOne(invoicedata::class,'invoiceid','id');
