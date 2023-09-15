@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Illuminate\Http\Request;
 use App\Models\blocks as bloke;
-use Illuminate\Support\Facades\DB;
 use Exception;
+
 
 class blocks extends Controller
 {
@@ -15,7 +16,9 @@ class blocks extends Controller
     public function index()
     {
         //
-        return view('blocks.blocks');
+        $data = bloke::paginate(25);
+        return view('blocks.blocks',['data'=>$data]);
+
     }
 
     /**
@@ -34,13 +37,12 @@ class blocks extends Controller
         //
 
         try {
-            //code...
             $input = $request->all();
             $validate = $request->validate([
                 'blocks'=>'required'
             ]);
             bloke::create([
-                'blocks'=>$input['blocks'],
+                'blockname'=>$input['blocks'],
                 'status'=>0
             ]);
             return redirect()->back()->with(['success'=>"save copletely"]);

@@ -1,35 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\cars;
-use App\Models\invoce;
-use App\Models\blocks;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-
-class invoice extends Controller
+class track extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-
-
-        $data  = DB::table('cars')
-                 ->join('invoces','cars.vehicleidno','invoces.vehicleidno')
-                 ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
-                 ->groupBy('modeldescription')
-                 ->get();
-        $invoices = invoce::paginate(25);
-
-        // return dd($data);
-        return view('invoice.invoce',['data'=>$invoices,'data1'=>$data]);
-
-        //
+        return view('track.track',['data'=>null]);
     }
 
     /**
@@ -51,12 +33,13 @@ class invoice extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id = null)
+    public function show(Request $request)
     {
-        //
-        $data = invoce::with('car')->findOrFail($id);
-        $blockdata = blocks::select(['id','blockname'])->where('status',0)->get();
-        return view('invoice.invoiceprofile',['data'=>$data,'blocks'=>$blockdata]);
+        $data = cars::with(['status','invoice'])->where('vehicleidno',$request->search)->first();
+        // return dd($data);
+        // return redirect()->back()->with(['data'=>$data]);
+        return view('track.track',['data'=>$data]);
+
     }
 
     /**
