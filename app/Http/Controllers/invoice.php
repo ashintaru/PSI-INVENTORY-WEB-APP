@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\cars;
 use App\Models\invoce;
+use App\Models\blocks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,8 @@ class invoice extends Controller
     {
         //
         $data = invoce::with('car')->findOrFail($id);
-        return view('invoice.invoiceprofile',['data'=>$data]);
+        $blockdata = blocks::select(['id','blockname'])->where('status',0)->get();
+        return view('invoice.invoiceprofile',['data'=>$data,'blocks'=>$blockdata]);
     }
 
     /**

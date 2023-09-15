@@ -25,35 +25,27 @@
 	</div>
     <script>
 
+        $( document ).ready(function() {
+
+            $( "#file" ).on( "change", function() {
+                let file = document.getElementById("file").files[0];
+                $('#filename').html(file.name);
+                console.log(file.name);
+            });
+
+        });
+
+
         function showFileSize() {
             let file = document.getElementById("file").files[0];
+            let filetext = document.getElementById("filename");
             if(file) {
+                // filetext.text(file.text);
                 const maxSize = 200000;
                 if(file.size > maxSize ){
                     alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes");
                     event.preventDefault();
                 }
-                // else{
-                //     $('#fileUploadForm').ajaxForm({
-                //         beforeSend: function () {
-                //             var percentage = '0';
-                //         },
-                //         uploadProgress: function (event, position, total, percentComplete) {
-                //             var percentage = percentComplete;
-                //             $('#progressBar').css("width", percentage+'%', function() {
-                //             return $(this).attr("aria-valuenow", percentage) + "%";
-
-                //         })
-                //         },
-                //         complete: function (xhr) {
-                //             if(xhr.responseText)
-                //                 {
-
-                //                 }
-                //         }
-                //     });
-
-                // }
             }
         }
 

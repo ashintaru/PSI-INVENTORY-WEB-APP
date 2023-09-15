@@ -35,7 +35,7 @@ class track extends Controller
      */
     public function show(Request $request)
     {
-        $data = cars::with('status')->where('vehicleidno',$request->search)->get();
+        $data = cars::with(['status','invoice'])->where('vehicleidno',$request->search)->first();
         // return dd($data);
         // return redirect()->back()->with(['data'=>$data]);
         return view('track.track',['data'=>$data]);
