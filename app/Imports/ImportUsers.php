@@ -14,7 +14,7 @@ class ImportUsers implements ToModel
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function model(array $row):User
     {
         return new User([
             'name'     => $row[0],
