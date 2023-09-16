@@ -89,7 +89,7 @@
                         <li>
                             <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                                <x-data_icon></x-data_icon>
-                                  <span class="flex-1 ml-3 text-left whitespace-nowrap">Import</span>
+                                  <span class="flex-1 ml-3 text-left whitespace-nowrap">Master List</span>
                                   <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                                   </svg>
@@ -101,12 +101,18 @@
                                   <li>
                                      <a href="{{URL('import_export')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Upload Data</a>
                                   </li>
+                                  <li>
+                                    <a href="{{URL('recieve')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                        Raw Data
+                                       <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{{$carscount}}</span>
+                                    </a>
+                                 </li>
                             </ul>
                          </li>
 
                          <li>
                             <a href="{{URL('inventory')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                <x-inv_icon></x-inv_icon>
+                                <x-db_icon></x-db_icon>
                                 <span class="flex-1 ml-3 whitespace-nowrap">Inventory</span>
                             </a>
                          </li>
@@ -118,13 +124,7 @@
                                <span class="flex-1 ml-3 whitespace-nowrap">Invoice</span>
                             </a>
                          </li>
-                         <li>
-                            <a href="{{URL('recieve')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                               <x-db_icon></x-db_icon>
-                               <span class="flex-1 ml-3 whitespace-nowrap">Raw Data</span>
-                               <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{{$carscount}}</span>
-                            </a>
-                         </li>
+
                          <li>
                             <a href="{{route('dashboard')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white">
