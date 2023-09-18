@@ -4,8 +4,9 @@
         approved
     @else
     <div>
-        <form class="" action="{{URL('insert-car-details ')}}" method="POST" >
+        <form class="" action="{{URL('createinvoicedata/'.$data->id)}}" method="POST" >
             @csrf
+            @method('PATCH')
             <div class="w-full">
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Personel</label>
                 <div class="relative max-w-full">

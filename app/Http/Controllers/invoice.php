@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\cars;
 use App\Models\invoce;
 use App\Models\blocks;
+use Exception;
 use Illuminate\Http\Request;
+use App\Models\invoicedata;
 use Illuminate\Support\Facades\DB;
 
 
@@ -16,8 +18,6 @@ class invoice extends Controller
      */
     public function index()
     {
-
-
 
         $data  = DB::table('cars')
                  ->join('invoces','cars.vehicleidno','invoces.vehicleidno')
@@ -49,6 +49,7 @@ class invoice extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -76,6 +77,23 @@ class invoice extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            //code...
+            $invoice = invoce::findOrFail($id);
+            invoicedata::create(
+                [
+                    'invoiceid',
+                    'name',
+                    'date',
+                    'block'
+                ]
+            )
+
+
+        } catch (Exception $th) {
+            //throw $th;
+        }
+
     }
 
     /**
