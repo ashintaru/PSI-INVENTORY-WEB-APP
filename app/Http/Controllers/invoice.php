@@ -32,6 +32,9 @@ class invoice extends Controller
         //
     }
 
+    public function import(){
+        return view('invoice.importInvoice');
+    }
     /**
      * Show the form for creating a new resource.
      */

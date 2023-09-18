@@ -4,18 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exports\ExportUsers;
-use App\Imports\ImportUsers;
 use App\Imports\carsImport;
-use App\Imports\carstatusimport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exceptions\InvalidOrderException;
 use App\Models\Log;
 use App\Models\cars;
 use App\Models\carstatus;
-
-use Redirect;
 use Exception;
-
+use App\Imports\Importinvoce;
 
 
 class ImportExportController extends Controller
@@ -25,13 +20,37 @@ class ImportExportController extends Controller
        return view('datagathering.import',[ 'pr'=>""]);
     }
 
-    public function export()
-    {
-        return Excel::download(new ExportUsers, 'users.xlsx');
-    }
 
+
+    public function importInvoice(Request $request){
+
+        while(empty($error)){
+            try{
+                //asking if the post method have file
+                $validated = $request->validate([
+                    'file' => 'required|max:2000',
+                ]);
+                $extension = request()->file('file')->extension();
+                if($extension === "xlsx"){
+                    try {
+                        Excel::import(new Importinvoce, request()->file('file'));
+                        return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                    } catch ( \Maatwebsite\Excel\Validators\ValidationException $e) {
+                         $failures = $e->failures();
+                        return back()->with(['msg' =>$failures]);
+                   }
+                }else{
+                    return back()->with(['msg' => 'Error:: File must be in Excel Format']);
+                }
+            }catch(Exception  $error){
+                return back()->with(['msg' => $error->getMessage()]);
+            }
+        }
+
+    }
     public function import(Request $request)
     {
+
         while(empty($error)){
             try{
                 //asking if the post method have file
@@ -52,11 +71,13 @@ class ImportExportController extends Controller
                 else{
                     request()->file('file') == null;
                     return back()->with(['msg' => 'Error:: File must be in Excel Format']);
-                }
 
+                }
             }
             catch(Exception  $error){
+                // return dd($error);
                 return back()->with(['msg' => $error->getMessage()]);
+
             }
 
         }

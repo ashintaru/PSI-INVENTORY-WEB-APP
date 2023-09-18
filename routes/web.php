@@ -44,6 +44,8 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
         Route::get('export', 'export')->name('export');
         Route::get('insert-data','viewcarform');
         Route::post('insert-car-details','savecardetail')->name('show-car-form');
+        Route::post('uploadInvoice','importInvoice');
+
         });
         Route::controller(invoicecontroller::class)->group(function(){
             Route::get('invoice/{id}','index');
@@ -68,6 +70,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
         Route::controller(invoice::class)->group(function(){
             Route::get('invoice','index');
             Route::get('invoice-get/{id}','show');
+            Route::get('upload-Invoice','import');
         });
 
         Route::controller(blocks::class)->group(function(){

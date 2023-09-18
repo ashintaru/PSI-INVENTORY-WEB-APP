@@ -72,8 +72,9 @@ class CarsController extends Controller
                     $car->status->havebeenpassed = $result;
                     $car->status->update();
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furhter inspection";
+
                     $this->checkinventory($car,$result);
-                    $this->checkinvoice($car);
+
                     Log::create([
                         'idNum'=>$carid,
                         'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
@@ -222,7 +223,6 @@ class CarsController extends Controller
                     $car->status->havebeenpassed = $result;
                     $car->status->update();
                     $this->checkinventory($car,$result);
-                    $this->checkinvoice($car);
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
                     Log::create([
                         'idNum'=>$carid,

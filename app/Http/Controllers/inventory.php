@@ -21,7 +21,6 @@ class inventory extends Controller
             // return dd($inventor);
             return view('inventory.inventory',['data'=>$inventory]);
         } catch (Exception $th) {
-            //throw $th;
             return view('inventory.inventory',['data'=>null,'mgs'=>$th]);
         }
 

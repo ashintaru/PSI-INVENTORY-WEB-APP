@@ -40,28 +40,22 @@ class account extends Controller
     public function store(Request $request)
     {
         //
-        try {
-                $request->validate([
-                    'name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-                    'role'=>   ['required'],
-                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                ]);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'role'=>   ['required'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
 
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'role'=> $request->role,
-                    'password' => Hash::make($request->password),
-                ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role'=> $request->role,
+            'password' => Hash::make($request->password),
+        ]);
 
-                event(new Registered($user));
-                return redirect()->back()->with(['success'=>'created successfull']);
-            }
-        catch (Exception $th) {
-            return redirect()->back()->with(['msg'=>$th]);
-        }
-    }
+        event(new Registered($user));
+        return redirect()->back()->with(['success'=>'created successfull']);    }
 
 
 

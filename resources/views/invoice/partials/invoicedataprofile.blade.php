@@ -20,7 +20,6 @@
                     <span class="text-red-600 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-
             <div class="flex flex-row gap-4 w-full">
                 <div class="w-full">
                     <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Final Date</label>
@@ -58,7 +57,6 @@
             <br>
             <div class="space-x-4 space-y-4">
                 <x-primary-button>Submit</x-primary-button>
-
             </div>
         </form>
     </div>

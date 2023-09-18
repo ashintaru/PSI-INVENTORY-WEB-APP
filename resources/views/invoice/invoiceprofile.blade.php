@@ -33,7 +33,11 @@
                 </li>
             </ol>
         </nav>
-
+        <div class="py-4">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 ">
+                @include('invoice.partials.invoicedataprofile',['data'=>$data,'blocks'=>$blocks])
+            </div>
+        </div>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 ">
                 @include('invoice.partials.carprofile',['data'=>$data->car])
@@ -44,14 +48,6 @@
                 @include('invoice.partials.invoiceprofile',['data'=>$data])
             </div>
         </div>
-        <div class="py-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 ">
-                @include('invoice.partials.invoicedataprofile',['data'=>$data,'blocks'=>$blocks])
-            </div>
-        </div>
-
-
-
     @else
 
     @endif
