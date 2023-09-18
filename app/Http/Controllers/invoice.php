@@ -80,11 +80,14 @@ class invoice extends Controller
         try {
             //code...
             $inputs = $request->all();
-            // return dd($inputs);
             $invoice = invoce::findOrFail($id);
+            // return dd($invoice->car->vehicleidno);
             $invoice->status = 1;
             $invoice->save();
 
+            $blocks = blocks::findOrFail($inputs['blocks']);
+            $blocks->status=1;
+            $blocks->save();
 
 
             invoicedata::create([
