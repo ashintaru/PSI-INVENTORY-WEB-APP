@@ -44,7 +44,6 @@
             </a>
          </li>
     </ul>
-
     <div class="py-1">
             @if ($data)
                 @include('inventory.partials.inventorytable',['data'=>$data])
@@ -64,6 +63,4 @@
             </div>
         </div>
 	</div>
-
-
 </x-app-layout>
