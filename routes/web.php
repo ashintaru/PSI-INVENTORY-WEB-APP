@@ -69,7 +69,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
         });
         Route::controller(invoice::class)->group(function(){
             Route::get('invoice','index');
-            Route::patch('createinvoicedata/{id}','update');
+            Route::post('createinvoicedata/{id}','update');
             Route::get('invoice-get/{id}','show');
             Route::get('upload-Invoice','import');
         });
