@@ -79,16 +79,21 @@ class invoice extends Controller
         //
         try {
             //code...
+            $inputs = $request->all();
+            // return dd($inputs);
             $invoice = invoce::findOrFail($id);
-            invoicedata::create(
-                [
-                    'invoiceid',
-                    'name',
-                    'date',
-                    'block'
-                ]
-            )
+            $invoice->status = 1;
+            $invoice->save();
 
+
+
+            invoicedata::create([
+                    'invoiceid'=>$id,
+                    'name'=>$inputs['name'],
+                    'date'=>$inputs['date'],
+                    'block'=>$inputs['blocks']
+                ]);
+                return redirect()->back();
 
         } catch (Exception $th) {
             //throw $th;
