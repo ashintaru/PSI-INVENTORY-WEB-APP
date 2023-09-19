@@ -48,6 +48,7 @@
        <tbody>
             @if (!is_null($data))
                 @foreach($data as $d)
+                    @if (empty($d->car->invoice->status) || $d->car->invoice->status == 0 )
                     <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                         <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$d->id}}
@@ -79,6 +80,7 @@
                             </a>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
             @else
                 table are empty.......

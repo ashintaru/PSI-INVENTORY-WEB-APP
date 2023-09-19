@@ -29,9 +29,18 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation
     // Checking if the bin number is already in the database
     if ($bin_number->contains($row[8]) == false)
     {
+
+        $description = explode(' ',$row[4]);
+
+        if( strtolower($description[0]) == strtolower("mirage") )
+            $tag = "MAZDA";
+        elseif ( strtolower($description[0]) == strtolower("l300") )
+            $tag = "MMPC";
+        else
+            $tag = "SUBURU";
+
         return [
             new cars([
-            //
             'mmpcmodelcode'=> $row[0],
             'mmpcmodelyear'=> $row[1] ,
             'mmpcoptioncode'=> $row[2],
@@ -39,6 +48,7 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation
             'modeldescription'=> $row[4],
             'exteriorcolor'=> $row[5],
             'csno'=> $row[6],
+            'tag'=>$tag,
             'bilingdate'=> Carbon::parse($row[7]),
             'vehicleidno'=> $row[8],
             'engineno'=> $row[9],

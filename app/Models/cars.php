@@ -17,6 +17,7 @@ class cars extends Model
         'modeldescription',
         'exteriorcolor',
         'csno',
+        'tag',
         'bilingdate',
         'vehicleidno',
         'engineno',
@@ -46,6 +47,6 @@ class cars extends Model
         return $this->hasOne(inventory::class,'vehicleid','id');
     }
     public function invoice(){
-        return $this->hasOne(invoce::class,'vehicleid','id');
+        return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
     }
 }
