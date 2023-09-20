@@ -14,6 +14,7 @@ use App\Http\Controllers\invoice;
 use App\Http\Controllers\account;
 use App\Http\Controllers\blocks;
 use App\Http\Controllers\track;
+use App\Http\Controllers\report;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 
@@ -74,6 +75,8 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
             Route::get('upload-Invoice','import');
         });
 
+
+
         Route::controller(blocks::class)->group(function(){
             Route::get('blocks','index');
             Route::post('savedblock','store');
@@ -94,6 +97,11 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
             Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
             Route::put('update-car-details/{id}','updatecardetails');
         });
+    });
+
+    Route::controller(report::class)->group(function(){
+        Route::get('report','index');
+
     });
 
     Route::group(['middleware' => ['status']], function (){
