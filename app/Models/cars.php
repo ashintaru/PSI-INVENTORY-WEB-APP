@@ -10,7 +10,6 @@ class cars extends Model
     use HasFactory;
     protected $fillable =
     [
-
         'mmpcmodelcode',
         'mmpcmodelyear',
         'mmpcoptioncode',
@@ -25,7 +24,6 @@ class cars extends Model
         'productioncbunumber',
         'bilingdocuments',
         'vehiclestockyard'
-
     ];
 
     public function settools(){
