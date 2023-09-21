@@ -48,39 +48,26 @@
        <tbody>
             @if (!is_null($data))
                 @foreach($data as $d)
-                    @if (empty($d->car->invoice->status) || $d->car->invoice->status == 0 )
-                    <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                        <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$d->id}}
-                        </th>
-                        <td class="px-6 py-4">
-                            @if ($d->invstatus)
-                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Passed</span>
-                            @else
-                            <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Failed</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            {{$d->car->vehicleidno}}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{$d->car->engineno}}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{$d->car->csno}}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{$d->car->modeldescription}}
-                        </td>
-                        <td class="px-6 py-4 flex ">
-                            <a href="{{URL('/view'."/".$d->car->vehicleidno."/"."inv")}}"
-                                data-tooltip-target="config-button"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                <x-config_icon></x-config_icon>
-                            </a>
-                        </td>
-                    </tr>
-                    @endif
+                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                    <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{$d->id}}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{$d->vehicleidno}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{$d->engineno}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{$d->csno}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{$d->modeldescription}}
+                    </td>
+                    <td class="px-6 py-4 flex ">
+                        {{$d->billingdate}}
+                    </td>
+                </tr>
                 @endforeach
             @else
                 table are empty.......

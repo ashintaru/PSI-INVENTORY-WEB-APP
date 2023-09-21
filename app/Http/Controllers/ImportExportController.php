@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\CarsExport;
 use App\Exports\ExportUsers;
 use App\Imports\carsImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,6 +48,10 @@ class ImportExportController extends Controller
             }
         }
 
+    }
+    public function export(Request $request){
+        // return Excel::download(new CarsExport, 'invoices.xlsx');
+        return (new CarsExport($request->user()->tags))->download('invoices.xlsx');
     }
     public function import(Request $request)
     {

@@ -36,6 +36,10 @@ Route::controller(track::class)->group(function(){
     Route::get('track','index');
     Route::post('trackproduct','show');
 });
+Route::controller(ImportExportController::class)->group(function(){
+        Route::get('export-units','export');
+});
+
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
     Route::middleware(['auth','web','areAdmin'])->group(function() {
 
@@ -101,7 +105,9 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
 
     Route::controller(report::class)->group(function(){
         Route::get('report','index');
-
+        Route::get('total-units','showtotalunits');
+        Route::get('approved-units','showapproveunits');
+        Route::get('disapproved-units','showdisapproveunits');
     });
 
     Route::group(['middleware' => ['status']], function (){
