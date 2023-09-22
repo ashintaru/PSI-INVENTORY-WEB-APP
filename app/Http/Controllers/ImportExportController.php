@@ -47,11 +47,22 @@ class ImportExportController extends Controller
                 return back()->with(['msg' => $error->getMessage()]);
             }
         }
-
     }
-    public function export(Request $request){
+
+
+    public function exportapprovedunits(Request $request)
+    {
+        return (new CarsExport($request->user()->tags,1))->download('approvedunits.xlsx');
+    }
+    public function exportdisapprovedunits(Request $request)
+    {
+        return (new CarsExport($request->user()->tags,0))->download('pendingunits.xlsx');
+    }
+
+    public function export(Request $request)
+    {
         // return Excel::download(new CarsExport, 'invoices.xlsx');
-        return (new CarsExport($request->user()->tags))->download('invoices.xlsx');
+        return (new CarsExport($request->user()->tags))->download('totalunits.xlsx');
     }
     public function import(Request $request)
     {

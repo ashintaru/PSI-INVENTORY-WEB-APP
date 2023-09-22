@@ -18,7 +18,7 @@ class inventory extends Controller
         try {
 
             $inventory = inbentaryo::with(['car'])->paginate(25);
-            // return dd($inventor);
+            // return dd($inventory);
             return view('inventory.inventory',['data'=>$inventory]);
         } catch (Exception $th) {
             return view('inventory.inventory',['data'=>null,'mgs'=>$th]);
@@ -53,9 +53,8 @@ class inventory extends Controller
      */
     public function show(string $action)
     {
-        //
-        $result = ($action == "passed")?1:0;
-        $inventory = inbentaryo::with(['car'])->where('invstatus',$result)->paginate(25);
+        $result = ($action == "passed") ? 1 : 0;
+        $inventory = inbentaryo::with('car')->where('invstatus',$result)->paginate(25);
         return view('inventory.inventory',['data'=>$inventory]);
 
     }

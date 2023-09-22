@@ -36,8 +36,10 @@ Route::controller(track::class)->group(function(){
     Route::get('track','index');
     Route::post('trackproduct','show');
 });
+
 Route::controller(ImportExportController::class)->group(function(){
         Route::get('export-units','export');
+        Route::get('export-disapproveunits','exportdisapprovedunits');
 });
 
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
@@ -84,6 +86,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
         Route::controller(blocks::class)->group(function(){
             Route::get('blocks','index');
             Route::post('savedblock','store');
+            Route::get('getblocks/{id}','fetchBlocks');
         });
 
         Route::controller(CarsController::class)->group(function(){

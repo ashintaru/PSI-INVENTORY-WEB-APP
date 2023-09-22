@@ -8,7 +8,7 @@
                 </a>
             </li>
             <li class="inline-flex items-center">
-                <a href="{{URL('export-units')}}">
+                <a href="{{URL('export-disapproveunits')}}">
                     Download
                 </a>
             </li>

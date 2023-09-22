@@ -3,47 +3,25 @@
 namespace App\Exports;
 
 use App\Models\cars;
-use Maatwebsite\Excel\Excel;
-use Illuminate\Contracts\Support\Responsable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
-
 use Maatwebsite\Excel\Concerns\FromQuery;
-
-
 
 class CarsExport implements FromQuery
 {
-
     use Exportable;
 
-    // private $fileName = 'invoices.xlsx';
-
-    // /**
-    // * Optional Writer Type
-    // */
-    // private $writerType = Excel::XLSX;
-
-    // /**
-    // * Optional headers
-    // */
-    // private $headers = [
-    //     'Content-Type' => 'text/csv',
-    // ];
-    // /**
-    // * @return \Illuminate\Support\Collection
-    // */
-    // public function collection()
-    // {
-    //     return cars::all();
-    // }
-    public function __construct(string $tag)
+    public function __construct(string $tag ,int $status = null)
     {
+        $this->status = $status;
         $this->tag = $tag;
     }
 
     public function query()
     {
-        return cars::query()->where('tag', $this->tag);
+        if($this->status == null)
+            return cars::query()->where('tag', $this->tag);
+        else
+            return cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')->query()
+            ->where('tag', $this->tag)->where('havebeenpassed',$this->status);
     }
 }

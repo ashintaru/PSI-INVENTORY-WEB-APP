@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\cars;
+use App\Models\inventory;
 use Illuminate\Support\Facades\DB;
 
 class report extends Controller
@@ -12,6 +13,15 @@ class report extends Controller
 
     public function index(Request $request)
     {
+        // $sql = "SELECT COUNT(cars.vehicleidno) as approved_units , inventories.updated_at as dateRecorded FROM `cars`
+        // JOIN inventories on inventories.vehicleidno = cars.vehicleidno
+        // WHERE inventories.invstatus = 1
+        // GROUP BY inventories.updated_at"
+
+        // $result = DB::statement($sql);
+
+        // $inventory = inventory::where('invstatus',1)->count()->groupBy('update_at')->get();
+        // return dd($inventory);
         $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')->where('tag','=',$request->user()->tags)->get();
         $recived = count( $cars );
         return view('report.report',['cars'=>$cars,'total'=>$recived]);
