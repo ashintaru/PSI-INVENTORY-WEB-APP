@@ -6,7 +6,7 @@ use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Illuminate\Http\Request;
 use App\Models\blocks as bloke;
 use Exception;
-
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class blocks extends Controller
 {
@@ -52,6 +52,11 @@ class blocks extends Controller
         }
     }
 
+    public function fetchBlocks($id = null){
+        $data = ($id != null )? $id:"bad";
+
+        return response()->json($data);
+    }
     /**
      * Display the specified resource.
      */

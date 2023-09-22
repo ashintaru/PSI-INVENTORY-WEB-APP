@@ -41,7 +41,25 @@
                         <select id="blocks" name="blocks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                          @if ($blocks)
                              @foreach ($blocks as $b)
-                                 <option value="{{$b->id}}">{{$b->blockname}}</option>
+                                 <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
+                             @endforeach
+                         @else
+                             <option value="">Ask the admin for the blcokings</option>
+                         @endif
+                        </select>
+
+                       </div>
+                    @error('mmpcoptioncode')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-full">
+                    <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
+                    <div class="w-full">
+                        <select id="blocks" name="blocks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                         @if ($blocks)
+                             @foreach ($blocks as $b)
+                                 <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
                              @endforeach
                          @else
                              <option value="">Ask the admin for the blcokings</option>
@@ -63,12 +81,28 @@
     @endif
 
 </section>
-{{-- <script>
-    import Datepicker from 'flowbite-datepicker/Datepicker';
-import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
+<script>
+$(document).ready(function(){
 
-    const datepickerEl = document.getElementById('datepickerId');
-    new Datepicker(datepickerEl, {
-        // options
+
+    $("#blocks").change(function(){
+
+
+        // alert();
+        dataurl = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: dataurl,
+            dataType: 'json',
+            success: function (data) {
+               alert(data)
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
     });
-</script> --}}
+});
+
+
+</script>

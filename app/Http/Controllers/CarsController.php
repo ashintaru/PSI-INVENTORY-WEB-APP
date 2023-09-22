@@ -22,7 +22,9 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::paginate(25);
+        $data = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
+        ->orderBy('havebeenchecked','asc')
+        ->orderBy('cars.id', 'ASC')->paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
 
@@ -66,8 +68,7 @@ class CarsController extends Controller
                     return redirect()->back()->withErrors($validated);
                 }else{
                     $inputs = $request->all();
-                    $result = ( $inputs['status'] == 1 ) ? 1 : 0 ;
-
+                    $result = ($inputs['status'] == 1 ) ? 1 : 0 ;
                     $car->status->havebeenchecked = 1;
                     $car->status->havebeenpassed = $result;
                     $car->status->update();
