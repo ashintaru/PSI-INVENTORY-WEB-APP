@@ -194,3 +194,31 @@
 
 
 </x-app-layout>
+<script>
+    $(document).ready(function(){
+       // Initialize Date picker
+       $("#setMin,#setMax").datepicker({
+           dateFormat: "yy-mm-dd"
+       });
+       $('#datepicker').datepicker({
+           dateFormat: "yy-mm-dd",
+           maxDate:'+1m +10d',
+           minDate: -10
+       });
+       // Changing date range
+       $('#setMin,#setMax').change(function(){
+           // Get value
+           var minDate = $("#setMin").val();
+           var maxDate = $("#setMax").val();
+
+           // Set minDate and maxDate
+           if(minDate != ''){
+               $('#datepicker').datepicker('option', 'minDate', new Date(minDate));
+           }
+           if(maxDate != ''){
+               $('#datepicker').datepicker('option', 'maxDate', new Date(maxDate));
+           }
+       });
+    });
+    </script>
+

@@ -13,4 +13,5 @@ class inventory extends Model
     public function car(){
         return $this->belongsTo(cars::class,'vehicleid','id');
     }
+    protected $dateFormat = 'U';
 }
