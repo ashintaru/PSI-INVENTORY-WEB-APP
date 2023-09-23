@@ -10,6 +10,7 @@ class CarsExport implements FromQuery
 {
     use Exportable;
 
+
     public function __construct(string $tag ,int $status = null)
     {
         $this->status = $status;

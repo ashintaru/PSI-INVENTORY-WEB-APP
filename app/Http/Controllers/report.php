@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Exports\inventoryExport;
 use Illuminate\Http\Request;
 use App\Models\cars;
 use App\Models\inventory;
+use App\Models\invoce;
 use Illuminate\Support\Facades\DB;
 
 class report extends Controller
@@ -43,21 +46,47 @@ class report extends Controller
                     ->where('cars.tag',$request->user()->tags)
                     ->paginate(25);
                 }else{
+                    $startdate = Carbon::parse($inputs['start'])->toDateTimeString();
+                    $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
                     $data = inventory::join('cars','cars.vehicleidno','=','inventories.vehicleidno')
                     ->where('cars.tag',$request->user()->tags)
-                    ->whereBetween('inventories.created_at',[$inputs['start'],$inputs['end']])
+                    ->whereBetween('inventories.created_at',[$startdate,$enddate])
                     ->paginate(25);
                 }
             }
-            if($inputs['action'] == 2 ){
+            elseif($inputs['action'] == 2 ){
                 if($inputs['start'] == null ||$inputs['end'] == null){
                     $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
                     ->where('cars.tag',$request->user()->tags)
                     ->paginate(25);
                 }else{
+                    $startdate = Carbon::parse($inputs['start'])->toDateTimeString();
+                    $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
                     $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
                     ->where('cars.tag',$request->user()->tags)
-                    ->whereBetween('invoces.created_at',[$inputs['start'],$inputs['end']])
+                    ->whereBetween('invoces.created_at',[$startdate,$enddate])
+                    ->paginate(25);
+                }
+            }
+        }elseif($inputs['process'] == "download"){
+            if($inputs['action'] == 1 ){
+                $startdate = Carbon::parse($inputs['start'])->toDateTimeString();
+                $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
+                $date = Carbon::now()->format('Y-m-d');
+                $name = "inventory-Report".$date;
+                return (new inventoryExport($request->user()->tags,$startdate,$enddate))->download($name.'.xlsx');
+            }
+            elseif($inputs['action'] == 2 ){
+                if($inputs['start'] == null ||$inputs['end'] == null){
+                    $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->paginate(25);
+                }else{
+                    $startdate = Carbon::parse($inputs['start'])->toDateTimeString();
+                    $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
+                    $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->whereBetween('invoces.created_at',[$startdate,$enddate])
                     ->paginate(25);
                 }
             }

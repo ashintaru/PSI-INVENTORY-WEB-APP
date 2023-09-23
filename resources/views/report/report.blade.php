@@ -43,8 +43,8 @@
                     <option value="3">Releasing</option>
                 </select>
             </div>
-            <button name="process" value="download">download</button>
-            <button name="process" value="search">Search</button>
+            <button name="process" value="search" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Search</button>
+            <button name="process" value="download" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">download</button>
             <button name="process" value="print">print</button>
 
         </form>
