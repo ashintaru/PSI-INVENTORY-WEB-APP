@@ -13,18 +13,7 @@ class report extends Controller
 
     public function index(Request $request)
     {
-        // $sql = "SELECT COUNT(cars.vehicleidno) as approved_units , inventories.updated_at as dateRecorded FROM `cars`
-        // JOIN inventories on inventories.vehicleidno = cars.vehicleidno
-        // WHERE inventories.invstatus = 1
-        // GROUP BY inventories.updated_at"
-
-        // $result = DB::statement($sql);
-
-        // $inventory = inventory::where('invstatus',1)->count()->groupBy('update_at')->get();
-        // return dd($inventory);
-        $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')->where('tag','=',$request->user()->tags)->get();
-        $recived = count( $cars );
-        return view('report.report',['cars'=>$cars,'total'=>$recived]);
+        return view('report.report',['data'=>'']);
     }
     public function showtotalunits(Request $request){
         $cars = cars::where('tag','=',$request->user()->tags)->paginate(25);
@@ -43,5 +32,37 @@ class report extends Controller
         ->where('carstatus.havebeenpassed','=',0)
         ->paginate(25);
         return view('report.partials.approvedunits',['data'=>$cars]);
+    }
+    public function fetchdata(Request $request){
+        $inputs = $request->all();
+        $data='';
+        if($inputs['process'] == "search"){
+            if($inputs['action'] == 1 ){
+                if( $inputs['start'] == null || $inputs['end'] == null){
+                    $data = inventory::join('cars','cars.vehicleidno','=','inventories.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->paginate(25);
+                }else{
+                    $data = inventory::join('cars','cars.vehicleidno','=','inventories.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->whereBetween('inventories.created_at',[$inputs['start'],$inputs['end']])
+                    ->paginate(25);
+                }
+            }
+            if($inputs['action'] == 2 ){
+                if($inputs['start'] == null ||$inputs['end'] == null){
+                    $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->paginate(25);
+                }else{
+                    $data = invoce::join('cars','cars.vehicleidno','=','invoces.vehicleidno')
+                    ->where('cars.tag',$request->user()->tags)
+                    ->whereBetween('invoces.created_at',[$inputs['start'],$inputs['end']])
+                    ->paginate(25);
+                }
+            }
+        }
+
+        return view('report.report',['data'=>$data]);
     }
 }
