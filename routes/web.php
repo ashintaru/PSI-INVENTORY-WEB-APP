@@ -108,7 +108,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
 
     Route::controller(report::class)->group(function(){
         Route::get('report','index');
-        Route::get('report','fetchdata');
+        Route::post('report','fetchdata');
 
         Route::get('total-units','showtotalunits');
         Route::get('approved-units','showapproveunits');
