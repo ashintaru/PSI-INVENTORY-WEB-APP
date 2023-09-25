@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Imports;
 
 use App\Models\cars;
 use App\Models\invoce as invoice;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\RemembersChunkOffset;
 
 class Importinvoce implements ToModel,WithBatchInserts,WithChunkReading
 {

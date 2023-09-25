@@ -37,6 +37,7 @@ class cars extends Model
         return $this->hasOne(damage::class,'vehicleidno','vehicleidno');
     }
 
+
     public function status(){
         return $this->hasOne(carstatus::class,'vehicleidno','vehicleidno');
     }

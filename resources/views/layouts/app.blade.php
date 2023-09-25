@@ -34,7 +34,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
@@ -45,8 +44,12 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"  rel="stylesheet" />
+        {{-- <link href="src/selectstyle.css" rel="stylesheet">
+        <script src="//code.jquery.com/jquery.min.js"></script>
+        <script src="src/selectstyle.js"></script> --}}
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="../path/to/flowbite/dist/datepicker.js"></script>
+        {{-- <script src="../path/to/flowbite/dist/datepicker.js"></script> --}}
     </head>
 
     <body class="font-mono antialiased bg-white dark:bg-gray-900">
@@ -224,9 +227,9 @@
 
         {{--  --}}
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script src="../path/to/flowbite/dist/datepicker.js"></script>
+        {{-- <script src="../path/to/flowbite/dist/datepicker.js"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/datepicker.min.js"></script>
-        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+        {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
         </body>
     <script>
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');

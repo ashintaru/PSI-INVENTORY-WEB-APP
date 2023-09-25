@@ -20,4 +20,7 @@ class invoicedata extends Model
     public function invoice(){
         return $this->belongsTo(invoce::class,'id','id');
     }
+    public function blockings(){
+        return $this->hasOne(blockings::class,'id','block');
+    }
 }

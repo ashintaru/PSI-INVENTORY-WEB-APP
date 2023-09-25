@@ -12,7 +12,7 @@
                     Block Name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Status
+                    Blockings Total Count
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Date Created
@@ -23,11 +23,10 @@
             </tr>
         </thead>
         <tbody>
+
             @if ($data)
-                    @foreach ($data as $d )
-
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
+                @foreach ($data as $d )
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$d->id}}
                         </th>
@@ -35,11 +34,7 @@
                             {{$d->blockname}}
                         </td>
                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @if(!$d->status)
-                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">opened</span>
-                            @else
-                            <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">closwd</span>
-                            @endif
+                            {{count($d->blockings)}}
                         </td>
                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$d->updated_at}}

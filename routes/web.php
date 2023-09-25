@@ -15,6 +15,7 @@ use App\Http\Controllers\account;
 use App\Http\Controllers\blocks;
 use App\Http\Controllers\track;
 use App\Http\Controllers\report;
+use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 
@@ -45,14 +46,18 @@ Route::controller(ImportExportController::class)->group(function(){
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
     Route::middleware(['auth','web','areAdmin'])->group(function() {
 
-        Route::controller(ImportExportController::class)->group(function(){
-        Route::get('import_export', 'importExport');
-        Route::post('import', 'import')->name('import');
-        Route::get('export', 'export')->name('export');
-        Route::get('insert-data','viewcarform');
-        Route::post('insert-car-details','savecardetail')->name('show-car-form');
-        Route::post('uploadInvoice','importInvoice');
 
+        Route::controller(blockings::class)->group(function(){
+            Route::post('import-blockings','importBlockings');
+        });
+
+        Route::controller(ImportExportController::class)->group(function(){
+            Route::get('import_export', 'importExport');
+            Route::post('import', 'import')->name('import');
+            Route::get('export', 'export')->name('export');
+            Route::get('insert-data','viewcarform');
+            Route::post('insert-car-details','savecardetail')->name('show-car-form');
+            Route::post('uploadInvoice','importInvoice');
         });
         Route::controller(invoicecontroller::class)->group(function(){
             Route::get('invoice/{id}','index');
@@ -105,6 +110,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
             Route::put('update-car-details/{id}','updatecardetails');
         });
     });
+
 
     Route::controller(report::class)->group(function(){
         Route::get('report','index');

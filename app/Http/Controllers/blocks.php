@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Illuminate\Http\Request;
 use App\Models\blocks as bloke;
+use App\Models\blockings;
 use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,7 +17,7 @@ class blocks extends Controller
     public function index()
     {
         //
-        $data = bloke::paginate(25);
+        $data = bloke::with('blockings')->get();
         return view('blocks.blocks',['data'=>$data]);
 
     }
@@ -53,8 +54,9 @@ class blocks extends Controller
     }
 
     public function fetchBlocks($id = null){
-        $data = ($id != null )? $id:"bad";
-
+        // $data = ($id != null )? $id:"bad";
+        $block = bloke::findOrFail($id);
+        $data = blockings::where('blockId',$block->id)->where('blockstatus',0)->get();
         return response()->json($data);
     }
     /**

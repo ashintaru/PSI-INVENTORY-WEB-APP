@@ -18,4 +18,9 @@ class blocks extends Model
         return $this->belongsTo(invoicedata::class,'block','id');
     }
 
+    public function blockings(){
+        return $this->hasMany(blockings::class,'blockId','id');
+    }
+
+
 }

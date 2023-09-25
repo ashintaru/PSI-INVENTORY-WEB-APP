@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\cars;
+use App\Models\blockings;
 use App\Models\invoce;
 use App\Models\blocks;
 use Exception;
@@ -79,22 +79,24 @@ class invoice extends Controller
         //
         try {
             //code...
+            $validated = $request->validate([
+                'date' => 'required',
+                'blockings' => 'required',
+            ]);
+
             $inputs = $request->all();
             $invoice = invoce::findOrFail($id);
-            // return dd($invoice->car->vehicleidno);
+            // return dd($inputs);
             $invoice->status = 1;
             $invoice->save();
-
-            $blocks = blocks::findOrFail($inputs['blocks']);
-            $blocks->status=1;
+            $blocks = blockings::findOrFail($inputs['blockings']);
+            $blocks->blockstatus=1;
             $blocks->save();
-
-
             invoicedata::create([
                     'invoiceid'=>$id,
                     'name'=>$inputs['name'],
                     'date'=>$inputs['date'],
-                    'block'=>$inputs['blocks']
+                    'block'=>$inputs['blockings']
                 ]);
                 return redirect()->back();
 

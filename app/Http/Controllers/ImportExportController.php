@@ -76,8 +76,6 @@ class ImportExportController extends Controller
                 $extension = request()->file('file')->extension();
                 if($extension === "xlsx"){
                     Excel::import(new carsImport, request()->file('file'));
-                    // Excel::import(new carstatusimport, request()->file('file'));
-                    //  return dd();
                     Log::create([
                         'idNum'=>$request->user()->id,
                         'logs'=>$request->user()->name.' upload Data into the Database'
