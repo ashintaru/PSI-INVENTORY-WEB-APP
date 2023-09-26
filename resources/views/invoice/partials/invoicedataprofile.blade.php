@@ -1,8 +1,9 @@
 <section class="py-3">
     @if ($data->status)
     <div>
-        <form class="" action="{{URL('createinvoicedata/'.$data->id)}}" method="POST" >
+        <form class="" action="{{URL('updateinvoicedata/'.$data->invoicedata->invoiceid)}}" method="POST" >
             @csrf
+            @method("PATCH")
             <div class="w-full">
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Personel</label>
                 <div class="relative max-w-full">
@@ -26,7 +27,7 @@
                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                             </svg>
                         </div>
-                        <input type="date" name="date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <input type="date" value="{{$data->invoicedata->date}}" name="date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                     @error('name')
                         <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -36,7 +37,8 @@
                     <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
                     <div class="w-full">
                         <select id="blocks" name="blocks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                         @if ($blocks)
+                            <option  data-url="" value="null" >Select Blocks </option>
+                            @if ($blocks)
                              @foreach ($blocks as $b)
                                  <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
                              @endforeach
@@ -64,11 +66,12 @@
             </div>
             <br>
             <div class="space-x-4 space-y-4">
-                <x-primary-button>Submit</x-primary-button>
+                <x-primary-button>Update</x-primary-button>
             </div>
         </form>
     </div>
-    <section >
+    <br>
+    <section  class="">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
@@ -89,7 +92,7 @@
                            Invoice ID
                         </th>
                         <td class="px-6 py-3 text-lg text-center font-mono">
-                            {{$data->invoicedata->invoiceid  }}
+                            {{$data->invoicedata->invoiceid}}
                         </td>
                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                             Person In charge
@@ -101,7 +104,7 @@
                             Invoice date
                         </th>
                         <th class="px-6 py-3 text-lg font-mono">
-                            {{Carbon\Carbon::parse($data->date)->format('M d Y')}}
+                            {{Carbon\Carbon::parse($data->invoicedata->date)->format('M d Y')}}
                         </th>
                     </tr>
                     <tr>
@@ -158,6 +161,8 @@
                     <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
                     <div class="w-full">
                         <select id="blocks" name="blocks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option  data-url="" value="null" >Select Blocks </option>
+
                          @if ($blocks)
                              @foreach ($blocks as $b)
                                  <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
@@ -194,30 +199,35 @@
 </section>
 <script>
 $(document).ready(function(){
+    var select = $('#blockings');
     $("#blocks").change(function(){
        var dataurl = $(this).val();
-        $.ajax({
-            type: "GET",
-            url: dataurl,
-            dataType: 'json',
-            success: function (data) {
-               var select = $('#blockings');
-                select.empty();
-                data.forEach(element => {
-                //   console.log(element['bloackname']);
-                //   console.log(select);
-                var option = $("<option></option>");
-                    option.append(element['bloackname']);
-                    option.val(element['id']);
-                     console.log(option);
-                    select.append(option);
-                });
+       if($(this).val() == "null"){
+            select.empty();
+       }else{
+            $.ajax({
+                type: "GET",
+                url: dataurl,
+                dataType: 'json',
+                success: function (data) {
+                    select.empty();
+                    data.forEach(element => {
+                    //   console.log(element['bloackname']);
+                    //   console.log(select);
+                    var option = $("<option></option>");
+                        option.append(element['bloackname']);
+                        option.val(element['id']);
+                        // console.log(option);
+                        select.append(option);
+                    });
 
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        });
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+       }
+
     });
 });
 

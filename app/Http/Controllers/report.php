@@ -17,7 +17,7 @@ class report extends Controller
 
     public function index(Request $request)
     {
-        return view('report.report',['data'=>'','date'=>'']);
+        return view('report.report',['data'=>'','date'=>'','process'=>'']);
     }
     public function showtotalunits(Request $request){
         $cars = cars::where('tag','=',$request->user()->tags)->paginate(25);
@@ -40,6 +40,8 @@ class report extends Controller
     public function fetchdata(Request $request){
         $inputs = $request->all();
         $date = array();
+        $process = $inputs['action'] ;
+
 
         $data='';
         if($inputs['process'] == "search"){
@@ -87,9 +89,8 @@ class report extends Controller
                 return (new invoiceExport($request->user()->tags,$startdate,$enddate))->download($name.'.xlsx');
             }
         }
-
         array_push($date,$inputs['start']);
         array_push($date,$inputs['end']);
-        return view('report.report',['data'=>$data,'date'=>$date]);
+        return view('report.report',['data'=>$data,'date'=>$date,'process'=>$process]);
     }
 }

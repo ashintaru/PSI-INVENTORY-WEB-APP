@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Models\invoicedata;
 use Illuminate\Support\Facades\DB;
 
-
 class invoice extends Controller
 {
     /**
@@ -46,9 +45,34 @@ class invoice extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request ,string $id)
     {
-        //
+                //
+                try {
+                    //code...
+                    $validated = $request->validate([
+                        'date' => 'required',
+                        'blockings' => 'required',
+                    ]);
+
+                    $inputs = $request->all();
+                    $invoice = invoce::findOrFail($id);
+                    // return dd($inputs);
+                    $invoice->status = 1;
+                    $invoice->save();
+                    $blocks = blockings::findOrFail($inputs['blockings']);
+                    $blocks->blockstatus=1;
+                    $blocks->save();
+                    invoicedata::create([
+                            'invoiceid'=>$id,
+                            'name'=>$inputs['name'],
+                            'date'=>$inputs['date'],
+                            'block'=>$inputs['blockings']
+                        ]);
+                        return redirect()->back();
+                } catch (Exception $th) {
+                    //throw $th;
+                }
 
     }
 
@@ -76,34 +100,39 @@ class invoice extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        try {
-            //code...
-            $validated = $request->validate([
-                'date' => 'required',
-                'blockings' => 'required',
-            ]);
+                //
+                try {
+                    //code...
+                    $validated = $request->validate([
+                        'date' => 'required',
+                        'blockings' => 'required',
+                    ]);
 
-            $inputs = $request->all();
-            $invoice = invoce::findOrFail($id);
-            // return dd($inputs);
-            $invoice->status = 1;
-            $invoice->save();
-            $blocks = blockings::findOrFail($inputs['blockings']);
-            $blocks->blockstatus=1;
-            $blocks->save();
-            invoicedata::create([
-                    'invoiceid'=>$id,
-                    'name'=>$inputs['name'],
-                    'date'=>$inputs['date'],
-                    'block'=>$inputs['blockings']
-                ]);
-                return redirect()->back();
+                    $inputs = $request->all();
 
-        } catch (Exception $th) {
-            //throw $th;
-        }
+                    // return $request->all();
 
+                    $invoicedata = invoicedata::findOrfail($id);
+                    $recentBlockings = $invoicedata->block;
+                    $invoicedata->date = $inputs['date'];
+                    $invoicedata->block = $inputs['blockings'];
+                    $invoicedata->save();
+
+                    $pastBlockings = blockings::findOrFail($recentBlockings);
+                    $pastBlockings->blockstatus=0;
+                    $pastBlockings->save();
+
+
+                    $blocks = blockings::findOrFail($inputs['blockings']);
+                    $blocks->blockstatus=1;
+                    $blocks->save();
+
+                    return redirect()->back();
+
+                } catch (Exception $th) {
+                    return redirect()->back();
+                    //throw $th;
+                }
     }
 
     /**
