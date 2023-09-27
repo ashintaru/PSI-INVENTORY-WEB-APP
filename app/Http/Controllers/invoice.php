@@ -8,6 +8,7 @@ use App\Models\blocks;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\invoicedata;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class invoice extends Controller
@@ -114,6 +115,7 @@ class invoice extends Controller
 
                     $invoicedata = invoicedata::findOrfail($id);
                     $recentBlockings = $invoicedata->block;
+                    $invoicedata->name = Auth::user()->name;
                     $invoicedata->date = $inputs['date'];
                     $invoicedata->block = $inputs['blockings'];
                     $invoicedata->save();

@@ -19,6 +19,12 @@
     $passedcars = (count($pcars)>0)?count($pcars):0;
 
     $invoicecategory = invoicecount::select(['id','modeldescription','count'])->get();
+    header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
+    header("Pragma: no-cache"); //HTTP 1.0
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+    // or, if you DO want a file to cache, use:
+    // header("Cache-Control: max-age=2592000"); //30days (60sec * 60min * 24hours * 30days)
+
 
   ?>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -34,6 +40,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->

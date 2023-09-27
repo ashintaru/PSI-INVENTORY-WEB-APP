@@ -16,10 +16,8 @@ class blocks extends Controller
      */
     public function index()
     {
-        //
         $data = bloke::with('blockings')->get();
         return view('blocks.blocks',['data'=>$data]);
-
     }
 
     /**
@@ -35,8 +33,6 @@ class blocks extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         try {
             $input = $request->all();
             $validate = $request->validate([
@@ -53,8 +49,8 @@ class blocks extends Controller
         }
     }
 
-    public function fetchBlocks($id = null){
-        // $data = ($id != null )? $id:"bad";
+    public function fetchBlocks($id = null)
+    {
         $block = bloke::findOrFail($id);
         $data = blockings::where('blockId',$block->id)->where('blockstatus',0)->get();
         return response()->json($data);

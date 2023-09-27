@@ -11,17 +11,7 @@
     </nav>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @include('blocks.partials.blockform')
-        </div>
-    </div>
-    <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @include('blocks.partials.blockings')
-        </div>
-    </div>
-    <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @include('blocks.partials.blocktable')
+            @include('blockings.partials.blockingstable')
         </div>
     </div>
 </x-app-layout>

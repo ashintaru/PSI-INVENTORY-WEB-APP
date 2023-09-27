@@ -34,27 +34,40 @@ use App\Http\Controllers\pdfcontroller;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::controller(track::class)->group(function(){
-    Route::get('track','index');
-    Route::post('trackproduct','show');
-});
 
-Route::controller(ImportExportController::class)->group(function(){
-        Route::get('export-units','export');
-        Route::get('export-disapproveunits','exportdisapprovedunits');
-});
 
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
-    Route::middleware(['auth','web','areAdmin'])->group(function() {
 
 
+Route::middleware(['auth','web','isClient'])->group(function(){
+    Route::controller(ImportExportController::class)->group(function(){
+        Route::get('export-units','export');
+        Route::get('export-disapproveunits','exportdisapprovedunits');
+    });
+
+    Route::controller(track::class)->group(function(){
+        Route::get('track','index');
+        Route::post('trackproduct','show');
+    });
+
+    Route::controller(report::class)->group(function(){
+        Route::get('report','index');
+        Route::post('report','fetchdata');
+        Route::get('total-units','showtotalunits');
+        Route::get('approved-units','showapproveunits');
+        Route::get('disapproved-units','showdisapproveunits');
+    });
+
+});
+
+Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');
+            Route::get('blocking-list/{id}','displayblockings');
+            Route::get('select-blockings/{id}','fetchCar');
         });
-
         Route::get('cars',[pdfcontroller::class,'showEmployees']);
         Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
-
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
             Route::post('import', 'import')->name('import');
@@ -83,6 +96,7 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
             Route::post('searchinventory','searchinventory');
             Route::get('viewinventory/{action}','show');
         });
+
         Route::controller(invoice::class)->group(function(){
             Route::get('invoice','index');
             Route::post('createinvoicedata/{id}','store');
@@ -91,9 +105,6 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
             Route::patch('updateinvoicedata/{id}','update');
 
         });
-
-
-
         Route::controller(blocks::class)->group(function(){
             Route::get('blocks','index');
             Route::post('savedblock','store');
@@ -118,14 +129,6 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
     });
 
 
-    Route::controller(report::class)->group(function(){
-        Route::get('report','index');
-        Route::post('report','fetchdata');
-
-        Route::get('total-units','showtotalunits');
-        Route::get('approved-units','showapproveunits');
-        Route::get('disapproved-units','showdisapproveunits');
-    });
 
     Route::group(['middleware' => ['status']], function (){
         Route::get('account', [account::class, 'index']);

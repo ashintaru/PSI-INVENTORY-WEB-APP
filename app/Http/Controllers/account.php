@@ -12,8 +12,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Exception;
-
-
+use PhpParser\Node\Stmt\TryCatch;
 
 class account extends Controller
 {
@@ -40,23 +39,27 @@ class account extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'role'=>   ['required'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+                'role'=>   ['required'],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role'=> $request->role,
+                'password' => Hash::make($request->password),
+            ]);
+            event(new Registered($user));
+            return redirect()->back()->with(['success'=>'created successfull']);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role'=> $request->role,
-            'password' => Hash::make($request->password),
-        ]);
+        }catch (Exception $message) {
+            return redirect()->back()->with(['msg'=>$message]);
+        }
 
-        event(new Registered($user));
-        return redirect()->back()->with(['success'=>'created successfull']);    }
-
+    }
 
 
     /**
@@ -81,38 +84,55 @@ class account extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
-        // return dd($user);
-        if(User::where('email',$request->email)->exists()){
-            return Redirect::route('admin.profile.edit',['id'=>$user->id])->with('status', 'error');
-        }
-        else{
-            $user->name = $request->name ;
-            $user->email = $request->email;
-            $user->save();
-            return Redirect::route('admin.profile.edit',['id'=>$user->id])->with('status', 'profile-updated');
 
+        try {
+            $user = User::findOrFail($id);
+            // return dd($user);
+            if(User::where('email',$request->email)->exists()){
+                return Redirect::route('admin.profile.edit',['id'=>$user->id])->with('status', 'error');
+            }
+            else{
+                $user->name = $request->name ;
+                $user->email = $request->email;
+                $user->save();
+                return Redirect::route('admin.profile.edit',['id'=>$user->id])->with('status', 'profile-updated');
+            }
+        } catch (Exception $msg) {
+            return Redirect::route('admin.profile.edit',['id'=>$user->id])->with('msg', $msg);
         }
+
+
+
 
     }
 
     public function updatepassword( Request $request ,  $id = null):RedirectResponse
     {
-
-        $user = User::findOrFail($id);
-        $resetpassword = Hash::make('Password_123');
-        $user->password = $resetpassword;
-        $user->update();
-        return back()->with('status', 'password-updated');
+        try {
+            $user = User::findOrFail($id);
+            $resetpassword = Hash::make('Password_123');
+            $user->password = $resetpassword;
+            $user->update();
+            return back()->with('status', 'password-updated');
+        } catch (Exception $e) {
+            //throw $th;
+            return back()->with('msg',$e);
+        }
     }
 
     public function updaterole(Request $request, $id = null)
     {
-        $user = User::findOrFail($id);
 
-        $user->role = $request->role;
-        $user->update();
-        return redirect()->back()->with(['success'=>'created successfull']);
+        try {
+            $user = User::findOrFail($id);
+            $user->role = $request->role;
+            $user->update();
+            return redirect()->back()->with(['success'=>'created successfull']);
+        } catch (Exception $e) {
+            return redirect()->back()->with(['msg'=>$e]);
+        }
+
+
 
     }
     /**

@@ -5,9 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Auth as harang;
+use Auth;
 
-class Authorization
+
+
+class isClient
 {
     /**
      * Handle an incoming request.
@@ -16,9 +18,11 @@ class Authorization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (harang::user() &&  harang::user()->role == 1) {
+        if (Auth::user() && Auth::user()->role == 3 ) {
             return $next($request);
         }
-        return redirect('dashboard')->with('msg','You have not admin access');
+        return redirect('dashboard')->with('msg','You are not a client');
+
+
     }
 }
