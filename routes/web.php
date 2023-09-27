@@ -17,6 +17,7 @@ use App\Http\Controllers\track;
 use App\Http\Controllers\report;
 use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
+use App\Http\Controllers\pdfcontroller;
 
 
 /*
@@ -50,6 +51,9 @@ Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');
         });
+
+        Route::get('cars',[pdfcontroller::class,'showEmployees']);
+        Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
 
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
