@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
+use Barryvdh\DomPDF\PDF
 
 class CarsController extends Controller
 {
