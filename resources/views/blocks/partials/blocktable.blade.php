@@ -40,7 +40,7 @@
                             {{$d->updated_at}}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="{{URL('blocking-list/'.$d->id)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Blocking List</a>
                         </td>
                 </tr>
                 @endforeach
