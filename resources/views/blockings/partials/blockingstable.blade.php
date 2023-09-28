@@ -1,3 +1,8 @@
+<style>
+    .status:hover {
+    cursor: pointer;
+    }
+</style>
 <section>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -26,7 +31,7 @@
             <tbody>
                 @if ($data)
                     @foreach ($data as $d )
-                        <tr data-modal-target="defaultModal" data-modal-toggle="defaultModal" data-url="{{URL('select-blockings/'.$d->id)}}" id="{{$d->id}}" class="selectedRow bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr  id="{{$d->id}}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <form method="POST" action="{{URL('updateBlockings/'.$d->id)}}" >
                                 @csrf
                                 @method("PATCH")
@@ -39,11 +44,11 @@
                                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <input type="text" name="blockname" value="{{$d->bloackname}}" class="block w-1/2 px-5 py-2.5 mr-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 </td>
-                                <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td data-url="{{URL('select-blockings/'.$d->id)}}" data-modal-target="defaultModal" data-modal-toggle="defaultModal" scope="row" class="selectedRow px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     @if($d->blockstatus == 0)
-                                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Open</span>
+                                        <span class="status bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Open</span>
                                     @else
-                                        <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">closed</span>
+                                        <span class="status bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">closed</span>
                                     @endif
 
                                 </td>

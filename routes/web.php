@@ -39,6 +39,8 @@ Route::get('/', function () {
 Route::get('/dashboard', [indexcontroller::class,'index'])->middleware(['auth', 'verified','web'])->name('dashboard');
 
 
+// Client Route
+
 Route::middleware(['auth','web','isClient'])->group(function(){
     Route::controller(ImportExportController::class)->group(function(){
         Route::get('export-units','export');
@@ -60,14 +62,13 @@ Route::middleware(['auth','web','isClient'])->group(function(){
 
 });
 
+// Admin and Super Admin Route
+
 Route::middleware(['auth','web','areAdmin'])->group(function() {
-        Route::controller(blockings::class)->group(function(){
-            Route::post('import-blockings','importBlockings');
-            Route::get('blocking-list/{id}','displayblockings');
-            Route::get('select-blockings/{id}','fetchCar');
-        });
+
         Route::get('cars',[pdfcontroller::class,'showEmployees']);
         Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
+
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
             Route::post('import', 'import')->name('import');
@@ -130,7 +131,9 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
 
 
-    Route::group(['middleware' => ['status']], function (){
+    //super admin Route
+
+    Route::group(['middleware' => ['areSuperAdmin']], function (){
         Route::get('account', [account::class, 'index']);
         Route::post('create-account', [account::class, 'store']);
         Route::get('profile/{id}', [account::class, 'edit'])->name('admin.profile.edit');
@@ -139,7 +142,19 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::patch('updaterole/{id}',[account::class,'updaterole'])->name('admin.role.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('health', HealthCheckResultsController::class);
+
+
+        Route::controller(blockings::class)->group(function(){
+            Route::post('import-blockings','importBlockings');
+            Route::get('blocking-list/{id}','displayblockings');
+            Route::get('select-blockings/{id}','fetchCar');
+            Route::patch('updateBlockings/{id}','update');
+        });
+
+
     });
+
+
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

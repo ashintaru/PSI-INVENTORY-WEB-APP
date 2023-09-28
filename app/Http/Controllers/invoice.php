@@ -73,6 +73,8 @@ class invoice extends Controller
                         return redirect()->back();
                 } catch (Exception $th) {
                     //throw $th;
+                    return redirect()->back();
+
                 }
 
     }
@@ -128,9 +130,7 @@ class invoice extends Controller
                     $blocks = blockings::findOrFail($inputs['blockings']);
                     $blocks->blockstatus=1;
                     $blocks->save();
-
                     return redirect()->back();
-
                 } catch (Exception $th) {
                     return redirect()->back();
                     //throw $th;
