@@ -12,7 +12,7 @@ class inventory extends Model
 
     // class ,fk , ownkey
     public function car(){
-        return $this->belongsTo(cars::class,'id','vehicleid');
+        return $this->belongsTo(cars::class,'vehicleid','id');
     }
 
 }
