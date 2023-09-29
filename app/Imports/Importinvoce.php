@@ -5,9 +5,10 @@ use App\Models\cars;
 use App\Models\invoce as invoice;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-class Importinvoce implements ToModel,WithChunkReading,ShouldQueue
+
+class Importinvoce implements ToModel,WithBatchInserts,WithChunkReading
 {
     /**
     * @param array $row
@@ -36,6 +37,11 @@ class Importinvoce implements ToModel,WithChunkReading,ShouldQueue
 
             }
      }
+     public function batchSize(): int
+     {
+         return 1000;
+     }
+
     public function chunkSize(): int
     {
         return 1000;

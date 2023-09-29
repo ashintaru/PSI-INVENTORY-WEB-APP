@@ -13,6 +13,7 @@ use App\Models\carstatus;
 use Exception;
 use App\Imports\Importinvoce;
 
+
 class ImportExportController extends Controller
 {
     public function importExport()
@@ -74,7 +75,7 @@ class ImportExportController extends Controller
                 ]);
                 $extension = request()->file('file')->extension();
                 if($extension === "xlsx"){
-                    Excel::queueImport(new carsImport, request()->file('file'));
+                    Excel::import(new carsImport, request()->file('file'));
                     Log::create([
                         'idNum'=>$request->user()->id,
                         'logs'=>$request->user()->name.' upload Data into the Database'

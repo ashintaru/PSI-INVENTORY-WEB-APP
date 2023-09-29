@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Events\carCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,10 +24,6 @@ class cars extends Model
         'productioncbunumber',
         'bilingdocuments',
         'vehiclestockyard'
-    ];
-
-    protected $dispatchesEvents = [
-        'created'=>carCreated::class
     ];
 
     public function settools(){

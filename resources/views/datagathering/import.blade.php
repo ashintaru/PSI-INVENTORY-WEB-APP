@@ -36,18 +36,18 @@
         });
 
 
-        // function showFileSize() {
-        //     let file = document.getElementById("file").files[0];
-        //     let filetext = document.getElementById("filename");
-        //     if(file) {
-        //         // filetext.text(file.text);
-        //         const maxSize = 200000;
-        //         if(file.size > maxSize ){
-        //             alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes");
-        //             event.preventDefault();
-        //         }
-        //     }
-        // }
+        function showFileSize() {
+            let file = document.getElementById("file").files[0];
+            let filetext = document.getElementById("filename");
+            if(file) {
+                // filetext.text(file.text);
+                const maxSize = 200000;
+                if(file.size > maxSize ){
+                    alert( "Error :: The file exceed the max upload size of .."+ maxSize + " in bytes");
+                    event.preventDefault();
+                }
+            }
+        }
 
     </script>
 

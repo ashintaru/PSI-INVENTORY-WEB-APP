@@ -10,11 +10,9 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 
-class carsImport implements ToModel,WithChunkReading,WithValidation,ShouldQueue
+class carsImport implements ToModel,WithBatchInserts,WithValidation
 {
     /**
     * @param array $row
@@ -73,7 +71,7 @@ class carsImport implements ToModel,WithChunkReading,WithValidation,ShouldQueue
     else null;
 
     }
-    public function chunkSize(): int
+    public function batchSize(): int
     {
         return 1000;
     }
