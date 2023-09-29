@@ -7,12 +7,13 @@ use App\Models\carstatus;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Illuminate\Support\Facades\DB;
 
 
-class carsImport implements ToModel,WithBatchInserts,WithValidation
+class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
 {
     /**
     * @param array $row
@@ -73,7 +74,11 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation
     }
     public function batchSize(): int
     {
-        return 1000;
+        return 500;
+    }
+    public function uniqueBy()
+    {
+        return 'vehicleidno';
     }
     public function rules(): array
     {

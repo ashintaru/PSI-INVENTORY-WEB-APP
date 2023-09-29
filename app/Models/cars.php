@@ -47,6 +47,7 @@ class cars extends Model
     public function inventory(){
         return $this->hasOne(inventory::class,'vehicleid','id');
     }
+    // class ,fk ,lk
     public function invoice(){
         return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
     }

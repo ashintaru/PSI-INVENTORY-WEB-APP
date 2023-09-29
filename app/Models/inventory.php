@@ -10,8 +10,9 @@ class inventory extends Model
     use HasFactory;
     protected $fillable =  ['vehicleid','vehicleidno','invstatus'];
 
+    // class ,fk , ownkey
     public function car(){
-        return $this->belongsTo(cars::class,'vehicleid','id');
+        return $this->belongsTo(cars::class,'id','vehicleid');
     }
 
 }
