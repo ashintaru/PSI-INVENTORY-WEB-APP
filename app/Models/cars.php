@@ -27,14 +27,14 @@ class cars extends Model
     ];
 
     public function settools(){
-        return $this->hasOne(set_tool::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(set_tool::class,'vehicleid','id');
     }
     public function loosetools(){
-        return $this->hasOne(tool::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(tool::class,'vehicleid','id');
     }
 
     public function damage(){
-        return $this->hasOne(damage::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(damage::class,'vehicleid','id');
     }
 
 

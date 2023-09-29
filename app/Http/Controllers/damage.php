@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cars;
 use Illuminate\Http\Request;
 use App\Models\Log;
 use App\Models\damage as sira;
@@ -21,9 +22,12 @@ class damage extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request , $id = null)
     {
         //
+        $data = cars::findorfail($id);
+        return view('carprofile.damage',['car'=>$data]);
+
     }
 
     /**
@@ -42,7 +46,7 @@ class damage extends Controller
         $remark = ($request['remark'])?$request['remark']:'No problem after the checking...';
         sira::create(
             [
-                'vehicleidno'=>$id,
+                'vehicleid'=>$id,
                 'dents'=>$dents,
                 'dings'=>$dings,
                 'scratches'=>$scratches,
@@ -53,13 +57,14 @@ class damage extends Controller
             ]
         );
 
-        $carstatus = carstatus::where('vehicleidno',$id)->first();
+        $car = cars::findOrFail($id);
+        $carstatus = carstatus::where('vehicleidno',$car->vehicleidno)->first();
         $carstatus->hasdamage = 1;
         $carstatus->update();
         // return dd($carstatus);
         Log::create([
-            'idNum'=>$id,
-            'logs'=>'Car VI#'. ' '. $id .' have been checked if it have a damage  by '. $request->user()->name
+            'idNum'=>$car->vehicleidno,
+            'logs'=>'Car VI#'. ' '. $car->vehicleidno .' have been checked if it have a damage  by '. $request->user()->name
         ]);
 
         return back()->with(['success'=>'the car have been checked....']);
@@ -108,8 +113,8 @@ class damage extends Controller
             $damagecar->remark = $remark;
             $damagecar->update();
             Log::create([
-                'idNum'=>$damagecar->vehicleidno,
-                'logs'=>'Car VI#'. ' '. $damagecar->vehicleidno.' have been update if it have a damage  by '. $request->user()->name
+                'idNum'=>$damagecar->car->vehicleidno,
+                'logs'=>'Car VI#'. ' '. $damagecar->car->vehicleidno.' have been update if it have a damage  by '. $request->user()->name
             ]);
 
             return redirect()->back()->with(['success'=>'the car have been Update....']);

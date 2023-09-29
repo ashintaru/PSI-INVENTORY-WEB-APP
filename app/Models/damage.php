@@ -10,7 +10,7 @@ class damage extends Model
     use HasFactory;
     protected $table = 'damage';
     protected $fillable = [
-        'vehicleidno',
+        'vehicleid',
         'dents',
         'dings',
         'scratches',
@@ -19,7 +19,7 @@ class damage extends Model
         'other',
         'remark'
     ];
-    public function user(){
-        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+    public function car(){
+        return $this->BelongsTo(cars::class,'vehicleid','id');
     }
 }
