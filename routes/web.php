@@ -114,8 +114,8 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('getblocks/{id}','fetchBlocks');
         });
         Route::controller(CarsController::class)->group(function(){
-            Route::patch('approved-inventory/{id}', 'approve')->name('approve');
-            Route::patch('update-inventory/{id}','updatecarstatus');
+            Route::put('approved-inventory/{id}', 'approve')->name('approve');
+            Route::put('update-inventory/{id}','updatecarstatus');
             Route::get('recieve', 'index');
             Route::post('search', 'show')->name('search');
             Route::get('view/{id}/{action}', 'view')->name('show-profile');

@@ -204,7 +204,8 @@ class CarsController extends Controller
     }
     public function updatecarstatus($carid = null , Request $request){
         try {
-            $car = cars::where('vehicleidno',$carid)->first();
+            // return dd($request->all());
+            $car = cars::where('id',$carid)->first();
             $result = ($car->status->hasloosetool == 1 && $car->status->hassettool == 1 && $car->status->hasdamage == 1 )?true : false;
             // return dd($result);
             if($result){
@@ -222,8 +223,8 @@ class CarsController extends Controller
                     $this->checkinventory($car,$result);
                     $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
                     Log::create([
-                        'idNum'=>$carid,
-                        'logs'=>'Car VI#'. ' '. $carid .' '.$mesage.' '. $request->user()->name
+                        'idNum'=>$car->vehicleidno,
+                        'logs'=>'Car VI#'. ' '. $car->vehicleidno .' '.$mesage.' '. $request->user()->name
                     ]);
                     return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been UPDATE PROPERLY....']);
                 }

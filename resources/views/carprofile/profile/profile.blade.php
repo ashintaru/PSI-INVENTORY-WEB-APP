@@ -194,15 +194,19 @@
         @if ($car->status->havebeenchecked)
             <form method="POST" action="{{URL('update-inventory/'.$car->id)}}" class="">
                 @csrf
-                @method('PATCH')
+                @method('PUT')
                 <div class="flex-col space-y-2">
                     <div class="flex space-x-4">
                         <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                            <input name="status" @if($car->status->havebeenpassed == 1) checked @endif  value="1" id="bordered-radio-1" type="radio"  name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input name="status"
+                            @if($car->status->havebeenpassed == "1") checked @endif
+                            value="1" id="bordered-radio-1" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="bordered-radio-1" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Passed</label>
                         </div>
                         <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                            <input name="status" @if($car->status->havebeenpassed == 0) checked @endif  value="0" checked id="bordered-radio-2" type="radio"  name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input name="status"
+                            @if($car->status->havebeenpassed == "0") checked @endif
+                            value="0" id="bordered-radio-2" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="bordered-radio-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Failed</label>
                         </div>
                         <x-primary-button>{{ __('Update') }}</x-primary-button>
@@ -212,19 +216,19 @@
         @else
             <form method="POST" action="{{URL('approved-inventory/'.$car->id)}}" class="">
                 @csrf
-                @method('PATCH')
+                @method('PUT')
                 <div class="flex-col space-y-2">
                     <div class="flex space-x-4">
                         <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                            <input name="status" @if(old('status')) checked @endif  value="1" id="bordered-radio-1" type="radio"  name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input name="status" @if(old('status')) checked @endif  value="1" id="bordered-radio-1" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="bordered-radio-1" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Passed</label>
                         </div>
                         <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                            <input name="status" @if(old('status')) checked @endif  value="0" checked id="bordered-radio-2" type="radio"  name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input name="status" @if(old('status')) checked @endif  value="0"  id="bordered-radio-2" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="bordered-radio-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Failed</label>
                         </div>
-                        {{-- <x-primary-button>{{ __('Submit') }}</x-primary-button> --}}
-                        <button type="submit">Submit</button>
+                        <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                        {{-- <button type="submit">Submit</button> --}}
                     </div>
                 </div>
             </form>
