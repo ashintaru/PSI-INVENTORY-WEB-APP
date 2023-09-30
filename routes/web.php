@@ -68,7 +68,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
         Route::get('cars',[pdfcontroller::class,'showEmployees']);
         Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
-
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
             Route::post('import', 'import')->name('import');
@@ -81,14 +80,17 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('invoice/{id}','index');
         });
         Route::controller(looseitems::class)->group(function(){
+            Route::get('createloosetools/{id}','create');
             Route::post('loose-item/{id}','store');
             Route::patch('update-loose-item/{id}','update');
         });
         Route::controller(settools::class)->group(function(){
+            Route::get('createsettools/{id}','create');
             Route::post('set-tool/{id}','store');
             Route::patch('update-set-tool/{id}','update');
         });
         Route::controller(damage::class)->group(function(){
+            Route::get('createdamage/{id}','create');
             Route::post('car-damage/{id}','store');
             Route::patch('update-car-damage/{id}','update');
         });
@@ -111,10 +113,9 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('savedblock','store');
             Route::get('getblocks/{id}','fetchBlocks');
         });
-
         Route::controller(CarsController::class)->group(function(){
-            Route::patch('approved-inventory/{id}', 'approve')->name('approve');
-            Route::patch('update-inventory/{id}','updatecarstatus');
+            Route::put('approved-inventory/{id}', 'approve')->name('approve');
+            Route::put('update-inventory/{id}','updatecarstatus');
             Route::get('recieve', 'index');
             Route::post('search', 'show')->name('search');
             Route::get('view/{id}/{action}', 'view')->name('show-profile');

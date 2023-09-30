@@ -1,137 +1,93 @@
-<section>
-    @if (!is_null($car))
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Car Detail's
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{'Index #  '.$car->id}}
-                        </th>
-                        <td></td>
-                        <td class="px-6 flex flex-row-reverse py-4">
-                            <button
-                                id="edit-car"
-                                data-url="{{url('edit-car-profile/'.$car->id)}}"
-                                data-modal-target="staticModal" data-modal-toggle="staticModal"
-                                data-tooltip-target="view-button"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                <x-edit1_icon></x-edit1_icon>
+<section class="space-y-4 ">
+@if (!is_null($car))
+    <nav class="justify-between px-4 py-3 text-gray-700 border border-gray-200 rounded-lg sm:flex sm:px-5 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center mb-3 space-x-1 md:space-x-3 sm:mb-0">
+            <li>
+                <div class="flex items-center">
+                <a href="{{URL('recieve')}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Database</a>
+                </div>
+            </li>
+            <li aria-current="page">
+                <div class="flex items-center">
+                <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <a href="{{URL('view/'.$car->id)}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{$car->vehicleidno}}</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <x-alert-error></x-alert-error>
+    <x-alert-success></x-alert-success>
 
-                            </button>
-                         </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            CS #
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{$car->csno}}
-                        </th>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Status
-                        </th>
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            Model Code
-                        </th>
-                        <td class="px-6 py-4">
-                            {{$car->mmpcmodelcode}}
-                        </td>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Checked
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            @if ( $car->status->havebeenchecked == 0)
-                            <svg width="26px" height="26px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet"><path d="M62 52c0 5.5-4.5 10-10 10H12C6.5 62 2 57.5 2 52V12C2 6.5 6.5 2 12 2h40c5.5 0 10 4.5 10 10v40z" fill="#ff5a79"></path><path fill="#ffffff" d="M50 21.2L42.8 14L32 24.8L21.2 14L14 21.2L24.8 32L14 42.8l7.2 7.2L32 39.2L42.8 50l7.2-7.2L39.2 32z"></path></svg>
-                            @else
-                            <svg width="26px" height="26px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#77B255" d="M36 32a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v28z"></path><path fill="#FFF" d="M29.28 6.362a2.502 2.502 0 0 0-3.458.736L14.936 23.877l-5.029-4.65a2.5 2.5 0 1 0-3.394 3.671l7.209 6.666c.48.445 1.09.665 1.696.665c.673 0 1.534-.282 2.099-1.139c.332-.506 12.5-19.27 12.5-19.27a2.5 2.5 0 0 0-.737-3.458z"></path></svg>                            @endif
-                        </th>
-
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            VIN
-                        </th>
-                        <td class="px-6 py-4">
-                            {{$car->vehicleidno}}
-                        </td>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Passed
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            @if ( $car->status->havebeenpassed == 0)
-                            <svg width="26px" height="26px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet"><path d="M62 52c0 5.5-4.5 10-10 10H12C6.5 62 2 57.5 2 52V12C2 6.5 6.5 2 12 2h40c5.5 0 10 4.5 10 10v40z" fill="#ff5a79"></path><path fill="#ffffff" d="M50 21.2L42.8 14L32 24.8L21.2 14L14 21.2L24.8 32L14 42.8l7.2 7.2L32 39.2L42.8 50l7.2-7.2L39.2 32z"></path></svg>
-                            @else
-                            <svg width="26px" height="26px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#77B255" d="M36 32a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v28z"></path><path fill="#FFF" d="M29.28 6.362a2.502 2.502 0 0 0-3.458.736L14.936 23.877l-5.029-4.65a2.5 2.5 0 1 0-3.394 3.671l7.209 6.666c.48.445 1.09.665 1.696.665c.673 0 1.534-.282 2.099-1.139c.332-.506 12.5-19.27 12.5-19.27a2.5 2.5 0 0 0-.737-3.458z"></path></svg>
-                            @endif
-                        </th>
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            Engine No.
-                        </th>
-                        <td class="px-6 py-4">
-                            {{$car->engineno}}
-                        </td>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                            Realeased
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            @if ( $car->havebeenreleased == 0)
-                            <svg width="26px" height="26px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet"><path d="M62 52c0 5.5-4.5 10-10 10H12C6.5 62 2 57.5 2 52V12C2 6.5 6.5 2 12 2h40c5.5 0 10 4.5 10 10v40z" fill="#ff5a79"></path><path fill="#ffffff" d="M50 21.2L42.8 14L32 24.8L21.2 14L14 21.2L24.8 32L14 42.8l7.2 7.2L32 39.2L42.8 50l7.2-7.2L39.2 32z"></path></svg>
-                            @else
-                            <svg width="26px" height="26px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#77B255" d="M36 32a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v28z"></path><path fill="#FFF" d="M29.28 6.362a2.502 2.502 0 0 0-3.458.736L14.936 23.877l-5.029-4.65a2.5 2.5 0 1 0-3.394 3.671l7.209 6.666c.48.445 1.09.665 1.696.665c.673 0 1.534-.282 2.099-1.139c.332-.506 12.5-19.27 12.5-19.27a2.5 2.5 0 0 0-.737-3.458z"></path></svg>
-                            @endif
-                        </th>
-
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            Color
-                        </th>
-                        <td class="px-6 py-4">
-                            {{$car->exteriorcolor}}
-                        </td>
-
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4">
-                            <label for="red-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date Updated ::  {{ Carbon\Carbon::parse($car->updated_at)->format('M d Y') }}</label>
-
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        @else
-        <p> Empyty Value ....</p>
-    @endif
-
-<!-- Modal toggle -->
-  <!-- Main modal -->
-  <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-      <div class="relative w-full max-w-2xl max-h-full">
-          <!-- Modal content -->
-          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <!-- Modal header -->
-              <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                  <button id="closed" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="staticModal">
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                      </svg>
-                      <span class="sr-only">Close modal</span>
-                  </button>
-              </div>
-              <!-- Modal body -->
-              <div class="p-6 space-y-6">
-                <form id="editprofile" class="" action="{{URL('update-car-details/'.$car->id)}}" method="POST">
+    <div class="relative overflow-x-auto  shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        Loose Tool's
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Set Tool's
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        Damage
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Check Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $index=0;
+                @endphp
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <th scope="row" class="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        @if ($car->status->hasloosetool==1)
+                        @php
+                            $index++;
+                        @endphp
+                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">checked</span>
+                        @else
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                        @endif
+                    </th>
+                    <td class="px-6 py-4 text-center">
+                        @if ($car->status->hassettool==1)
+                        @php
+                            $index++;
+                        @endphp
+                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">checked</span>
+                        @else
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 text-center dark:bg-gray-800">
+                        @if ($car->status->hasdamage==1)
+                        @php
+                            $index++;
+                        @endphp
+                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">checked</span>
+                        @else
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        @if ($car->status->hasloosetool==1 && $car->status->hassettool==1 && $car->status->hasdamage==1 )
+                        <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">checked</span>
+                        @else
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{{$index}}/3</span>
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex flex-row overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <div class="rounded-lg py-4">
+            <div class="w-full mx-auto sm:px-6 lg:px-8 space-y-6 ">
+                <form action="{{URL('update-car-details/'.$car->id)}}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="grid md:grid-cols-3 md:gap-6">
@@ -196,54 +152,91 @@
                         </div>
                     </div>
                     <div class="flex flex-row gap-4 w-full">
-                        <x-primary-button>Submit</x-primary-button>
+                        <x-primary-button>Update</x-primary-button>
                     </div>
                 </form>
-                <div id="spinner" class="text-center">
-                    <div role="status">
-                        <svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                        </svg>
-                        <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="flex w-1/3">
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="{{URL('createloosetools/'.$car->id)}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                          <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                          <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                       </svg>
+                       <span class="ml-3">Loose Tool's</span>
+                    </a>
+                 </li>
+                 <li>
+                    <a href="{{URL('createsettools/'.$car->id)}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                          <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                          <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                       </svg>
+                       <span class="ml-3">Set Tool's</span>
+                    </a>
+                 </li>
+                 <li>
+                    <a href="{{URL('createdamage/'.$car->id)}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                          <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                          <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                       </svg>
+                       <span class="ml-3">Damage</span>
+                    </a>
+                 </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        @if ($car->status->havebeenchecked)
+            <form method="POST" action="{{URL('update-inventory/'.$car->id)}}" class="">
+                @csrf
+                @method('PUT')
+                <div class="flex-col space-y-2">
+                    <div class="flex space-x-4">
+                        <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                            <input name="status"
+                            @if($car->status->havebeenpassed == "1") checked @endif
+                            value="1" id="bordered-radio-1" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="bordered-radio-1" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Passed</label>
+                        </div>
+                        <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                            <input name="status"
+                            @if($car->status->havebeenpassed == "0") checked @endif
+                            value="0" id="bordered-radio-2" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="bordered-radio-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Failed</label>
+                        </div>
+                        <x-primary-button>{{ __('Update') }}</x-primary-button>
                     </div>
                 </div>
+            </form>
+        @else
+            <form method="POST" action="{{URL('approved-inventory/'.$car->id)}}" class="">
+                @csrf
+                @method('PUT')
+                <div class="flex-col space-y-2">
+                    <div class="flex space-x-4">
+                        <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                            <input name="status" @if(old('status')) checked @endif  value="1" id="bordered-radio-1" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="bordered-radio-1" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Passed</label>
+                        </div>
+                        <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                            <input name="status" @if(old('status')) checked @endif  value="0"  id="bordered-radio-2" type="radio"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="bordered-radio-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Failed</label>
+                        </div>
+                        <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                        {{-- <button type="submit">Submit</button> --}}
+                    </div>
+                </div>
+            </form>
+        @endif
+    </div>
 
-              </div>
-              <!-- Modal footer -->
-              <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-            </div>
-          </div>
-      </div>
-  </div>
+@else
+    <p> Empyty Value ....</p>
+@endif
 
-  <!-- Spinner -->
-
-  <!-- spinner end -->
-
-  <script type="text/javascript">
-    $(document).ready(function () {
-        var profileform = document.getElementById("editprofile");
-        var spinner = document.getElementById("spinner");
-            profileform.style.display='none';
-
-        $('#closed').click(()=>{
-            spinner.style.display = "block";
-            profileform.style.display='none';
-        });
-
-       /* When click show user */
-        $('body').on('click', '#edit-car', function () {
-          var userURL = $(this).data('url');
-            $.get(userURL, function () {
-                spinner.style.display = "block";
-             }).done( () => {
-                    spinner.style.display = "none";
-                    profileform.style.display='block';
-            }).fail(()=>console.log("error"))
-       });
-
-    });
-
-</script>
 </section>

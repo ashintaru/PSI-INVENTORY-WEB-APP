@@ -11,16 +11,15 @@ class tool extends Model
 
     protected $table = 'loose_tool';
     protected $fillable = [
-        'vehicleidno',
+        'vehicleid',
         'ownermanual',
         'warantybooklet',
         'key',
         'remotecontrol',
     	'others',
-
     ];
 
-    public function user(){
-        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+    public function car(){
+        return $this->BelongsTo(cars::class,'vehicleid','id');
     }
 }

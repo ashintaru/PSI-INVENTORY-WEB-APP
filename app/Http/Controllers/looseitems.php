@@ -24,7 +24,9 @@ class looseitems extends Controller
      */
     public function create(Request $request , $carid = null)
     {
+        $data = cars::with('loosetools')->findOrFail($carid);
 
+        return view('carprofile.loosetools',['car'=>$data]);
     }
 
     /**
@@ -48,7 +50,7 @@ class looseitems extends Controller
                 $othervalue = ($request->has('other'))?$inputs['othervalue']:false;
 
                 tool::create([
-                    'vehicleidno'=>$carid,
+                    'vehicleid'=>$carid,
                     'ownermanual'=>$manual,
                     'warantybooklet'=>$waranty,
                     'key'=>$keyvalue,
@@ -61,10 +63,10 @@ class looseitems extends Controller
                 ]);
 
                 // return dd($carid);
-                $car = carstatus::where('vehicleidno',$carid)->first();
-                $car->hasloosetool = 1;
-                $car->update();
-
+                $car = cars::findOrFail($carid);
+                $status = carstatus::where('vehicleidno',$car->vehicleidno)->first();
+                $status->hasloosetool = 1;
+                $status->update();
                 return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been checked....']);
             }
         } catch (Exception $error) {
@@ -95,7 +97,6 @@ class looseitems extends Controller
     public function update(Request $request, $id = null)
     {
         try {
-            //code...
             $inputs = $request->all();
             if(($request->has('key') && $request->keyvalue == null)|| ( $request->has('other') && $request->othervalue == null)){
                 return redirect()->back()->withErrors(['msg'=>'the user should provide ']);
@@ -109,14 +110,16 @@ class looseitems extends Controller
 
                 $tools = tool::findOrFail($id);
                 $tools->ownermanual = $manual;
-                $tools->warantybooklet  =$waranty;
+                $tools->warantybooklet = $waranty;
                 $tools->key = $keyvalue;
                 $tools->remotecontrol = $remote;
                 $tools->others = $othervalue;
                 $tools->update();
 
+
+
                 Log::create([
-                    'idNum'=>$tools->vehicleidno,
+                    'idNum'=>$tools->car->vehicleidno,
                     'logs'=>'Car VI#'. ' '. $tools->vehicleidno .' have been update the loose tools by '. $request->user()->name
                 ]);
                 return redirect()->back()->with(['success' => 'success:: the tools  has been update']);

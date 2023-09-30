@@ -11,7 +11,7 @@ class set_tool extends Model
     use HasFactory;
     protected $table = 'set_tool';
     protected $fillable = [
-        'vehicleidno',
+        'vehicleid',
         'toolbag',
         'tirewrench',
         'jack',
@@ -29,7 +29,7 @@ class set_tool extends Model
         'other',
     ];
 
-    public function user(){
-        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+    public function car(){
+        return $this->BelongsTo(cars::class,'vehicleid','id');
     }
 }
