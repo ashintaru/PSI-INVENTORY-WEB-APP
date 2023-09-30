@@ -23,9 +23,8 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-        ->orderBy('havebeenchecked','asc')
-        ->orderBy('cars.id', 'ASC')->paginate(25);
+        $data = cars::with('status')
+        ->paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
 
