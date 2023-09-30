@@ -14,7 +14,7 @@
     </div>
 
 	<div class="py-1">
-        @include('data.partials.tablecardata',['data'=>$data])
+        @include('data.partials.tablecardata')
         <div class="py-2">
             @if (count($data)>1)
                 {{$data->links('pagination::tailwind')}}

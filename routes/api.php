@@ -27,4 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/hello', function () {
     return "Hello World!";
   });
-Route::get('testData',[apiTester::class,'fetchRawdata'])->name('api.test_data');;
+Route::get('testData',[apiTester::class,'allWithoutCache'])->name('api.test_data');
+Route::get('testcache',[apiTester::class,'index'])->name('api.test_data');
+
