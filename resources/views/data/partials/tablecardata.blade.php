@@ -51,7 +51,7 @@
       <tbody>
           @if (!is_null($data))
             @foreach($data as $d)
-            <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-yellow-100">
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {{$d->id}}
                 </th>
@@ -79,7 +79,7 @@
                 {{$d->vehiclestockyard}}
                 </td>
                 <td class="px-6 py-4 flex ">
-                    <button
+                    {{-- <button
                         id="show-car"
                         data-url="{{URL('showcarprofile/'.$d->id)}}"
                         data-modal-target="staticModal" data-modal-toggle="staticModal"
@@ -89,7 +89,7 @@
                             <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
                           </svg>
 
-                    </button>
+                    </button> --}}
                     <a href="{{URL('/view'."/".$d->id)}}"
                         data-tooltip-target="config-button">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
@@ -107,16 +107,16 @@
   </table>
 
 
-    <div id="view-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+    {{-- <div id="view-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         View Car Profile
         <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
+    </div> --}}
     <div id="config-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         Configuration
         <div class="tooltip-arrow" data-popper-arrow></div>
     </div>
   {{-- modal --}}
-  <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  {{-- <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -207,8 +207,8 @@
               </div>
         </div>
     </div>
-</div>
-<script type="text/javascript">
+</div> --}}
+{{-- <script type="text/javascript">
     $(document).ready(function () {
        /* When click show user */
        var form = document.getElementById("profileform");
@@ -247,5 +247,5 @@
           }).fail()
        });
     });
-</script>
+</script> --}}
 </section>

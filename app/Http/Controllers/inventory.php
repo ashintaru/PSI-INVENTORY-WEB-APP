@@ -64,7 +64,12 @@ class inventory extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+    }
+
+    public function view($id = null){
+        $data = inbentaryo::with(['car'])->findOrFail($id);
+        return view('inventory.inventoryprofile',['data'=>$data]);
     }
 
     /**

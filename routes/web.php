@@ -96,6 +96,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         });
         Route::controller(inventory::class)->group(function(){
             Route::get('inventory', 'index')->name('show-inventory');
+            Route::get('inventory/{id}','view');
             Route::post('searchinventory','searchinventory');
             Route::get('viewinventory/{action}','show');
         });

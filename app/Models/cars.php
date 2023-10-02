@@ -25,7 +25,6 @@ class cars extends Model
         'bilingdocuments',
         'vehiclestockyard'
     ];
-
     public function settools(){
         return $this->hasOne(set_tool::class,'vehicleid','id');
     }

@@ -50,7 +50,7 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
             'exteriorcolor'=> $row[5],
             'csno'=> $row[6],
             'tag'=>$tag,
-            'bilingdate'=> Carbon::parse($row[7]),
+            'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
             'vehicleidno'=> $row[8],
             'engineno'=> $row[9],
             'productioncbunumber'=> $row[10],

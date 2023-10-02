@@ -1,22 +1,5 @@
 <!DOCTYPE html>
 <?php
-    use App\Models\cars;
-    use App\Models\invoicecount;
-    $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-                ->get();
-    $fcars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-    ->where('havebeenchecked',"=",1)
-    ->where('havebeenpassed',"=",0)
-    ->get();
-    $pcars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-    ->where('havebeenchecked',"=",1)
-    ->where('havebeenpassed',"=",1)
-    ->get();
-    $carscount = (count($cars)>0)?count($cars):0;
-    $failedcars = (count($fcars)>0)?count($fcars):0;
-    $passedcars = (count($pcars)>0)?count($pcars):0;
-
-    $invoicecategory = invoicecount::select(['id','modeldescription','count'])->get();
     header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
     header("Pragma: no-cache"); //HTTP 1.0
     header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
