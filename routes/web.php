@@ -64,10 +64,10 @@ Route::middleware(['auth','web','isClient'])->group(function(){
 
 // Admin and Super Admin Route
 
+Route::get('cars',[pdfcontroller::class,'showEmployees']);
+Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
 Route::middleware(['auth','web','areAdmin'])->group(function() {
 
-        Route::get('cars',[pdfcontroller::class,'showEmployees']);
-        Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
             Route::post('import', 'import')->name('import');

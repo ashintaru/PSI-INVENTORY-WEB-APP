@@ -123,6 +123,7 @@
 <script>
         // ApexCharts options and config
         window.addEventListener("load", function() {
+
             let inventories = {!! json_encode($inventories , JSON_HEX_TAG) !!};
             const cars = {!! json_encode($cars , JSON_HEX_TAG) !!};
     // console.log(cars);
@@ -225,20 +226,20 @@
                 },
             }
 
-            if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
-                const chart = new ApexCharts(document.getElementById("area-chart"), options);
-                chart.render();
-            }
+                if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+                    const chart = new ApexCharts(document.getElementById("area-chart"), options);
+                    chart.render();
+                }
             });
 
             const cars = {!! json_encode($cars , JSON_HEX_TAG) !!};
-            // console.log(cars);
+            console.log(cars);
             let total = 0
             let passed = 0;
             let pending = 0;
             for(const x in cars){
                 total++;
-                if(cars[x].havebeenpassed==1){
+                if(cars[x].havebeenpassed ==1){
                     passed++;
                 }
                 else if(cars[x].havebeenpassed==0){
