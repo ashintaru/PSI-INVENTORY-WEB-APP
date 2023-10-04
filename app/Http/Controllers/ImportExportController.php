@@ -10,8 +10,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Log;
 use App\Models\cars;
 use App\Models\carstatus;
-use Exception;
+use App\Imports\mzdsImport;
+use App\Imports\mmpcImport;
+use App\Imports\subaruImport;
 use App\Imports\Importinvoce;
+
+use Exception;
 
 
 class ImportExportController extends Controller
@@ -24,7 +28,6 @@ class ImportExportController extends Controller
 
 
     public function importInvoice(Request $request){
-
         while(empty($error)){
             try{
                 //asking if the post method have file
@@ -72,15 +75,50 @@ class ImportExportController extends Controller
                 //asking if the post method have file
                 $validated = $request->validate([
                     'file' => 'required|max:2000',
+                    'tags' => 'required'
                 ]);
+                // return dd($request->tags);
                 $extension = request()->file('file')->extension();
                 if($extension === "xlsx"){
-                    Excel::import(new carsImport, request()->file('file'));
-                    Log::create([
-                        'idNum'=>$request->user()->id,
-                        'logs'=>$request->user()->name.' upload Data into the Database'
-                    ]);
-                    return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                    switch ($request->tags) {
+                        case '1':
+                            //mazda import
+                            $collection = (new mzdsImport)->import(request()->file('file'));
+                            // dd($collection->pluck(8));
+                            // $array = array();
+                            // foreach ($collection as $data ) {
+                            //     array_push($array,$data->pluck(8));
+                            // }
+                            // dd($collection);
+                            Log::create([
+                                'idNum'=>$request->user()->id,
+                                'logs'=>$request->user()->name.' upload Data into the Database'
+                            ]);
+                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                            break;
+                        case '2':
+                            //MMpc
+                            (new mmpcImport)->import(request()->file('file'));
+                            Log::create([
+                                'idNum'=>$request->user()->id,
+                                'logs'=>$request->user()->name.' upload Data into the Database'
+                            ]);
+                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                            break;
+                        case '3':
+                            //Subaru import
+                            (new subaruImport)->import(request()->file('file'));
+                            Log::create([
+                                'idNum'=>$request->user()->id,
+                                'logs'=>$request->user()->name.' upload Data into the Database'
+                            ]);
+                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                            break;
+
+                        default:
+                            return back()->with(['success' => 'Warning:: the file has been uploaded succesfully but it does not saved in databased','pr'=>'success']);
+                            break;
+                    }
                 }
                 else{
                     request()->file('file') == null;

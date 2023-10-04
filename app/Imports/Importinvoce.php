@@ -1,15 +1,18 @@
 <?php
-namespace App\Imports;
 
+namespace App\Imports;
 use App\Models\cars;
 use App\Models\invoce as invoice;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class Importinvoce implements ToModel,WithBatchInserts,WithChunkReading
+
+
+//we shuold implement queue job
+class Importinvoce implements ToModel,WithBatchInserts
 {
+
     /**
     * @param array $row
     *
@@ -41,10 +44,4 @@ class Importinvoce implements ToModel,WithBatchInserts,WithChunkReading
      {
          return 1000;
      }
-
-    public function chunkSize(): int
-    {
-        return 1000;
-    }
-
 }

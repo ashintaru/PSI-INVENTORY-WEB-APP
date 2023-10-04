@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
 use Barryvdh\DomPDF\PDF;
+use App\Models\blocks;
+use App\Models\blockings;
 
 class CarsController extends Controller
 {
@@ -23,7 +25,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::with('status')
+        $data = cars::with(['status','blocking'])
         ->paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
@@ -48,8 +50,9 @@ class CarsController extends Controller
     public function view($id = null,$action = 'null')
     {
         $data = cars::findOrFail($id);
+        $block = blocks::get();
         // return dd(json_decode($tools,true) );
-        return view('carprofile.carprofile',['car'=>$data]);
+        return view('carprofile.carprofile',['car'=>$data,'blocks'=>$block]);
     }
 
     public function approve( $carid = null,Request $request)
@@ -134,6 +137,36 @@ class CarsController extends Controller
     }
 
 
+    public function updateBlockings( Request $request , $id = null ){
+        $validated = $request->validate([
+            'blockings'=> 'required',
+        ]);
+
+        $car = cars::findOrFail($id);
+        if($car->blockings=="empty"){
+            $car->blockings = $request->blockings;
+            $car->update();
+            $blocks = blockings::findOrFail($request->blockings);
+            $blocks->blockstatus=1;
+            $blocks->update();
+        }else{
+            $oldBlocking = $car->blockings;
+            $car->blockings = $request->blockings;
+            $car->update();
+            $oldblocks = blockings::findOrFail($oldBlocking);
+            $oldblocks->blockstatus=0;
+            $oldblocks->update();
+            $newblocks = blockings::findOrFail($request->blockings);
+            $newblocks->blockstatus=1;
+            $newblocks->update();
+
+
+        }
+
+        return back()->with(['success'=>'Success:: the car have been update properly... ']);
+
+
+    }
 
     public function updatecardetails(Request $request, $id = null){
 

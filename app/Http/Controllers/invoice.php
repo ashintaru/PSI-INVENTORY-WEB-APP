@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\invoicedata;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\cars;
 
 class invoice extends Controller
 {
@@ -58,19 +59,32 @@ class invoice extends Controller
 
                     $inputs = $request->all();
                     $invoice = invoce::findOrFail($id);
+                    $car = cars::where('vehicleidno',$invoice->vehicleidno)->get();
                     // return dd($inputs);
                     $invoice->status = 1;
                     $invoice->save();
+
+                    if($car->blockings!="empty"){
+                        $pastBlockings = blockings::findOrFail($car->blockings);
+                        $pastBlockings->blockstatus=0;
+                        $pastBlockings->save();
+                    }
+
+                    $car->blockings = $inputs['blockings'];
+                    $car->update();
+
                     $blocks = blockings::findOrFail($inputs['blockings']);
                     $blocks->blockstatus=1;
                     $blocks->save();
+
                     invoicedata::create([
-                            'invoiceid'=>$id,
-                            'name'=>$inputs['name'],
-                            'date'=>$inputs['date'],
-                            'block'=>$inputs['blockings']
-                        ]);
-                        return redirect()->back();
+                        'invoiceid'=>$id,
+                        'name'=>$inputs['name'],
+                        'date'=>$inputs['date'],
+                        'block'=>$inputs['blockings']
+                    ]);
+
+                    return redirect()->back();
                 } catch (Exception $th) {
                     //throw $th;
                     return redirect()->back();
@@ -114,8 +128,9 @@ class invoice extends Controller
                     $inputs = $request->all();
 
                     // return $request->all();
-
                     $invoicedata = invoicedata::findOrfail($id);
+
+
                     $recentBlockings = $invoicedata->block;
                     $invoicedata->name = Auth::user()->name;
                     $invoicedata->date = $inputs['date'];

@@ -1,42 +1,34 @@
 <?php
 
 namespace App\Imports;
+
 use App\Models\cars;
 use App\Models\carstatus;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToModel;
 
-
-class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
+class subaruImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
 {
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-
     use Importable;
-
-public function model(array $row)
-{
+    public function model(array $row)
+    {
         $bin = DB::table('cars')->get();
         $bin_number = $bin->pluck('vehicleidno');
 
     if ($bin_number->contains($row[8]) == false)
     {
-        $description = explode(' ',$row[4]);
-        if( strtolower($description[0]) == strtolower("mirage") )
-            $tag = "MAZDA";
-        elseif ( strtolower($description[0]) == strtolower("l300") )
-            $tag = "MMPC";
-        else
-            $tag = "SUBURU";
+
         return [
             new cars([
             'mmpcmodelcode'=> $row[0],
@@ -46,7 +38,7 @@ public function model(array $row)
             'modeldescription'=> $row[4],
             'exteriorcolor'=> $row[5],
             'csno'=> $row[6],
-            'tag'=>$tag,
+            'tag'=>"subaru",
             'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
             'vehicleidno'=> $row[8],
             'engineno'=> $row[9],

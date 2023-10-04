@@ -23,7 +23,8 @@ class cars extends Model
         'engineno',
         'productioncbunumber',
         'bilingdocuments',
-        'vehiclestockyard'
+        'vehiclestockyard',
+        'blockings'
     ];
     public function settools(){
         return $this->hasOne(set_tool::class,'vehicleid','id');
@@ -43,6 +44,9 @@ class cars extends Model
     }
     public function inventory(){
         return $this->hasOne(inventory::class,'vehicleid','id');
+    }
+    public function blocking(){
+        return $this->hasOne(blockings::class,'id','blockings');
     }
     // class ,fk ,lk
     public function invoice(){

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('productioncbunumber');
             $table->bigInteger('bilingdocuments');
             $table->string('vehiclestockyard');
+            $table->string('blockings');
             $table->timestamps();
         });
     }

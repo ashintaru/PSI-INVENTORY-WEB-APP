@@ -118,6 +118,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
             Route::put('update-inventory/{id}','updatecarstatus');
             Route::get('recieve', 'index');
+            Route::put('update-blockings/{id}','updateBlockings');
             Route::post('search', 'show')->name('search');
             Route::get('view/{id}/{action}', 'view')->name('show-profile');
             Route::get('view/{id}', 'view')->name('show-profile');

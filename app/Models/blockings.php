@@ -17,4 +17,7 @@ class blockings extends Model
     public function block(){
         return $this->belongsTo(blocks::class,'blockId','id');
     }
+    public function car(){
+        return $this->belongsTo(cars::class,'blockings','id');
+    }
 }
