@@ -34,7 +34,7 @@ class invoice extends Controller
     }
 
     public function import(){
-        return view('invoice.importInvoice');
+        return view('invoice.importInvoice',['collection'=>[]]);
     }
     /**
      * Show the form for creating a new resource.

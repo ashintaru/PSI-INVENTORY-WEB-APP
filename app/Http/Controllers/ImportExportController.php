@@ -37,8 +37,10 @@ class ImportExportController extends Controller
                 $extension = request()->file('file')->extension();
                 if($extension === "xlsx"){
                     try {
-                        Excel::import(new Importinvoce, request()->file('file'));
-                        return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+                        $import = new Importinvoce;
+                        Excel::import($import, request()->file('file'));
+                        // return dd();
+                        return view('invoice.importInvoice',['collection'=>$import->getArrayVin()]);
                     } catch ( \Maatwebsite\Excel\Validators\ValidationException $e) {
                          $failures = $e->failures();
                         return back()->with(['msg' =>$failures]);

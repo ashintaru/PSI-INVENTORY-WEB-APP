@@ -13,11 +13,9 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 class Importinvoce implements ToModel,WithBatchInserts
 {
 
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+    private $output = array();
+    private $rowcounts =1;
+
     public function model(array $row)
     {
         $bin = cars::join('carstatus','cars.vehicleidno','=','carstatus.vehicleidno')->where('havebeenpassed',1)->get();
@@ -26,23 +24,33 @@ class Importinvoce implements ToModel,WithBatchInserts
         $invoice_number = $invoice->pluck('vehicleidno');
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
-            return new invoice([
-                'vehicleidno'=>$row[11],
-                'status'=>0,
-                'stp'=>$row[0],
-                'vehicletype'=>$row[6],
-                'modeltype'=>$row[7],
-                'salesremark'=>$row[16],
-                'csrno'=>$row[17],
-                'csrtype'=>$row[18],
-                'csrdate'=>Carbon::parse($row[19]),
-                'dateModifier'=>null
-            ]);
-
+            $rows = array();
+            $rows['vin']=$row[11];
+            $rows['columnNumber'] = $this->rowcounts;
+            array_push($this->output,$rows);
+            ++$this->rowcounts;
+            // return new invoice([
+            //     'vehicleidno'=>$row[11],
+            //     'status'=>0,
+            //     'stp'=>$row[0],
+            //     'vehicletype'=>$row[6],
+            //     'modeltype'=>$row[7],
+            //     'salesremark'=>$row[16],
+            //     'csrno'=>$row[17],
+            //     'csrtype'=>$row[18],
+            //     'csrdate'=>Carbon::parse($row[19]),
+            //     'dateModifier'=>null
+            // ]);
         }
+        else
+            ++$this->rowcounts;
+     }
+     public function getArrayVin()
+     {
+        return $this->output;
      }
      public function batchSize(): int
      {
-         return 1000;
+         return 500;
      }
 }
