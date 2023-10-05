@@ -29,18 +29,18 @@ class Importinvoce implements ToModel,WithBatchInserts
             $rows['columnNumber'] = $this->rowcounts;
             array_push($this->output,$rows);
             ++$this->rowcounts;
-            // return new invoice([
-            //     'vehicleidno'=>$row[11],
-            //     'status'=>0,
-            //     'stp'=>$row[0],
-            //     'vehicletype'=>$row[6],
-            //     'modeltype'=>$row[7],
-            //     'salesremark'=>$row[16],
-            //     'csrno'=>$row[17],
-            //     'csrtype'=>$row[18],
-            //     'csrdate'=>Carbon::parse($row[19]),
-            //     'dateModifier'=>null
-            // ]);
+            return new invoice([
+                'vehicleidno'=>$row[11],
+                'status'=>0,
+                'stp'=>$row[0],
+                'vehicletype'=>$row[6],
+                'modeltype'=>$row[7],
+                'salesremark'=>$row[16],
+                'csrno'=>$row[17],
+                'csrtype'=>$row[18],
+                'csrdate'=>Carbon::parse($row[19]),
+                'dateModifier'=>null
+            ]);
         }
         else
             ++$this->rowcounts;

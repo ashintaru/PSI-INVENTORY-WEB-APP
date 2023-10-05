@@ -12,7 +12,7 @@ class blockings extends Model
     protected $fillable = [
         'blockId',
         'bloackname',
-        'status',
+        'blockstatus',
     ];
     public function block(){
         return $this->belongsTo(blocks::class,'blockId','id');
