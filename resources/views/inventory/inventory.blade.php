@@ -36,10 +36,10 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                         <th scope="col" class="px-3 py-3">
-                            Inv ID
+                            Unit ID
                         </th>
                         <th scope="col" class="px-3 py-3">
-                                Data ID
+                            Inventory ID
                         </th>
                         <th scope="col" class="px-3 py-3">
                             Blocking

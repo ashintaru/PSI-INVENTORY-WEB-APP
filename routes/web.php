@@ -106,7 +106,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('createinvoicedata/{id}','store');
             Route::get('invoice-get/{id}','show');
             Route::get('upload-Invoice','import');
-            Route::patch('updateinvoicedata/{id}','update');
+            Route::put('updateinvoicedata/{id}','update');
 
         });
         Route::controller(blocks::class)->group(function(){

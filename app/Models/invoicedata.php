@@ -18,7 +18,7 @@ class invoicedata extends Model
     ];
 
     public function invoice(){
-        return $this->belongsTo(invoce::class,'id','id');
+        return $this->belongsTo(invoce::class,'id','invoiceid');
     }
     public function blockings(){
         return $this->hasOne(blockings::class,'id','block');

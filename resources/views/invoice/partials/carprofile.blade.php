@@ -42,6 +42,16 @@
                         <td class="px-6 py-3 text-lg text-center font-mono">
                             {{$data->modeldescription}}
                         </td>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                            Blockings
+                        </th>
+                        <td class="px-6 py-3 text-lg text-center font-mono">
+                            @if ($data->blockings == "empty")
+                                Null
+                            @else
+                                {{$data->blocking->bloackname}}
+                            @endif
+                        </td>
                     </tr>
                 </tbody>
             </table>

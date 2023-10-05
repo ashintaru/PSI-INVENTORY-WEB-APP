@@ -7,7 +7,6 @@ use App\Models\invoce;
 use App\Models\blocks;
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\invoicedata;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\cars;
@@ -25,10 +24,11 @@ class invoice extends Controller
                  ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
                  ->groupBy('modeldescription')
                  ->get();
+
         $invoices = invoce::paginate(25);
 
         // return dd($data);
-        return view('invoice.invoce',['data'=>$invoices,'data1'=>$data]);
+        return view('invoice.invoce',['invoices'=>$invoices,'cars'=>$data]);
 
         //
     }
@@ -47,52 +47,10 @@ class invoice extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request ,string $id)
+    public function store(Request $request ,$id = null)
     {
-                //
-                try {
-                    //code...
-                    $validated = $request->validate([
-                        'date' => 'required',
-                        'blockings' => 'required',
-                    ]);
-
-                    $inputs = $request->all();
-                    $invoice = invoce::findOrFail($id);
-                    $car = cars::where('vehicleidno',$invoice->vehicleidno)->get();
-                    // return dd($inputs);
-                    $invoice->status = 1;
-                    $invoice->save();
-
-                    if($car->blockings!="empty"){
-                        $pastBlockings = blockings::findOrFail($car->blockings);
-                        $pastBlockings->blockstatus=0;
-                        $pastBlockings->save();
-                    }
-
-                    $car->blockings = $inputs['blockings'];
-                    $car->update();
-
-                    $blocks = blockings::findOrFail($inputs['blockings']);
-                    $blocks->blockstatus=1;
-                    $blocks->save();
-
-                    invoicedata::create([
-                        'invoiceid'=>$id,
-                        'name'=>$inputs['name'],
-                        'date'=>$inputs['date'],
-                        'block'=>$inputs['blockings']
-                    ]);
-
-                    return redirect()->back();
-                } catch (Exception $th) {
-                    //throw $th;
-                    return redirect()->back();
-
-                }
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -101,7 +59,7 @@ class invoice extends Controller
         //
         $data = invoce::with('car')->findOrFail($id);
         $blockdata = blocks::select(['id','blockname'])->where('status',0)->get();
-        return view('invoice.invoiceprofile',['data'=>$data,'blocks'=>$blockdata]);
+        return view('invoice.invoiceprofile',['invoice'=>$data,'blocks'=>$blockdata]);
     }
 
     /**
@@ -118,38 +76,34 @@ class invoice extends Controller
     public function update(Request $request, string $id)
     {
                 //
-                try {
-                    //code...
-                    $validated = $request->validate([
-                        'date' => 'required',
-                        'blockings' => 'required',
-                    ]);
+        try {
+            $validated = $request->validate([
+                'date' => 'required',
+                'blockings' => 'required',
+            ]);
 
-                    $inputs = $request->all();
+            $inputs = $request->all();
+            $invoice = invoce::with(['car'])->findOrfail($id);
+            $car = $invoice->car;
+            $car->blockings = $inputs['blockings'];
+            $invoice->status = 1;
+            $invoice->dateModifier = $inputs['date'];
 
-                    // return $request->all();
-                    $invoicedata = invoicedata::findOrfail($id);
+            $oldblocks = blockings::findOrFail($car->getOriginal('blockings'));
+            $oldblocks->blockstatus = 0;
+            $oldblocks->update();
 
+            $newblocks = blockings::findOrFail($inputs['blockings']);
+            $newblocks->blockstatus = 1;
+            $newblocks->update();
 
-                    $recentBlockings = $invoicedata->block;
-                    $invoicedata->name = Auth::user()->name;
-                    $invoicedata->date = $inputs['date'];
-                    $invoicedata->block = $inputs['blockings'];
-                    $invoicedata->save();
-
-                    $pastBlockings = blockings::findOrFail($recentBlockings);
-                    $pastBlockings->blockstatus=0;
-                    $pastBlockings->save();
-
-
-                    $blocks = blockings::findOrFail($inputs['blockings']);
-                    $blocks->blockstatus=1;
-                    $blocks->save();
-                    return redirect()->back();
-                } catch (Exception $th) {
-                    return redirect()->back();
-                    //throw $th;
-                }
+            $car->update();
+            $invoice->update();
+            return redirect()->back();
+        } catch (Exception $th) {
+            return redirect()->back();
+            //throw $th;
+        }
     }
 
     /**

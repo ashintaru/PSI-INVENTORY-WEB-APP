@@ -43,9 +43,7 @@ class blockings extends Controller
     }
 
     public function fetchCar($id = null){
-        $data = spots::join('invoicedatas','invoicedatas.block','=','blockings.id')
-        ->join('invoces','invoces.id','=','invoicedatas.invoiceid')
-        ->join('cars','cars.vehicleidno','=','invoces.vehicleidno')
+        $data = spots::join('cars','cars.blockings','=','blockings.id')
         ->where('blockings.id',$id)->get();
         return response()->json($data);
     }

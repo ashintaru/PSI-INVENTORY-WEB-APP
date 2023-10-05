@@ -9,12 +9,9 @@ class invoce extends Model
 {
     use HasFactory;
     protected $fillable =  [
-        'vehicleidno','status','stp','vehicletype','modeltype','salesremark','csrno','csrtype','csrdate'
+        'vehicleidno','status','stp','vehicletype','modeltype','salesremark','csrno','csrtype','csrdate','dateModifier'
     ];
     public function car(){
         return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
-    }
-    public function invoicedata(){
-        return $this->hasOne(invoicedata::class,'invoiceid','id');
     }
 }

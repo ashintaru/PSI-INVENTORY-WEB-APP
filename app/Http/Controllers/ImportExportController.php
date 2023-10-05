@@ -82,14 +82,7 @@ class ImportExportController extends Controller
                 if($extension === "xlsx"){
                     switch ($request->tags) {
                         case '1':
-                            //mazda import
                             $collection = (new mzdsImport)->import(request()->file('file'));
-                            // dd($collection->pluck(8));
-                            // $array = array();
-                            // foreach ($collection as $data ) {
-                            //     array_push($array,$data->pluck(8));
-                            // }
-                            // dd($collection);
                             Log::create([
                                 'idNum'=>$request->user()->id,
                                 'logs'=>$request->user()->name.' upload Data into the Database'
@@ -114,7 +107,6 @@ class ImportExportController extends Controller
                             ]);
                             return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
                             break;
-
                         default:
                             return back()->with(['success' => 'Warning:: the file has been uploaded succesfully but it does not saved in databased','pr'=>'success']);
                             break;
