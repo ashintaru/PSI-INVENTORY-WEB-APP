@@ -24,8 +24,7 @@ class indexcontroller extends Controller
         }
         else{
             // return dd('admin');
-            $cars = cars::join('carstatus','carstatus.vehicleidno','=','cars.vehicleidno')
-                        ->get();
+            $cars = cars::get();
 
             $inventory = DB::select('select COUNT(vehicleidno) as totalcount , updated_at
             FROM inventories
