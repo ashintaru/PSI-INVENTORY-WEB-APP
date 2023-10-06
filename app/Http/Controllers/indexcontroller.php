@@ -9,12 +9,22 @@ use App\Models\invoicecount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
-use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\Stmt\Return;
+// use Illuminate\Support\Facades\Cache;
+
 
 class indexcontroller extends Controller
 {
     //
     public function index(){
+
+        // Cache::put('dummy','roasa');
+
+
+        // Cache::flush();
+
+        // dd(Cache::get('dummy'));
+
 
         if(Auth::user()->role != 1 && Auth::user()->role != 2){
             // return dd('client');
