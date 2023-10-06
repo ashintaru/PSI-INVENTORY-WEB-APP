@@ -10,17 +10,20 @@ class carstatus extends Model
     protected $table = 'carstatus';
     use HasFactory;
     protected $fillable = [
-        'vehicleidno',
+        'vehicleid',
         'havebeenpassed',
         'havebeenchecked',
         'havebeenreleased',
         'havebeenstored',
         'hasloosetool',
         'hassettool',
-        'hasdamage'
+        'hasdamage',
+        'datein',
+        'daterecieve',
+        'recieveBy',
     ];
 
     public function car(){
-        return $this->BelongsTo(cars::class,'vehicleidno','vehicleidno');
+        return $this->BelongsTo(cars::class,'vehicleid','id');
     }
 }

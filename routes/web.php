@@ -18,7 +18,8 @@ use App\Http\Controllers\report;
 use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
-
+use App\Http\Controllers\batching;
+use FontLib\Table\Type\name;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,9 +116,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('getblocks/{id}','fetchBlocks');
         });
         Route::controller(CarsController::class)->group(function(){
+            Route::post('batchingUnit','unitBatching');
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
             Route::put('update-inventory/{id}','updatecarstatus');
-            Route::get('recieve', 'index');
+            Route::get('recieve', 'index')->name('raw-data');
             Route::put('update-blockings/{id}','updateBlockings');
             Route::post('search', 'show')->name('search');
             Route::get('view/{id}/{action}', 'view')->name('show-profile');
@@ -130,6 +132,15 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
             Route::put('update-car-details/{id}','updatecardetails');
         });
+
+        Route::controller(batching::class)->group(function(){
+            Route::get('batches', 'index')->name('batch');
+            Route::get('delete-batch/{id}','destroy');
+            Route::post('create-Recieve','store');
+
+        });
+
+
     });
 
 
