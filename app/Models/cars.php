@@ -26,6 +26,9 @@ class cars extends Model
         'vehiclestockyard',
         'blockings'
     ];
+    public function batch(){
+        return $this->hasOne(batching::class,'unitid','id');
+    }
     public function settools(){
         return $this->hasOne(set_tool::class,'vehicleid','id');
     }
@@ -37,7 +40,7 @@ class cars extends Model
         return $this->hasOne(damage::class,'vehicleid','id');
     }
     public function status(){
-        return $this->hasOne(carstatus::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(carstatus::class,'vehicleid','id');
     }
     public function logs(){
         return $this->hasMany(Log::class,'idNum','vehicleidno');

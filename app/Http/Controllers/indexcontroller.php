@@ -18,14 +18,6 @@ class indexcontroller extends Controller
     //
     public function index(){
 
-        // Cache::put('dummy','roasa');
-
-
-        // Cache::flush();
-
-        // dd(Cache::get('dummy'));
-
-
         if(Auth::user()->role != 1 && Auth::user()->role != 2){
             // return dd('client');
             return view('dashboard',['cars'=>'','inventories'=>'']);

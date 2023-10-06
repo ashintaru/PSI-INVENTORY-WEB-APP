@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\batching;
 use App\Models\cars;
 use App\Models\Log;
 use App\Models\tool;
@@ -25,8 +26,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::with(['status','blocking'])
-        ->paginate(25);
+        $data = cars::paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
 
@@ -45,6 +45,20 @@ class CarsController extends Controller
         ->get();
         // return back->with()
         return view('data.recieve',['data'=>$data]);
+    }
+
+    public function unitBatching(Request $request){
+
+        $input = $request->all();
+        foreach ($input as $key => $value) {
+            if($key != "_token"){
+                batching::create(
+                    ['unitid'=>$value]
+                );
+            }
+        }
+        $data = cars::paginate(25);
+        return redirect()->route('raw-data');
     }
 
     public function view($id = null,$action = 'null')
