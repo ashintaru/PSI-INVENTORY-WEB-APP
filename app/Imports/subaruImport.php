@@ -47,16 +47,6 @@ class subaruImport implements ToModel,WithBatchInserts,WithValidation,WithUpsert
             'vehiclestockyard'=> $row[12],
             'blockings'=>"empty",
         ]),
-        new carstatus([
-            'vehicleidno'=>$row[8],
-            'havebeenpassed'=>false,
-            'havebeenchecked'=>false,
-            'havebeenreleased'=>false,
-            'havebeenstored'=>false,
-            'hasloosetool'=>false,
-            'hassettool'=>false,
-            'hasdamage'=>false
-            ])
         ];
     }
     else null;

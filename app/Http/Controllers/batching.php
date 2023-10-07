@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\batching as batch;
 use Illuminate\Support\Carbon;
 use App\Models\carstatus as recieve;
+use Illuminate\Support\Facades\Auth;
 
 class batching extends Controller
 {
@@ -14,7 +15,7 @@ class batching extends Controller
      */
     public function index()
     {
-        $batch =  batch::orderBy('id','asc')->get();
+        $batch =  batch::where('userid',Auth::user()->id)->orderBy('id','asc')->get();
         return view('data.batch',['batches'=>$batch]);
     }
 
@@ -33,8 +34,7 @@ class batching extends Controller
     {
         $inputs = request()->all();
         // $timestamp = Carbon::parse($inputs['datein']);
-        $batch =  batch::all();
-
+        $batch =  batch::where('userid',Auth::user()->id)->get();
         foreach ($batch as $key => $value) {
 
             recieve::create(
@@ -54,7 +54,7 @@ class batching extends Controller
             );
         }
 
-        batch::query()->truncate();
+        batch::query()->where('userid',Auth::user()->id)->delete();
         return redirect()->back()->with(['msg'=>"Success!!"]);
     }
 

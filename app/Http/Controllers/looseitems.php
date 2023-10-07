@@ -25,7 +25,6 @@ class looseitems extends Controller
     public function create(Request $request , $carid = null)
     {
         $data = cars::with('loosetools')->findOrFail($carid);
-
         return view('carprofile.loosetools',['car'=>$data]);
     }
 
@@ -64,7 +63,7 @@ class looseitems extends Controller
 
                 // return dd($carid);
                 $car = cars::findOrFail($carid);
-                $status = carstatus::where('vehicleidno',$car->vehicleidno)->first();
+                $status = carstatus::where('vehicleid',$carid)->first();
                 $status->hasloosetool = 1;
                 $status->update();
                 return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been checked....']);

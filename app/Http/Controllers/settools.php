@@ -36,12 +36,6 @@ class settools extends Controller
      */
     public function store($carid = null , Request $request)
     {
-        //
-        // try {
-        // }
-        // catch (Exception $th) {
-        //     return redirect()->back()->with(['msg' => $th]);
-        // }
         $inputs = $request->all();
         if( ($request->has('wheelcap') && $request->wheelcapvalue == 0) ||
             ($request->has('other') && $request->othervalue == 0 )){
@@ -85,7 +79,7 @@ class settools extends Controller
                 'other'=>$other,
             ]);
             $car = cars::findOrFail($carid);
-            $carstatus = carstatus::where('vehicleidno',$car->vehicleidno)->first();
+            $carstatus = carstatus::where('vehicleid',$carid)->first();
             $carstatus->hassettool = 1;
             $carstatus->update();
             Log::create([

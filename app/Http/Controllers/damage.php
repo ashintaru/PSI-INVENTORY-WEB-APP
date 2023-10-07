@@ -58,7 +58,7 @@ class damage extends Controller
         );
 
         $car = cars::findOrFail($id);
-        $carstatus = carstatus::where('vehicleidno',$car->vehicleidno)->first();
+        $carstatus = carstatus::where('vehicleid',$id)->first();
         $carstatus->hasdamage = 1;
         $carstatus->update();
         // return dd($carstatus);

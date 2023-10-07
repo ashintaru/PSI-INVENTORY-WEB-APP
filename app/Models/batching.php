@@ -11,6 +11,7 @@ class batching extends Model
     protected $table = 'batching';
     protected $fillable = [
         'unitid',
+        'userid'
     ];
     public $timestamps = false;
     public function car(){

@@ -19,7 +19,8 @@ use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
 use App\Http\Controllers\batching;
-use FontLib\Table\Type\name;
+use App\Http\Controllers\recieveController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,13 @@ Route::get('cars',[pdfcontroller::class,'showEmployees']);
 Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
 Route::middleware(['auth','web','areAdmin'])->group(function() {
 
+        Route::controller(recieveController::class)->group(function(){
+            Route::get('recieve-units',"index")->name('recive');
+            Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
+
+        });
+
+
         Route::controller(ImportExportController::class)->group(function(){
             Route::get('import_export', 'importExport');
             Route::post('import', 'import')->name('import');
@@ -115,6 +123,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('savedblock','store');
             Route::get('getblocks/{id}','fetchBlocks');
         });
+
         Route::controller(CarsController::class)->group(function(){
             Route::post('batchingUnit','unitBatching');
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
@@ -122,8 +131,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('recieve', 'index')->name('raw-data');
             Route::put('update-blockings/{id}','updateBlockings');
             Route::post('search', 'show')->name('search');
-            Route::get('view/{id}/{action}', 'view')->name('show-profile');
             Route::get('view/{id}', 'view')->name('show-profile');
+            Route::get('rawdata', 'rawData')->name('raw-data');
+
+
             Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
             Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
             Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');

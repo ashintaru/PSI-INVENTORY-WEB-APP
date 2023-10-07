@@ -89,7 +89,7 @@
                 <tbody>
                         @if (!is_null($data))
                             @foreach($data as $d)
-                                @if (empty($d->car->invoice))
+                                @if (empty($d->car->invoice) && $d->car->status->havebeenpassed == 1)
                                     <x-inventory.tableRow :tableRow="$d" />
                                 @endif
                             @endforeach

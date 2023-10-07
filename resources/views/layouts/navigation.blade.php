@@ -45,7 +45,7 @@
                     @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                     <li>
                         <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                           <x-data_icon></x-data_icon>
+                           <x-db_icon></x-db_icon>
                               <span class="flex-1 ml-3 text-left whitespace-nowrap">Master List</span>
                               <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -60,6 +60,11 @@
                               </li>
                               <li>
                                 <a href="{{URL('recieve')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                    Unit List
+                                </a>
+                             </li>
+                             <li>
+                                <a href="{{URL('rawdata')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                                     Raw Data
                                 </a>
                              </li>
@@ -67,8 +72,14 @@
                      </li>
 
                      <li>
+                        <a href="{{URL('recieve-units')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <x-data_icon></x-data_icon>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Recieving</span>
+                        </a>
+                     </li>
+
+                     <li>
                         <a href="{{URL('inventory')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <x-db_icon></x-db_icon>
                             <span class="flex-1 ml-3 whitespace-nowrap">Inventory</span>
                         </a>
                      </li>

@@ -18,6 +18,7 @@ use Exception;
 use Barryvdh\DomPDF\PDF;
 use App\Models\blocks;
 use App\Models\blockings;
+use Illuminate\Support\Facades\Auth;
 
 class CarsController extends Controller
 {
@@ -26,7 +27,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::paginate(25);
+        $data = cars::with(['batch','status'])->paginate(25);
         return view('data.recieve',['data'=>$data]);
     }
 
@@ -50,10 +51,11 @@ class CarsController extends Controller
     public function unitBatching(Request $request){
 
         $input = $request->all();
+        $userid = Auth::user()->id;
         foreach ($input as $key => $value) {
             if($key != "_token"){
                 batching::create(
-                    ['unitid'=>$value]
+                    ['unitid'=>$value,'userid'=>$userid]
                 );
             }
         }
@@ -64,9 +66,12 @@ class CarsController extends Controller
     public function view($id = null,$action = 'null')
     {
         $data = cars::findOrFail($id);
-        $block = blocks::get();
-        // return dd(json_decode($tools,true) );
-        return view('carprofile.carprofile',['car'=>$data,'blocks'=>$block]);
+        return view('data.carprofile',['car'=>$data]);
+    }
+
+    public function rawData(){
+        $data = cars::paginate(25);
+        return view('data.rawdata',['data'=>$data]);
     }
 
     public function approve( $carid = null,Request $request)
