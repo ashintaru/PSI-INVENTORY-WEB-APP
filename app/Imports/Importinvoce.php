@@ -6,29 +6,25 @@ use App\Models\invoce as invoice;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use App\Models\inventory;
 
 
 
 //we shuold implement queue job
 class Importinvoce implements ToModel,WithBatchInserts
 {
-
-    private $output = array();
-    private $rowcounts =1;
-
     public function model(array $row)
     {
-        $bin = cars::join('carstatus','cars.vehicleidno','=','carstatus.vehicleidno')->where('havebeenpassed',1)->get();
+        $bin = cars::join('inventories','inventories.vehicleid','=','cars.id')->where('invstatus',1)->get();
+        // dd($bin);
         $bin_number = $bin->pluck('vehicleidno');
         $invoice = invoice::all();
         $invoice_number = $invoice->pluck('vehicleidno');
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
-            $rows = array();
-            $rows['vin']=$row[11];
-            $rows['columnNumber'] = $this->rowcounts;
-            array_push($this->output,$rows);
-            ++$this->rowcounts;
+            // $inventory = inventory::where('vehicleidno',$row[11])->get();
+            // $inventory->invoicestatus =1;
+            // $inventory->update();
             return new invoice([
                 'vehicleidno'=>$row[11],
                 'status'=>0,
@@ -43,11 +39,7 @@ class Importinvoce implements ToModel,WithBatchInserts
             ]);
         }
         else
-            ++$this->rowcounts;
-     }
-     public function getArrayVin()
-     {
-        return $this->output;
+            return null;
      }
      public function batchSize(): int
      {

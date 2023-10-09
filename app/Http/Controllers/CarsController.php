@@ -135,7 +135,8 @@ class CarsController extends Controller
             inventory::create([
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
-                'invstatus'=>$status
+                'invstatus'=>$status,
+                'invoicestatus'=>0
             ]);
             // return dd($car->vehicleidno);
         }

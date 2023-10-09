@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\inventory as inbentaryo;
 use Exception;
-
+use App\Models\cars;
 
 
 class inventory extends Controller
@@ -16,8 +16,7 @@ class inventory extends Controller
     public function index()
     {
         try {
-
-            $inventory = inbentaryo::with(['car'])->paginate(25);
+            $inventory = cars::with(['inventory','blocking','invoice'])->paginate(25);
             // return dd($inventory);
             return view('inventory.inventory',['data'=>$inventory]);
         } catch (Exception $th) {
