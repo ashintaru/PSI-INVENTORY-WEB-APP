@@ -73,7 +73,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(recieveController::class)->group(function(){
             Route::get('recieve-units',"index")->name('recive');
             Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
-
+            Route::put('update-personel/{id}','updatePersonel');
         });
 
 
@@ -128,13 +128,11 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('batchingUnit','unitBatching');
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
             Route::put('update-inventory/{id}','updatecarstatus');
-            Route::get('recieve', 'index')->name('raw-data');
+            Route::get('recieve', 'index')->name('unit-list');
             Route::put('update-blockings/{id}','updateBlockings');
             Route::post('search', 'show')->name('search');
             Route::get('view/{id}', 'view')->name('show-profile');
             Route::get('rawdata', 'rawData')->name('raw-data');
-
-
             Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
             Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
             Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');

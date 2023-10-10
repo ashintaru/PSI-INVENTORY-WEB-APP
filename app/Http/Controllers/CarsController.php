@@ -60,7 +60,7 @@ class CarsController extends Controller
             }
         }
         $data = cars::paginate(25);
-        return redirect()->route('raw-data');
+        return redirect()->route('unit-list');
     }
 
     public function view($id = null,$action = 'null')
@@ -136,7 +136,6 @@ class CarsController extends Controller
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
                 'invstatus'=>$status,
-                'invoicestatus'=>0
             ]);
             // return dd($car->vehicleidno);
         }

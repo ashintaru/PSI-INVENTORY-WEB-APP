@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\carstatus as recieve;
 use App\Models\blocks;
+use App\Models\carstatus;
 use Illuminate\Http\Request;
 
 class recieveController extends Controller
@@ -41,6 +42,13 @@ class recieveController extends Controller
         $car = recieve::with(['car'])->findOrFail($id);
         $blocks = blocks::all();
         return view('recieve.show-recieve-unit',['car'=>$car,'blocks'=>$blocks]);
+    }
+
+    public function updatePersonel($id = null , Request $request){
+        $recieve = carstatus::findOrFail($id);
+        $recieve->recieveBy = $request["personel"];
+        $recieve->update();
+        return redirect()->back();
     }
 
     /**
