@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <div class="p-2">
-        <form class="flex gap-4" process="{{URL('report')}}" method="POST">
+        <form class="flex gap-4" action="{{URL('report')}}" method="POST">
             @csrf
             <div date-rangepicker class="flex items-center">
                 <div class="relative">

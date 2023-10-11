@@ -19,6 +19,9 @@ use Barryvdh\DomPDF\PDF;
 use App\Models\blocks;
 use App\Models\blockings;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
+
 
 class CarsController extends Controller
 {
@@ -69,9 +72,85 @@ class CarsController extends Controller
         return view('data.carprofile',['car'=>$data]);
     }
 
+    public function resetSearchRawData(){
+        $id=Auth()->user()->id;
+        Cache::forget("searchRawData-".$id);
+        return redirect()->route('raw-data');
+    }
+
+    public function searchRawData(Request $request){
+        $id=Auth()->user()->id;
+        switch ($request['process']) {
+            case '1':
+                    if (Cache::has("searchRawData-".$id)) {
+                        Cache::forget("searchRawData-".$id);
+                        Cache::forever("searchRawData-".$id,$request['search']);
+                    }else{
+                        Cache::forever("searchRawData-".$id,$request['search']);
+                    }
+                break;
+            case '2':
+                    $this->resetSearchRawData();
+                break;
+        }
+        return redirect()->route('raw-data');
+    }
+
     public function rawData(){
-        $data = cars::paginate(25);
-        return view('data.rawdata',['data'=>$data]);
+        $id=Auth()->user()->id;
+        if(Cache::has("searchRawData-".$id)){
+            $search = Cache::get("searchRawData-".$id);
+            $data = cars::where('vehicleidno',$search)->get();
+            return view('data.rawdata',['data'=>$data,'start'=>'','end'=>'']);
+        }else{
+            if(Cache::has('startRawData-'.$id)&&Cache::has('endRawData-'.$id)){
+                $start = Carbon::parse(Cache::get('startRawData-'.$id))->toDateTimeString();
+                $end = Carbon::parse(Cache::get('endRawData-'.$id))->toDateTimeString();
+                $data = cars::whereBetween('created_at',[$start, $end])->paginate(25);
+                // return dd($start);
+                return view('data.rawdata',['data'=>$data,'start'=>Cache::get('startRawData-'.$id),'end'=>Cache::get('endRawData-'.$id)]);
+            }else{
+                $data = cars::paginate(25);
+                return view('data.rawdata',['data'=>$data,'start'=>'','end'=>'']);
+            }
+        }
+
+    }
+
+    public function setFilter(Request $request){
+        $validated = $request->validate([
+            'start' => 'required',
+            'end' => 'required',
+        ]);
+        switch ($request['process']) {
+            case 'Filter':
+                $this->filterRawData($request['start'],$request['end']);
+                break;
+            default:
+                $this->resetFilter();
+                break;
+        }
+        return redirect()->route('raw-data');
+    }
+
+    public function resetFilter(){
+        Cache::flush();
+    }
+
+    public function filterRawData($start , $end)
+    {
+        $id=Auth()->user()->id;
+        Cache::forget("searchRawData-".$id);
+        if(Cache::has('startRawData-'.$id)&&Cache::has('endRawData-'.$id)){
+            Cache::forget('startRawData-'.$id);
+            Cache::forget('endRawData-'.$id);
+
+            Cache::forever('startRawData-'.$id, $start);
+            Cache::forever('endRawData-'.$id, $end);
+        }else{
+            Cache::forever('startRawData-'.$id, $start);
+            Cache::forever('endRawData-'.$id, $end);
+        }
     }
 
     public function approve( $carid = null,Request $request)
