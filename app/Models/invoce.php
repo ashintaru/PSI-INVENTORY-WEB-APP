@@ -14,4 +14,7 @@ class invoce extends Model
     public function car(){
         return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
     }
+    public function inventory(){
+        return $this->belongsTo(inventorys::class,'vehicleidno','vehicleidno');
+    }
 }

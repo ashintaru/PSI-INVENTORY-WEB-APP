@@ -15,4 +15,7 @@ class inventory extends Model
         return $this->belongsTo(cars::class,'vehicleid','id');
     }
 
+    public function invoice(){
+        return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
+    }
 }

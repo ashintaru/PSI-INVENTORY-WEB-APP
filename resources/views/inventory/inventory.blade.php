@@ -89,42 +89,42 @@
                 <tbody>
                         @if (!is_null($data))
                             @foreach($data as $d)
-                                @if($d->inventory && !$d->invoice)
-                                    @if ($d->inventory->invstatus ==1)
+                                @if(!$d->invoice)
+                                    @if ($d->invstatus ==1)
                                         <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                            <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{$d->car->id}}
+                                            </th>
                                             <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {{$d->id}}
                                             </th>
                                             <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{$d->inventory->id}}
+                                                {{$d->car->blocking->bloackname}}
                                             </th>
                                             <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{$d->blocking->bloackname}}
-                                            </th>
-                                            <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                @if ($d->inventory->invstatus == 1)
+                                                @if ($d->car->inventory->invstatus == 1)
                                                     <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">R.F.I</span>
                                                 @else
                                                     <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">pending</span>
                                                 @endif
                                             </th>
                                             <td class="px-6 py-4">
-                                                {{$d->vehicleidno}}
+                                                {{$d->car->vehicleidno}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{$d->engineno}}
+                                                {{$d->car->engineno}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{$d->csno}}
+                                                {{$d->car->csno}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{$d->modeldescription}}
+                                                {{$d->car->modeldescription}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{$d->bilingdate}}
+                                                {{$d->car->bilingdate}}
                                             </td>
                                             <td class="px-6 py-4 ">
-                                                <a href="{{URL('/inventory'."/".$d->inventory->id)}}"
+                                                <a href="{{URL('/inventory'."/".$d->car->inventory->id)}}"
                                                     tableRow-tooltip-target="config-button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
                                                         <path fill-rule="evenodd" d="M14.5 10a4.5 4.5 0 004.284-5.882c-.105-.324-.51-.391-.752-.15L15.34 6.66a.454.454 0 01-.493.11 3.01 3.01 0 01-1.618-1.616.455.455 0 01.11-.494l2.694-2.692c.24-.241.174-.647-.15-.752a4.5 4.5 0 00-5.873 4.575c.055.873-.128 1.808-.8 2.368l-7.23 6.024a2.724 2.724 0 103.837 3.837l6.024-7.23c.56-.672 1.495-.855 2.368-.8.096.007.193.01.291.01zM5 16a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />

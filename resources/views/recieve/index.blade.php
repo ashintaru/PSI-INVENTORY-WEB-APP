@@ -2,6 +2,12 @@
     <x-navigation.nav-link :url="URL('recieve')">
         Recieve
     </x-navigation.nav-link>
+    <div class="p-2">
+        <form action="{{URL("searchRecieveUnit")}}" method="post">
+            @csrf
+            <x-search-bar />
+        </form>
+    </div>
     <div class="py-1">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -34,7 +40,7 @@
                         Date In
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Date Recieve
+                        Date Encode
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Recive By:
@@ -46,8 +52,7 @@
             </thead>
             <tbody>
                 @if (!is_null($data))
-                <form action="{{URL('batchingUnit')}}" method="POST" >
-                    @csrf
+                     @csrf
                     @foreach($data as $tableRow)
                         @if (!$tableRow->havebeenpassed)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -105,7 +110,7 @@
                                     {{Carbon\Carbon::parse($tableRow->datein)->isoformat('MMMM Do YYYY h:mm a')}}
                                 </th>
                                 <th scope="row" class="px-3 text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{$tableRow->daterecieve}}
+                                    {{Carbon\Carbon::parse($tableRow->daterecieve)->isoformat('MMMM Do YYYY')}}
                                 </th>
                                 <th scope="row" class="px-3 text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{$tableRow->recieveBy}}
@@ -124,8 +129,7 @@
                         </tr>
                         @endif
                     @endforeach
-                </form>
-                @else
+               @else
                     table are empty.......
                 @endif
             </tbody>

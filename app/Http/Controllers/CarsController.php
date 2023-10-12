@@ -30,8 +30,23 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $data = cars::with(['batch','status'])->paginate(25);
-        return view('data.recieve',['data'=>$data]);
+        $id=Auth()->user()->id;
+        if(Cache::has("searchUnitData-".$id)){
+            $search = Cache::get("searchUnitData-".$id);
+            $data = cars::with(['batch','status'])->where('vehicleidno',$search)->get();
+            return view('data.rawdata',['data'=>$data,'start'=>'','end'=>'']);
+        }else{
+            if(Cache::has('startUnitData-'.$id)&&Cache::has('endUnitData-'.$id)){
+                $start = Carbon::parse(Cache::get('startUnitData-'.$id))->toDateTimeString();
+                $end = Carbon::parse(Cache::get('endUnitData-'.$id))->toDateTimeString();
+                $data = cars::with(['batch','status'])->whereBetween('created_at',[$start, $end])->paginate(25);
+                // return dd($start);
+                return view('data.recieve',['data'=>$data,'start'=>Cache::get('startUnitData-'.$id),'end'=>Cache::get('endUnitData-'.$id)]);
+            }else{
+                $data = cars::with(['batch','status'])->paginate(25);
+                return view('data.recieve',['data'=>$data,'start'=>'','end'=>'']);
+            }
+        }
     }
 
 
@@ -84,9 +99,9 @@ class CarsController extends Controller
             case '1':
                     if (Cache::has("searchRawData-".$id)) {
                         Cache::forget("searchRawData-".$id);
-                        Cache::forever("searchRawData-".$id,$request['search']);
+                        Cache::put("searchRawData-".$id,$request['search']);
                     }else{
-                        Cache::forever("searchRawData-".$id,$request['search']);
+                        Cache::put("searchRawData-".$id,$request['search']);
                     }
                 break;
             case '2':
@@ -134,7 +149,9 @@ class CarsController extends Controller
     }
 
     public function resetFilter(){
-        Cache::flush();
+        $id=Auth()->user()->id;
+        Cache::forget('startRawData-'.$id);
+        Cache::forget('endRawData-'.$id);
     }
 
     public function filterRawData($start , $end)
@@ -145,13 +162,78 @@ class CarsController extends Controller
             Cache::forget('startRawData-'.$id);
             Cache::forget('endRawData-'.$id);
 
-            Cache::forever('startRawData-'.$id, $start);
-            Cache::forever('endRawData-'.$id, $end);
+            Cache::put('startRawData-'.$id, $start);
+            Cache::put('endRawData-'.$id, $end);
         }else{
-            Cache::forever('startRawData-'.$id, $start);
-            Cache::forever('endRawData-'.$id, $end);
+            Cache::put('startRawData-'.$id, $start);
+            Cache::put('endRawData-'.$id, $end);
         }
     }
+
+    public function setFilterUnitList(Request $request){
+        $validated = $request->validate([
+            'start' => 'required',
+            'end' => 'required',
+        ]);
+        switch ($request['process']) {
+            case 'Filter':
+                $this->filterUnitList($request['start'],$request['end']);
+                break;
+            default:
+                $this->resetFilterUnit();
+                break;
+        }
+        return redirect()->route('unit-list');
+    }
+
+    public function resetFilterUnit(){
+        $id=Auth()->user()->id;
+
+        Cache::forget('startUnitData-'.$id);
+        Cache::forget('endUnitData-'.$id);
+        // Cache::flush();
+    }
+
+    public function filterUnitList($start , $end)
+    {
+        $id=Auth()->user()->id;
+        // Cache::forget("searchRawData-".$id);
+        if(Cache::has('startUnitData-'.$id)&&Cache::has('endUnitData-'.$id)){
+            Cache::forget('startUnitData-'.$id);
+            Cache::forget('endUnitData-'.$id);
+
+            Cache::put('startUnitData-'.$id, $start);
+            Cache::put('endUnitData-'.$id, $end);
+        }else{
+            Cache::put('startUnitData-'.$id, $start);
+            Cache::put('endUnitData-'.$id, $end);
+        }
+    }
+
+    public function resetSearchUnitData(){
+        $id=Auth()->user()->id;
+        Cache::forget("searchUnitData-".$id);
+        return redirect()->route('unit-list');
+    }
+
+    public function searchUnitData(Request $request){
+        $id=Auth()->user()->id;
+        switch ($request['process']) {
+            case '1':
+                    if (Cache::has("searchUnitData-".$id)) {
+                        Cache::forget("searchUnitData-".$id);
+                        Cache::put("searchUnitData-".$id,$request['search']);
+                    }else{
+                        Cache::put("searchUnitData-".$id,$request['search']);
+                    }
+                break;
+            case '2':
+                    $this->resetSearchUnitData();
+                break;
+        }
+        return redirect()->route('unit-list');
+    }
+
 
     public function approve( $carid = null,Request $request)
     {

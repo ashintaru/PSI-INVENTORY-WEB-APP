@@ -74,6 +74,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('recieve-units',"index")->name('recive');
             Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
             Route::put('update-personel/{id}','updatePersonel');
+            Route::post('searchRecieveUnit','searchRecieveData');
         });
 
 
@@ -126,12 +127,13 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
         Route::controller(CarsController::class)->group(function(){
             Route::post('filter-rawdata','setFilter');
+            Route::post('filter-recievedata','setFilterUnitList');
             Route::post('batchingUnit','unitBatching');
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
             Route::put('update-inventory/{id}','updatecarstatus');
             Route::get('recieve', 'index')->name('unit-list');
             Route::put('update-blockings/{id}','updateBlockings');
-            Route::post('search', 'show')->name('search');
+            Route::post('searchUnitList', 'searchUnitData')->name('search');
             Route::post('searchRawData','searchRawData');
             Route::get('view/{id}', 'view')->name('show-profile');
             Route::get('rawdata', 'rawData')->name('raw-data');

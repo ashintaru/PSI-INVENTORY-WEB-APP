@@ -16,7 +16,7 @@ class inventory extends Controller
     public function index()
     {
         try {
-            $inventory = cars::with(['inventory','blocking','invoice'])->paginate(25);
+            $inventory = inbentaryo::with(['car','invoice'])->paginate(25);
             // return dd($inventory);
             return view('inventory.inventory',['data'=>$inventory]);
         } catch (Exception $th) {

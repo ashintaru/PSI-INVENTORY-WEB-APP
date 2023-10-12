@@ -33,6 +33,12 @@ class batching extends Controller
     public function store(Request $request)
     {
         $inputs = request()->all();
+        $validate = $request->validate(
+            [
+                'datein'=>['required'],
+                'datereceive'=>['required']
+            ]
+        );
         // $timestamp = Carbon::parse($inputs['datein']);
         $batch =  batch::where('userid',Auth::user()->id)->get();
         foreach ($batch as $key => $value) {
