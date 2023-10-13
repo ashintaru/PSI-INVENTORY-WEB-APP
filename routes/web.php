@@ -126,14 +126,15 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         });
 
         Route::controller(CarsController::class)->group(function(){
+            Route::get('masterlist','index');
             Route::post('filter-rawdata','setFilter');
             Route::post('filter-recievedata','setFilterUnitList');
             Route::post('batchingUnit','unitBatching');
             Route::put('approved-inventory/{id}', 'approve')->name('approve');
             Route::put('update-inventory/{id}','updatecarstatus');
-            Route::get('recieve', 'index')->name('unit-list');
+            Route::get('recieve', 'unitindex')->name('unit-list');
             Route::put('update-blockings/{id}','updateBlockings');
-            Route::post('searchUnitList', 'searchUnitData')->name('search');
+            Route::post('searchUnitList','searchUnitData');
             Route::post('searchRawData','searchRawData');
             Route::get('view/{id}', 'view')->name('show-profile');
             Route::get('rawdata', 'rawData')->name('raw-data');

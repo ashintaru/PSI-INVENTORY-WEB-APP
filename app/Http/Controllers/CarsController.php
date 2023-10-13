@@ -30,11 +30,15 @@ class CarsController extends Controller
      */
     public function index()
     {
+        return view('data.index');
+    }
+
+    public function unitindex(){
         $id=Auth()->user()->id;
         if(Cache::has("searchUnitData-".$id)){
             $search = Cache::get("searchUnitData-".$id);
             $data = cars::with(['batch','status'])->where('vehicleidno',$search)->get();
-            return view('data.rawdata',['data'=>$data,'start'=>'','end'=>'']);
+            return view('data.recieve',['data'=>$data,'start'=>'','end'=>'']);
         }else{
             if(Cache::has('startUnitData-'.$id)&&Cache::has('endUnitData-'.$id)){
                 $start = Carbon::parse(Cache::get('startUnitData-'.$id))->toDateTimeString();
@@ -48,7 +52,6 @@ class CarsController extends Controller
             }
         }
     }
-
 
     /**
      * Display the specified resource.

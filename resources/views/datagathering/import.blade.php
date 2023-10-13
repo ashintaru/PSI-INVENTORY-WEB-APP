@@ -1,19 +1,29 @@
 <x-app-layout>
-      <nav class="flex" aria-label="Breadcrumb">
+    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
-            <li class="inline-flex items-center">
-                <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                        <path fill-rule="evenodd" d="M15.988 3.012A2.25 2.25 0 0118 5.25v6.5A2.25 2.25 0 0115.75 14H13.5V7A2.5 2.5 0 0011 4.5H8.128a2.252 2.252 0 011.884-1.488A2.25 2.25 0 0112.25 1h1.5a2.25 2.25 0 012.238 2.012zM11.5 3.25a.75.75 0 01.75-.75h1.5a.75.75 0 01.75.75v.25h-3v-.25z" clip-rule="evenodd" />
-                        <path fill-rule="evenodd" d="M2 7a1 1 0 011-1h8a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V7zm2 3.25a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75zm0 3.5a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
-                      </svg>
-                      <span class="flex-1 ml-3 whitespace-nowrap text-base font-extrabold">Upload File</span>
-                </a>
-            </li>
+          <li class="inline-flex items-center">
+            <a href="{{URL('masterlist')}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+              <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+              </svg>
+                Masterlist
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Upload Excel File</span>
+            </div>
+          </li>
         </ol>
     </nav>
 	<div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <x-alert-error></x-alert-error>
+            <x-alert-success></x-alert-success>
+
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <form  class="flex flex-col space-y-4" id="fileUploadForm" class="" action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
@@ -66,8 +76,6 @@
                     </form>
                 </div>
 			</div>
-            <x-alert-error></x-alert-error>
-            <x-alert-success></x-alert-success>
 		</div>
 	</div>
     <script>
