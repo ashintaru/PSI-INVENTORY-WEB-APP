@@ -25,8 +25,16 @@
             <x-search-bar />
         </form>
     </div>
-    <div class="p-2">
-        <form class="flex gap-4" action="{{URL('filter-recievedata')}}" method="POST">
+    <div class="p-2 flex justify-between items-center">
+        <a href="{{URL('batches')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+              </svg>
+            <span class="whitespace-nowrap">
+                Batch
+            </span>
+        </a>
+        <form class="flex items-center gap-1" action="{{URL('filter-recievedata')}}" method="POST">
             @csrf
             <div date-rangepicker class="flex items-center">
                 <div class="relative">
@@ -49,28 +57,19 @@
                        <input
                         @if ($end) value="{{$end}}"@endif
                         name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
-                 </div>
+                </div>
             </div>
-            <button name="process" value="Filter" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Filter</button>
-            <button name="process" value="Reset" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Reset</button>
+            <button name="process" value="Filter" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Filter</button>
+            <button name="process" value="Reset" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Reset</button>
         </form>
     </div>
-
-    @php
-        $session->put('roasa');
-
-
-        echo
-    @endphp
-
+    <x-alert-error></x-alert-error>
+    <x-alert-success></x-alert-success>
 	<div class="py-1">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-3 py-3">
-                    </th>
-                    <th scope="col" class="px-3 py-3">
-                        Unit ID
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Vehicle Identity No.
@@ -91,39 +90,40 @@
             </thead>
             <tbody>
                 @if (!is_null($data))
-                <form action="{{URL('batchingUnit')}}" method="POST" >
-                    @csrf
-                    <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Select</button>
-                    @foreach($data as $tableRow)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            @if (!$tableRow->status)
-                                <th scope="row" class="flex items-center px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    @if (!$tableRow->batch)
-                                        <input id="default-checkbox" type="checkbox" name="selected-{{$tableRow->id}}" value="{{$tableRow->id}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    </th>
-                                    @endif
-                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{$tableRow->id}}
-                                </th>
-                                <td class="px-6 py-4">
-                                {{$tableRow->vehicleidno}}
-                                </td>
-                                <td class="px-6 py-4">
-                                {{$tableRow->engineno}}
-                                </td>
-                                <td class="px-6 py-4">
-                                {{$tableRow->csno}}
-                                </td>
-                                <td class="px-6 py-4">
-                                {{$tableRow->modeldescription}}
-                                </td>
-                                <td class="px-6 py-4">
-                                {{$tableRow->vehiclestockyard}}
-                                </td>
+                @foreach($data as $tableRow)
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    @if (!$tableRow->status)
+                        <th scope="row" class="flex items-center px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @if (!$tableRow->batch)
+                                <form action="{{URL('batchingUnit')}}" method="POST" >
+                                    @csrf
+                                    <button type="submit" name="unitid" value="{{$tableRow->id}}" class="flex items-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                          </svg>
+                                          {{$tableRow->id}}
+                                    </button>
+                                </form>
                             @endif
-                        </tr>
-                    @endforeach
-                </form>
+                        </th>
+                        <td class="px-6 py-4">
+                        {{$tableRow->vehicleidno}}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{$tableRow->engineno}}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{$tableRow->csno}}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{$tableRow->modeldescription}}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{$tableRow->vehiclestockyard}}
+                        </td>
+                    @endif
+                </tr>
+            @endforeach
                 @else
                     table are empty.......
                 @endif

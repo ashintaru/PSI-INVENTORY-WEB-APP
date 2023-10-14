@@ -7,6 +7,7 @@ use App\Models\batching as batch;
 use Illuminate\Support\Carbon;
 use App\Models\carstatus as recieve;
 use Illuminate\Support\Facades\Auth;
+use App\Models\blocks;
 
 class batching extends Controller
 {
@@ -15,8 +16,9 @@ class batching extends Controller
      */
     public function index()
     {
+        $block = blocks::all();
         $batch =  batch::where('userid',Auth::user()->id)->orderBy('id','asc')->get();
-        return view('data.batch',['batches'=>$batch]);
+        return view('data.batch',['batches'=>$batch,'blocks'=>$block]);
     }
 
     /**

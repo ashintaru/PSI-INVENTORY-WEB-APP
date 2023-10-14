@@ -1,8 +1,9 @@
 <?php
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarsController;
+use App\Http\Controllers\receiving;
+use App\Http\Controllers\car;
 use App\Http\Controllers\indexcontroller;
-use App\Http\Controllers\invenotycontroller;
 use App\Http\Controllers\invoicecontroller;
 use App\Http\Controllers\looseitems;
 use App\Http\Controllers\ImportExportController;
@@ -77,15 +78,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('searchRecieveUnit','searchRecieveData');
         });
 
-
-        Route::controller(ImportExportController::class)->group(function(){
-            Route::get('import_export', 'importExport');
-            Route::post('import', 'import')->name('import');
-            Route::get('export', 'export')->name('export');
-            Route::get('insert-data','viewcarform');
-            Route::post('insert-car-details','savecardetail')->name('show-car-form');
-            Route::post('uploadInvoice','importInvoice');
-        });
         Route::controller(invoicecontroller::class)->group(function(){
             Route::get('invoice/{id}','index');
         });
@@ -125,19 +117,44 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('getblocks/{id}','fetchBlocks');
         });
 
+        Route::controller(ImportExportController::class)->group(function(){
+            Route::post('import', 'import')->name('import');
+            Route::get('export', 'export')->name('export');
+            Route::post('uploadInvoice','importInvoice');
+        });
+
+        Route::controller(car::class)->group(function(){
+            Route::get('insert-data','carform')->name('car-form');//  Displaying form for car detail's
+            Route::post('insert-car-details','savecardetail');// saving the detail's in the server`
+
+            Route::get('import_export', 'carformupload');//  Displaying upload form for car detail's
+
+        });
+
+        Route::controller(receiving::class)->group(function(){
+
+        });
+
         Route::controller(CarsController::class)->group(function(){
+
             Route::get('masterlist','index');
+
+            Route::get('recieve', 'unitindex')->name('unit-list');
+            Route::get('rawdata', 'rawData')->name('raw-data');
+            Route::post('batchingUnit','unitBatching');
+
             Route::post('filter-rawdata','setFilter');
             Route::post('filter-recievedata','setFilterUnitList');
-            Route::post('batchingUnit','unitBatching');
-            Route::put('approved-inventory/{id}', 'approve')->name('approve');
+
             Route::put('update-inventory/{id}','updatecarstatus');
-            Route::get('recieve', 'unitindex')->name('unit-list');
             Route::put('update-blockings/{id}','updateBlockings');
             Route::post('searchUnitList','searchUnitData');
             Route::post('searchRawData','searchRawData');
+
             Route::get('view/{id}', 'view')->name('show-profile');
-            Route::get('rawdata', 'rawData')->name('raw-data');
+
+            Route::put('approved-inventory/{id}', 'approve')->name('approve');
+
             Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
             Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
             Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');
@@ -151,7 +168,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('batches', 'index')->name('batch');
             Route::get('delete-batch/{id}','destroy');
             Route::post('create-Recieve','store');
-
         });
 
 

@@ -71,17 +71,12 @@ class CarsController extends Controller
 
     public function unitBatching(Request $request){
 
-        $input = $request->all();
         $userid = Auth::user()->id;
-        foreach ($input as $key => $value) {
-            if($key != "_token"){
-                batching::create(
-                    ['unitid'=>$value,'userid'=>$userid]
-                );
-            }
-        }
-        $data = cars::paginate(25);
-        return redirect()->route('unit-list');
+        // return dd($request->unitid);
+        batching::create(
+            ['unitid'=>$request->unitid,'userid'=>$userid]
+        );
+        return redirect()->route('unit-list')->with(['success'=>'have been transfered in batch']);
     }
 
     public function view($id = null,$action = 'null')
@@ -306,7 +301,6 @@ class CarsController extends Controller
     }
 
     public function editloosetool($id = null){
-
         $tools = tool::findOrFail($id);
         return response()->json($tools);
     }
@@ -342,17 +336,11 @@ class CarsController extends Controller
             $newblocks = blockings::findOrFail($request->blockings);
             $newblocks->blockstatus=1;
             $newblocks->update();
-
-
         }
-
         return back()->with(['success'=>'Success:: the car have been update properly... ']);
-
-
     }
 
     public function updatecardetails(Request $request, $id = null){
-
         $validated = $request->validate([
             'mmpcmodelcode'=> 'required',
             'mmpcmodelyear'=> 'required|numeric|min:2000|max:3000',
@@ -400,7 +388,6 @@ class CarsController extends Controller
         $car->bilingdocuments = $billingdocuments;
         $car->vehiclestockyard = $vehiclestockyard;
         $car->update();
-
         return back()->with(['success'=>'Success:: the car have been update properly... ']);
     }
     public function submitcardamage(Request $request , $id = null){
