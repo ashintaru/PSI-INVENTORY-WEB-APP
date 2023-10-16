@@ -13,7 +13,6 @@ return new class extends Migration
     {
         //
         Schema::create('carstatus', function (Blueprint $table) {
-
             $table->id();
             $table->string('vehicleidno')->unique();
             $table->boolean('havebeenpassed');
@@ -24,8 +23,6 @@ return new class extends Migration
             $table->boolean('hassettool');
             $table->boolean('hasdamage');
             $table->timestamps();
-
-
         });
     }
 

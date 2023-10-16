@@ -1,13 +1,12 @@
 <x-app-layout>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @if (!is_null($car))
                 <!-- Breadcrumb -->
                 <x-navigation.nav-link2 :car="$car"/>
                 <x-alert-error></x-alert-error>
             <x-alert-success></x-alert-success>
             @if($car->settools)
-                <form method="POST" action="{{URL('update-set-tool/'.$car->settools->id)}}">
+                <form method="POST" action="{{URL('update-set-tool/'.$car->vehicleidno)}}">
                     @method('PATCH')
                     @csrf
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -154,7 +153,7 @@
                     </table>
                 </form>
             @else
-                <form method="POST" action="{{URL('set-tool/'.$car->id)}}">
+                <form method="POST" action="{{URL('set-tool/'.$car->vehicleidno)}}">
                     @csrf
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead>
@@ -347,11 +346,6 @@
                     </table>
                 </form>
             @endif
-
-
-
-
-        @endif
         </div>
     </div>
 </x-app-layout>

@@ -12,8 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventories', function (Blueprint $table) {
-            $table->id();
-            $table->string('vehicleidno');
+            $table->string('mmpcmodelcode');
+            $table->year('mmpcmodelyear');
+            $table->string('mmpcoptioncode');
+            $table->string('extcolorcode');
+            $table->string('modeldescription');
+            $table->string('exteriorcolor');
+            $table->string('csno');
+            $table->date('bilingdate');
+            $table->string('vehicleidno')->unique();
+            $table->string('engineno');
+            $table->integer('productioncbunumber');
+            $table->bigInteger('bilingdocuments');
+            $table->string('vehiclestockyard');
+            $table->string('blockings');
             $table->timestamps();
         });
     }

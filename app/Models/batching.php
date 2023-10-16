@@ -10,12 +10,12 @@ class batching extends Model
     use HasFactory;
     protected $table = 'batching';
     protected $fillable = [
-        'unitid',
+        'vehicleidno',
         'userid'
     ];
     public $timestamps = false;
     public function car(){
-        return $this->belongsTo(cars::class,'unitid','id');
+        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
     }
 
 

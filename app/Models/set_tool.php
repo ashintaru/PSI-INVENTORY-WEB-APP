@@ -10,8 +10,11 @@ class set_tool extends Model
 {
     use HasFactory;
     protected $table = 'set_tool';
+    protected $primaryKey = 'vehicleidno';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
-        'vehicleid',
+        'vehicleidno',
         'toolbag',
         'tirewrench',
         'jack',
@@ -30,6 +33,6 @@ class set_tool extends Model
     ];
 
     public function car(){
-        return $this->BelongsTo(cars::class,'vehicleid','id');
+        return $this->BelongsTo(recieving::class,'vehicleidno','vehicleidno');
     }
 }

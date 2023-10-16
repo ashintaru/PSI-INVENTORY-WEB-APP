@@ -76,6 +76,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
             Route::put('update-personel/{id}','updatePersonel');
             Route::post('searchRecieveUnit','searchRecieveData');
+            Route::put('updatereceiveblockings/{id}','updateBlockings');
         });
 
         Route::controller(invoicecontroller::class)->group(function(){
@@ -84,7 +85,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(looseitems::class)->group(function(){
             Route::get('createloosetools/{id}','create');
             Route::post('loose-item/{id}','store');
-            Route::patch('update-loose-item/{id}','update');
+            Route::put('update-loose-item/{id}','update');
         });
         Route::controller(settools::class)->group(function(){
             Route::get('createsettools/{id}','create');
@@ -118,7 +119,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         });
 
         Route::controller(ImportExportController::class)->group(function(){
-            Route::post('import', 'import')->name('import');
             Route::get('export', 'export')->name('export');
             Route::post('uploadInvoice','importInvoice');
         });
@@ -126,7 +126,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(car::class)->group(function(){
             Route::get('insert-data','carform')->name('car-form');//  Displaying form for car detail's
             Route::post('insert-car-details','savecardetail');// saving the detail's in the server`
-
+            Route::post('import', 'import')->name('import');
             Route::get('import_export', 'carformupload');//  Displaying upload form for car detail's
 
         });

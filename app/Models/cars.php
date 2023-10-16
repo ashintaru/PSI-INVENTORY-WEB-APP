@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class cars extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'vehicleidno';
+
+    public $incrementing = false;
+
+    // In Laravel 6.0+ make sure to also set $keyType
+    protected $keyType = 'string';
     protected $fillable =
     [
         'mmpcmodelcode',
@@ -24,10 +30,12 @@ class cars extends Model
         'productioncbunumber',
         'bilingdocuments',
         'vehiclestockyard',
-        'blockings'
+        'blockings',
+        ''
     ];
+
     public function batch(){
-        return $this->hasOne(batching::class,'unitid','id');
+        return $this->hasOne(batching::class,'vehicleidno','vehicleidno');
     }
     public function settools(){
         return $this->hasOne(set_tool::class,'vehicleid','id');

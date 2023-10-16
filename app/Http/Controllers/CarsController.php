@@ -74,7 +74,7 @@ class CarsController extends Controller
         $userid = Auth::user()->id;
         // return dd($request->unitid);
         batching::create(
-            ['unitid'=>$request->unitid,'userid'=>$userid]
+            ['vehicleidno'=>$request->unitid,'userid'=>$userid]
         );
         return redirect()->route('unit-list')->with(['success'=>'have been transfered in batch']);
     }
@@ -318,7 +318,6 @@ class CarsController extends Controller
         $validated = $request->validate([
             'blockings'=> 'required',
         ]);
-
         $car = cars::findOrFail($id);
         if($car->blockings=="empty"){
             $car->blockings = $request->blockings;

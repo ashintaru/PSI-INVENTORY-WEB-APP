@@ -10,8 +10,11 @@ class tool extends Model
     use HasFactory;
 
     protected $table = 'loose_tool';
+    protected $primaryKey = 'vehicleidno';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
-        'vehicleid',
+        'vehicleidno',
         'ownermanual',
         'warantybooklet',
         'key',
@@ -19,7 +22,8 @@ class tool extends Model
     	'others',
     ];
 
+
     public function car(){
-        return $this->BelongsTo(cars::class,'vehicleid','id');
+        return $this->BelongsTo(recieving::class,'vehicleid','vehicleidno');
     }
 }
