@@ -18,6 +18,7 @@ use Exception;
 use Barryvdh\DomPDF\PDF;
 use App\Models\blocks;
 use App\Models\blockings;
+use App\Models\recieving;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
@@ -403,41 +404,30 @@ class CarsController extends Controller
         $carstatus = carstatus::where('vehicleidno',$id)->first();
         return view('edit-car-status',['data'=>$carstatus]);
     }
-    public function updatecarstatus($carid = null , Request $request){
+
+    public function updatecarstatus(Request $request , $carid = null){
         try {
             // return dd($request->all());
-            $car = cars::where('id',$carid)->first();
-            $result = ($car->status->hasloosetool == 1 && $car->status->hassettool == 1 && $car->status->hasdamage == 1 )?true : false;
-            // return dd($result);
-            if($result){
-                $car->status->havebeenchecked = 1;
-                $validated = $request->validate([
-                    'status' => 'required',
-                ]);
-                if(!$validated){
-                    return redirect()->back()->withErrors($validated);
-                }else{
-                    $inputs = $request->all();
-                    $result = ($inputs['status']==1) ? 1 : 0;
-                    $car->status->havebeenpassed = $result;
-                    $car->status->update();
-                    $this->checkinventory($car,$result);
-                    $mesage = ($result)?"have been passed and approved and now it will be moved to the Good storage by":"have been failed and disapproved and now will be moved to the bad storage for furtehr inspection";
-                    Log::create([
-                        'idNum'=>$car->vehicleidno,
-                        'logs'=>'Car VI#'. ' '. $car->vehicleidno .' '.$mesage.' '. $request->user()->name
-                    ]);
-                    return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been UPDATE PROPERLY....']);
-                }
-            }
-            else{
-                return redirect()->back()->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage due to an error pls check all he required form....']);
+            $car = recieving::findOrFail($carid);
+            $result = ($car->settools && $car->loosetools && $car->damage)?true : false;
+            switch ($result) {
+                case true:
+                    # code...
+                    return dd('saved');
+                    return redirect()->back()->with(['success' => 'success:: UPDATE PROPERLY....']);
+                    break;
+                case false:
+                    return dd('failed');
+                    break;
+                default:
+                    return dd('magic');
+                    return redirect()->back()->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage due to an error pls check all he required form....']);
+                    break;
             }
 
         } catch (Exception $error) {
             return redirect()->back()->with(['msg' => $error->getMessage()]);
         }
-
     }
 
     // public function preinvoice($description){

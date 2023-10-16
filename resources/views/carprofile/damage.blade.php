@@ -6,7 +6,7 @@
             <x-alert-error></x-alert-error>
             <x-alert-success></x-alert-success>
             @if($car->damage)
-                <form method="POST" action="{{URL('update-car-damage/'.$car->damage->id)}}">
+                <form method="POST" action="{{URL('update-car-damage/'.$car->damage->vehicleidno)}}">
                     @csrf
                     @method('PATCH')
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -84,7 +84,7 @@
                 </form>
 
             @else
-            <form method="POST" action="{{URL('car-damage/'.$car->id)}}">
+            <form method="POST" action="{{URL('car-damage/'.$car->vehicleidno)}}">
                 @csrf
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead>
