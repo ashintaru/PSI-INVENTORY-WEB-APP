@@ -48,35 +48,47 @@ class batching extends Controller
         $batch =  batch::where('userid',Auth::user()->id)->get();
         $vinarray = $batch->pluck('vehicleidno');
         $cars = cars::whereIn('vehicleidno',$vinarray)->get();
-        foreach ($cars as $car) {
-            unit::create(
-                [
-                    'mmpcmodelcode'=>$car->mmpcmodelcode,
-                    'mmpcmodelyear'=>$car->mmpcmodelyear,
-                    'mmpcoptioncode'=>$car->mmpcoptioncode,
-                    'extcolorcode'=>$car->extcolorcode,
-                    'modeldescription'=>$car->modeldescription,
-                    'exteriorcolor'=>$car->exteriorcolor,
-                    'csno'=>$car->csno,
-                    'tag'=>$car->tag,
-                    'bilingdate'=>$car->bilingdate,
-                    'vehicleidno'=>$car->vehicleidno,
-                    'engineno'=>$car->engineno,
-                    'productioncbunumber'=>$car->productioncbunumber,
-                    'bilingdocuments'=>$car->bilingdocuments,
-                    'vehiclestockyard'=>$car->vehiclestockyard,
-                    'blockings'=>$car->blockings,
-                    'receiveBy'=>$car->recieveBy,
-                    'dateIn'=>$inputs['datein'],
-                    'dateEncode'=>$inputs['datereceive']
-                ]
-            );
-
-            $car->delete();
+        if(count($cars) > 0 ){
+            foreach ($cars as $car) {
+                unit::create(
+                    [
+                        'mmpcmodelcode'=>$car->mmpcmodelcode,
+                        'mmpcmodelyear'=>$car->mmpcmodelyear,
+                        'mmpcoptioncode'=>$car->mmpcoptioncode,
+                        'extcolorcode'=>$car->extcolorcode,
+                        'modeldescription'=>$car->modeldescription,
+                        'exteriorcolor'=>$car->exteriorcolor,
+                        'csno'=>$car->csno,
+                        'tag'=>$car->tag,
+                        'bilingdate'=>$car->bilingdate,
+                        'vehicleidno'=>$car->vehicleidno,
+                        'engineno'=>$car->engineno,
+                        'productioncbunumber'=>$car->productioncbunumber,
+                        'bilingdocuments'=>$car->bilingdocuments,
+                        'vehiclestockyard'=>$car->vehiclestockyard,
+                        'blockings'=>$car->blockings,
+                        'receiveBy'=>$car->recieveBy,
+                        'dateIn'=>$inputs['datein'],
+                        'dateEncode'=>$inputs['datereceive']
+                    ]
+                );
+                $car->delete();
+            }
+            batch::query()->where('userid',Auth::user()->id)->delete();
+            return redirect()->back()->with(['success'=>"Success!!"]);
         }
-        batch::query()->where('userid',Auth::user()->id)->delete();
-        return redirect()->back()->with(['success'=>"Success!!"]);
+        else{
+           return redirect()->back()->with(['msg'=>"Failled!!"]);
+        }
     }
+
+    public function updatePersonel(Request $request , $id = null){
+        $recieve = cars::findOrFail($id);
+        $recieve->recieveBy = $request["personel"];
+        $recieve->update();
+        return redirect()->back()->with(['success'=>"Update Successfully"]);
+    }
+
 
     /**
      * Display the specified resource.

@@ -31,7 +31,7 @@ class cars extends Model
         'bilingdocuments',
         'vehiclestockyard',
         'blockings',
-        ''
+        'recieveBy'
     ];
 
     public function batch(){

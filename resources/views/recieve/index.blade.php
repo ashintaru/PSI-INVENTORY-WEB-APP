@@ -8,6 +8,9 @@
             <x-search-bar />
         </form>
     </div>
+    <x-alert-error></x-alert-error>
+    <x-alert-success></x-alert-success>
+
     <div class="py-1">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -45,20 +48,28 @@
                 @foreach($data as $tableRow)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" class="flex items-center px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <form action="{{URL('batchingUnit')}}" method="POST" >
-                                @csrf
-                                <button type="submit" name="unitid" value="{{$tableRow->vehicleidno}}" class="flex items-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
-                                      </svg>
-                                </button>
-                            </form>
+                            @if ($tableRow->blocking && $tableRow->receiveBy && $tableRow->receiveBy != "empty" )
+                                <form action="{{URL('default-approve/'.$tableRow->vehicleidno)}}" method="POST" >
+                                    @csrf
+                                    <button type="submit" class="flex items-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            @else
+                                ...
+                            @endif
                         </th>
                         <td class="px-6 py-4">
-                        {{$tableRow->vehicleidno}}
+                            {{$tableRow->vehicleidno}}
                         </td>
                         <td class="px-6 py-4">
-                            {{$tableRow->blockings}}
+                            @if ($tableRow->blocking)
+                                {{$tableRow->blocking->bloackname}}
+                            @else
+                                Nothing..
+                            @endif
                         </td>
                         <td class="px-6 py-4">
                             {{$tableRow->receiveBy}}

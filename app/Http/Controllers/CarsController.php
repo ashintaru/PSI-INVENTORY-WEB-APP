@@ -19,6 +19,7 @@ use Barryvdh\DomPDF\PDF;
 use App\Models\blocks;
 use App\Models\blockings;
 use App\Models\recieving;
+use App\Models\set_tool;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
@@ -405,26 +406,162 @@ class CarsController extends Controller
         return view('edit-car-status',['data'=>$carstatus]);
     }
 
+    public function defaultloosetool($carid){
+        // $loosetool = loos
+        $tool = tool::where('vehicleidno',$carid)->first();
+        if(empty($tool)){
+            return tool::create([
+                'vehicleidno'=>$carid,
+                'ownermanual'=>0,
+                'warantybooklet'=>0,
+                'key'=>0,
+                'remotecontrol'=>0,
+                'others'=>0
+            ]);
+        }else{
+            return null;
+        }
+    }
+    public function defaulttools($carid){
+        $tools = set_tool::where('vehicleidno',$carid)->first();
+        if(empty($tools)){
+            set_tool::create([
+                'vehicleidno'=>$carid,
+                'toolbag'=>1,
+                'tirewrench'=>1,
+                'jack'=>1,
+                'jackhandle'=>1,
+                'openwrench'=>1,
+                'towhook'=>1,
+                'slottedscrewdriver'=>1,
+                'philipsscrewdriver'=>1,
+                'wheels'=>1,
+                'cigarettelighter'=>1,
+                'wheelcap'=>4,
+                'sparetire'=>1,
+                'antena'=>1,
+                'mating'=>1,
+                'other'=>1,
+            ]);
+        }else{
+            return null;
+        }
+    }
+
+    public function defaultdamage($carid){
+        $damage = damage::where('vehicleidno',$carid)->first();
+        // return dd(empty($damage));
+        if(empty($damage)){
+              damage::create(
+                [
+                    'vehicleidno'=>$carid,
+                    'dents'=>0,
+                    'dings'=>0,
+                    'scratches'=>0,
+                    'paintdefects'=>0,
+                    'damage'=>0,
+                    'other'=>0,
+                    'remark'=>"no damage at all"
+                ]
+            );
+        }else{
+            return null;
+        }
+    }
+
+    public function defaultapprove($carid){
+
+        $this->defaultloosetool($carid);
+        $this->defaulttools($carid);
+        $this->defaultdamage($carid);
+        $car = recieving::findOrFail($carid);
+        inventory::create(
+            [
+                'mmpcmodelcode'=>$car->mmpcmodelcode,
+                'mmpcmodelyear'=>$car->mmpcmodelyear,
+                'mmpcoptioncode'=>$car->mmpcoptioncode,
+                'extcolorcode'=>$car->extcolorcode,
+                'modeldescription'=>$car->modeldescription,
+                'exteriorcolor'=>$car->exteriorcolor,
+                'csno'=>$car->csno,
+                'tag'=>$car->tag,
+                'bilingdate'=>$car->bilingdate,
+                'vehicleidno'=>$car->vehicleidno,
+                'engineno'=>$car->engineno,
+                'productioncbunumber'=>$car->productioncbunumber,
+                'bilingdocuments'=>$car->bilingdocuments,
+                'vehiclestockyard'=>$car->vehiclestockyard,
+                'blockings'=>$car->blockings,
+                'receiveBy'=>$car->receiveBy,
+                'dateIn'=>$car->dateIn,
+                'dateEncode'=>$car->dateEncode
+            ]
+        );
+        $car->delete();
+        return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
+    }
+
     public function updatecarstatus(Request $request , $carid = null){
         try {
-            // return dd($request->all());
-            $car = recieving::findOrFail($carid);
-            $result = ($car->settools && $car->loosetools && $car->damage)?true : false;
-            switch ($result) {
-                case true:
-                    # code...
-                    return dd('saved');
-                    return redirect()->back()->with(['success' => 'success:: UPDATE PROPERLY....']);
+            switch (request()->approved) {
+                case "1":
+                    $car = recieving::findOrFail($carid);
+                    inventory::create(
+                        [
+                            'mmpcmodelcode'=>$car->mmpcmodelcode,
+                            'mmpcmodelyear'=>$car->mmpcmodelyear,
+                            'mmpcoptioncode'=>$car->mmpcoptioncode,
+                            'extcolorcode'=>$car->extcolorcode,
+                            'modeldescription'=>$car->modeldescription,
+                            'exteriorcolor'=>$car->exteriorcolor,
+                            'csno'=>$car->csno,
+                            'tag'=>$car->tag,
+                            'bilingdate'=>$car->bilingdate,
+                            'vehicleidno'=>$car->vehicleidno,
+                            'engineno'=>$car->engineno,
+                            'productioncbunumber'=>$car->productioncbunumber,
+                            'bilingdocuments'=>$car->bilingdocuments,
+                            'vehiclestockyard'=>$car->vehiclestockyard,
+                            'blockings'=>$car->blockings,
+                            'receiveBy'=>$car->receiveBy,
+                            'dateIn'=>$car->dateIn,
+                            'dateEncode'=>$car->dateEncode
+                        ]
+                    );
+                    $car->delete();
+                    return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
                     break;
-                case false:
-                    return dd('failed');
+                case "2":
+                    $car = inventory::findOrFail($carid);
+                    recieving::create(
+                        [
+                            'mmpcmodelcode'=>$car->mmpcmodelcode,
+                            'mmpcmodelyear'=>$car->mmpcmodelyear,
+                            'mmpcoptioncode'=>$car->mmpcoptioncode,
+                            'extcolorcode'=>$car->extcolorcode,
+                            'modeldescription'=>$car->modeldescription,
+                            'exteriorcolor'=>$car->exteriorcolor,
+                            'csno'=>$car->csno,
+                            'tag'=>$car->tag,
+                            'bilingdate'=>$car->bilingdate,
+                            'vehicleidno'=>$car->vehicleidno,
+                            'engineno'=>$car->engineno,
+                            'productioncbunumber'=>$car->productioncbunumber,
+                            'bilingdocuments'=>$car->bilingdocuments,
+                            'vehiclestockyard'=>$car->vehiclestockyard,
+                            'blockings'=>$car->blockings,
+                            'receiveBy'=>$car->receiveBy,
+                            'dateIn'=>$car->dateIn,
+                            'dateEncode'=>$car->dateEncode
+                        ]
+                    );
+                    $car->delete();
                     break;
                 default:
                     return dd('magic');
                     return redirect()->back()->with(['msg' => 'Error:: the Car '.$carid .' has been not moved in the virtual storage due to an error pls check all he required form....']);
                     break;
             }
-
         } catch (Exception $error) {
             return redirect()->back()->with(['msg' => $error->getMessage()]);
         }

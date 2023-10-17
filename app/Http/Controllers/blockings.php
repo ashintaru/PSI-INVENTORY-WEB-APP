@@ -6,8 +6,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Imports\importBlockings;
 use App\Models\blockings as spots;
+use App\Models\cars;
 use App\Models\invoicedata;
 use Exception;
+use App\Models\inventory;
 
 
 class blockings extends Controller
@@ -43,7 +45,8 @@ class blockings extends Controller
     }
 
     public function fetchCar($id = null){
-        $data = spots::join('cars','cars.blockings','=','blockings.id')
+        $car = cars::where('blockings',$id)->first();
+        $data = spots::join('inventories','inventories.blockings','=','blockings.id')
         ->where('blockings.id',$id)->get();
         return response()->json($data);
     }

@@ -25,28 +25,27 @@ class mmpcImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
     {
         $bin = DB::table('cars')->get();
         $bin_number = $bin->pluck('vehicleidno');
-
     if ($bin_number->contains($row[8]) == false)
     {
-
         return [
             new cars([
-            'mmpcmodelcode'=> $row[0],
-            'mmpcmodelyear'=> $row[1] ,
-            'mmpcoptioncode'=> $row[2],
-            'extcolorcode'=> $row[3],
-            'modeldescription'=> $row[4],
-            'exteriorcolor'=> $row[5],
-            'csno'=> $row[6],
-            'tag'=>"mmpc",
-            'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
-            'vehicleidno'=> $row[8],
-            'engineno'=> $row[9],
-            'productioncbunumber'=> $row[10],
-            'bilingdocuments'=> $row[11],
-            'vehiclestockyard'=> $row[12],
-            'blockings'=>"empty",
-        ])
+                'mmpcmodelcode'=> $row[0],
+                'mmpcmodelyear'=> $row[1] ,
+                'mmpcoptioncode'=> $row[2],
+                'extcolorcode'=> $row[3],
+                'modeldescription'=> $row[4],
+                'exteriorcolor'=> $row[5],
+                'csno'=> $row[6],
+                'tag'=>"mmpc",
+                'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
+                'vehicleidno'=> $row[8],
+                'engineno'=> $row[9],
+                'productioncbunumber'=> $row[10],
+                'bilingdocuments'=> $row[11],
+                'vehiclestockyard'=> $row[12],
+                'blockings'=>'',
+                'recieveBy'=>'',
+            ])
         ];
     }
     else null;

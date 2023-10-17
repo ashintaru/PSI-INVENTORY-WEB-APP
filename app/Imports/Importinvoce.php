@@ -15,16 +15,13 @@ class Importinvoce implements ToModel,WithBatchInserts
 {
     public function model(array $row)
     {
-        $bin = cars::join('inventories','inventories.vehicleid','=','cars.id')->where('invstatus',1)->get();
-        // dd($bin);
+        $bin = inventory::get();
         $bin_number = $bin->pluck('vehicleidno');
-        $invoice = invoice::all();
+        $invoice = invoice::get();
         $invoice_number = $invoice->pluck('vehicleidno');
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
-            // $inventory = inventory::where('vehicleidno',$row[11])->get();
-            // $inventory->invoicestatus =1;
-            // $inventory->update();
+            $car = inventory::where('vehicleidno',$row[11])->first();
             return new invoice([
                 'vehicleidno'=>$row[11],
                 'status'=>0,
@@ -37,6 +34,7 @@ class Importinvoce implements ToModel,WithBatchInserts
                 'csrdate'=>Carbon::parse($row[19]),
                 'dateModifier'=>null
             ]);
+            $car->delete();
         }
         else
             return null;

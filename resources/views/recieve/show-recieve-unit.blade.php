@@ -160,6 +160,19 @@
                                     </svg>
                                     <span class="ml-3">Damage</span>
                                  </a>
+                                 @if ($car->blocking && $car->receiveBy && $car->receiveBy != "empty" )
+                                    <form action="{{URL('default-approve/'.$car->vehicleidno)}}" method="POST" >
+                                        @csrf
+                                        <button type="submit" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                            </svg>
+                                           <span class="ml-3">Approve All Form</span>
+                                        </button>
+                                    </form>
+                                @else
+                                    ...
+                                @endif
                             </div>
                         </div>
                         <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -201,39 +214,23 @@
                                 <x-primary-button>{{ __('Submit') }}</x-primary-button>
                             </form>
                         </div>
-                        <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                            <form method="POST" action="{{URL('update-inventory/'.$car->vehicleidno)}}" class="space-y-2">
-                                @csrf
-                                @method('PUT')
-                                <div class="flex-col space-y-3">
-                                    <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Unit Status</h3>
-                                    <ul class="space-y-2 w-1/2 items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li class="w-1/2 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center pl-3">
-                                                <input id="horizontal-list-radio-license" type="radio"
-                                                name="status"
-                                                                                                value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                <label for="horizontal-list-radio-license" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Pass</label>
-                                            </div>
-                                        </li>
-                                        <li class="w-1/2 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center pl-3">
-                                                <input id="horizontal-list-radio-id" type="radio"
-                                                name="status"
-                                                value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                <label for="horizontal-list-radio-id" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Failled</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <x-primary-button>{{ __('update') }}</x-primary-button>
-                                </div>
-                            </form>
-                        </div>
+                        @if ($car->settools && $car->loosetools && $car->damage && $tableRow->blocking && $tableRow->receiveBy && $tableRow->receiveBy != "empty" )
+                            <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                                <form method="POST" action="{{URL('update-inventory/'.$car->vehicleidno)}}" class="space-y-2">
+                                    @csrf
+                                    <div class="flex-col space-y-3">
+                                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Approve Unit</h3>
+                                        <button type="button" name="approved" value="1" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">Approve</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            ...
+                        @endif
                     @else
                         <p> Empyty Value ....</p>
                     @endif
-
-                    </section>
+                </section>
             </div>
         </div>
     @endif

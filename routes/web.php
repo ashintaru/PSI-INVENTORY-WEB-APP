@@ -146,14 +146,15 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('filter-rawdata','setFilter');
             Route::post('filter-recievedata','setFilterUnitList');
 
-            Route::put('update-inventory/{id}','updatecarstatus');
+            Route::post('default-approve/{id}','defaultapprove');
+            Route::post('update-inventory/{id}','updatecarstatus');
             Route::put('update-blockings/{id}','updateBlockings');
             Route::post('searchUnitList','searchUnitData');
             Route::post('searchRawData','searchRawData');
 
             Route::get('view/{id}', 'view')->name('show-profile');
 
-            Route::put('approved-inventory/{id}', 'approve')->name('approve');
+            // Route::put('approved-inventory/{id}', 'approve')->name('approve');
 
             Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
             Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
@@ -168,6 +169,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('batches', 'index')->name('batch');
             Route::get('delete-batch/{id}','destroy');
             Route::post('create-Recieve','store');
+            Route::put('update-cars-Personel/{id}','updatePersonel');
         });
 
 

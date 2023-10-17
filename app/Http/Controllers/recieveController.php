@@ -23,7 +23,7 @@ class recieveController extends Controller
             ->get();
             return view('recieve.index',['data'=>$cars]);
         }else{
-            $cars = units::paginate(25);
+            $cars = units::with('blocking')->paginate(25);
             return view('recieve.index',['data'=>$cars]);
         }
 
@@ -51,7 +51,7 @@ class recieveController extends Controller
     public function show(string $id)
     {
         //
-        $car = units::findOrFail($id);
+        $car = units::with('blocking','settools','loosetools','damage')->findOrFail($id);
         $blocks = blocks::all();
         // return dd($car);
         return view('recieve.show-recieve-unit',['car'=>$car,'blocks'=>$blocks]);

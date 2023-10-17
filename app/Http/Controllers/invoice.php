@@ -19,16 +19,15 @@ class invoice extends Controller
     public function index()
     {
 
-        $data  = DB::table('cars')
-                 ->join('invoces','cars.vehicleidno','invoces.vehicleidno')
-                 ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
-                 ->groupBy('modeldescription')
-                 ->get();
+        // $data  = DB::table('cars')
+        //          ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
+        //          ->groupBy('modeldescription')
+        //          ->get();
 
         $invoices = invoce::paginate(25);
 
         // return dd($data);
-        return view('invoice.invoce',['invoices'=>$invoices,'cars'=>$data]);
+        return view('invoice.invoce',['invoices'=>$invoices]);
 
         //
     }
