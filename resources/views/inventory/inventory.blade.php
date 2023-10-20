@@ -11,7 +11,7 @@
         </form>
     </div>
     <div class="py-1">
-        @if ($data)
+        @if ($inventory)
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -42,26 +42,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @if (!is_null($data))
-                            @foreach($data as $d)
+                        @if (!is_null($inventory))
+                            @foreach($inventory as $d)
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{$d->vehicleidno}}
                                 </th>
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{$d->receiveBy}}
+                                    {{$d->car->recieveBy}}
                                 </th>
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{$d->blocking->bloackname}}
+                                    @if ($d->car->blockings)
+                                        {{$d->car->blocking->bloackname}}
+                                    @else
+                                        ...
+                                    @endif
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{$d->engineno}}
+                                    {{$d->car->engineno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->csno}}
+                                    {{$d->car->csno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->modeldescription}}
+                                    {{$d->car->modeldescription}}
                                 </td>
                                 <td class="px-6 py-4">
                                     <button value="{{$d->vehicleidno}}" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="modal-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
@@ -137,9 +141,9 @@
 
 	    <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                @if ($data)
-                    @if (count($data)>1)
-                        {{$data->links()}}
+                @if ($inventory)
+                    @if (count($inventory)>1)
+                        {{$inventory->links()}}
                     @endif
                 @endif
             </div>

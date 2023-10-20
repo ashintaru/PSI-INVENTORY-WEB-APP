@@ -48,7 +48,7 @@
                 @foreach($data as $tableRow)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class="text-center">
-                            @if ($tableRow->blocking && $tableRow->receiveBy && $tableRow->receiveBy != "empty" )
+                            @if ($tableRow->car->blocking && $tableRow->car->recieveBy)
                                 <form action="{{URL('default-approve/'.$tableRow->vehicleidno)}}" method="POST" class="space-y-2">
                                     @csrf
                                     <div class="flex-col space-y-3">

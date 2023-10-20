@@ -62,8 +62,8 @@
                                         <label for="carid" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Unit Data ID</label>
                                     </div>
                                     <div class="relative z-0 w-full mb-6 group">
-                                        @if ($recieve->car->blockings != "empty")
-                                            <input type="text"  id="UnitBlockings" value="{{ $recieve->car->blocking->bloackname }}" name="exteriorcolor"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled/>
+                                        @if ($recieve->car->blockings)
+                                            <input type="text"  id="UnitBlockings" value="{{$recieve->car->blocking->bloackname }}" name="exteriorcolor"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled/>
                                             <label for="UnitBlockings" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Unit Blockings</label>
                                         @else
                                             <input type="text"  id="UnitBlockings" value="{{ $recieve->car->blockings}}" name="exteriorcolor"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled/>
@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                            <form method="POST" class="flex-col space-y-2" action="{{URL('updatereceiveblockings/'.$recieve->car->vehicleidno) }}">
+                            <form method="POST" class="flex-col space-y-2" action="{{URL('update-blockings/'.$recieve->car->vehicleidno) }}">
                                 @csrf
                                 @method('PUT')
                                 <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Block State</h3>

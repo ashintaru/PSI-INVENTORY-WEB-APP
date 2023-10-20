@@ -12,24 +12,8 @@ class invoce extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
-        'mmpcmodelcode',
-        'mmpcmodelyear',
-        'mmpcoptioncode',
-        'extcolorcode',
-        'modeldescription',
-        'exteriorcolor',
-        'csno',
-        'tag',
-        'bilingdate',
         'vehicleidno',
-        'engineno',
-        'productioncbunumber',
-        'bilingdocuments',
-        'vehiclestockyard',
-        'blockings',
-        'receiveBy',
-        'dateIn',
-        'dateEncode'
+        'status'
     ];
     public function blocking(){
         return $this->hasOne(blockings::class,'id','blockings');

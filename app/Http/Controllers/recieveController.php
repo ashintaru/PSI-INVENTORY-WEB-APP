@@ -18,11 +18,12 @@ class recieveController extends Controller
     {   $id = Auth()->user()->id;
         if (Cache::has("searchReceiveData-".$id)){
             $search = Cache::get("searchReceiveData-".$id);
-            $cars = units::with(['car'])->where('vehicleidno',$search)
+            $cars = units::where('status',0)->with(['car'])->where('vehicleidno',$search)
             ->get();
             return view('recieve.index',['data'=>$cars]);
         }else{
-            $cars = units::with(['car'])->paginate(25);
+            $cars = units::where('status',0)->with(['car'])->paginate(25);
+            // return dd($cars);
             return view('recieve.index',['data'=>$cars]);
         }
 
@@ -50,7 +51,7 @@ class recieveController extends Controller
     public function show(string $id)
     {
         //
-        $car = units::with('car','settools','loosetools','damage')->findOrFail($id);
+        $car = units::with(['car','settools','loosetools','damage'])->findOrFail($id);
         $blocks = blocks::all();
         // return dd($car);
         return view('recieve.show-recieve-unit',['recieve'=>$car,'blocks'=>$blocks]);

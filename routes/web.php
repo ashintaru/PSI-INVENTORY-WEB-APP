@@ -78,7 +78,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
             Route::put('update-personel/{id}','updatePersonel');
             Route::post('searchRecieveUnit','searchRecieveData');
-            Route::put('updatereceiveblockings/{id}','updateBlockings');
         });
         Route::controller(invoicecontroller::class)->group(function(){
             Route::get('invoice/{id}','index');

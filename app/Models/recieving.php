@@ -15,7 +15,8 @@ class recieving extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
-        'vehicleidno'
+        'vehicleidno',
+        'status'
     ];
     public function car(){
         return $this->hasOne(cars::class,'vehicleidno','vehicleidno');

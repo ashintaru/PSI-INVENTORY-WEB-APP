@@ -20,15 +20,16 @@ class inventory extends Controller
         try {
             $id = Auth::user()->id;
             if(Cache::has('search-inv-unit-'.$id)){
-                $inventory = inbentaryo::with(['blocking'])
+                $inventory = inbentaryo::where('status',1)->with(['car'])->with(['car'])
                 ->where('vehicleidno',Cache::get('search-inv-unit-'.$id))
                 ->get();
-                return view('inventory.inventory',['data'=>$inventory]);
+                return view('inventory.inventory',['inventory'=>$inventory]);
             }
             else{
-                $inventory = inbentaryo::with(['blocking'])
+                $inventory = inbentaryo::where('status',1)->with(['car'])
                 ->paginate(25);
-                return view('inventory.inventory',['data'=>$inventory]);
+                // return dd($inventory);
+                return view('inventory.inventory',['inventory'=>$inventory]);
             }
 
 

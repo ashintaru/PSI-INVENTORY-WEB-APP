@@ -233,8 +233,7 @@ class CarsController extends Controller
     public function approve( $carid = null,Request $request)
     {
        try {
-            $car = cars::with('status')->findOrFail($carid);
-            $result = ($car->status->hasloosetool == 1 && $car->status->hassettool == 1 && $car->status->hasdamage == 1 )?true : false;
+            $car = cars::findOrFail($carid);
             if($result){
                 $validated = $request->validate([
                     'status' => 'required',
@@ -468,16 +467,21 @@ class CarsController extends Controller
         $this->defaultloosetool($carid);
         $this->defaulttools($carid);
         $this->defaultdamage($carid);
-        $car = cars::findOrFail($carid);
-        $receiving = recieving::findOrFail($carid);
-        inventory::create(
+        $receiving = recieving::firstOrCreate(['vehicleidno'=>$carid],
             [
-                'vehicleidno'=>$receiving->vehicleidno,
-            ]
-        );
-        $car->status = 2;
-        $car->update();
-        $receiving->delete();
+                'vehicleidno'=>$carid,
+                'status'=>1
+            ]);
+        $inv = inventory::firstOrCreate(['vehicleidno'=>$carid],
+            [
+                'vehicleidno'=>$carid,
+                'status'=>1
+            ]);
+        $inv->status =1;
+        $inv->update();
+        $receiving->status = 1;
+        $receiving->update();
+
         return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
     }
 
@@ -486,56 +490,33 @@ class CarsController extends Controller
             switch (request()->approved) {
                 case "1":
                     $car = recieving::findOrFail($carid);
-                    inventory::create(
-                        [
-                            'mmpcmodelcode'=>$car->mmpcmodelcode,
-                            'mmpcmodelyear'=>$car->mmpcmodelyear,
-                            'mmpcoptioncode'=>$car->mmpcoptioncode,
-                            'extcolorcode'=>$car->extcolorcode,
-                            'modeldescription'=>$car->modeldescription,
-                            'exteriorcolor'=>$car->exteriorcolor,
-                            'csno'=>$car->csno,
-                            'tag'=>$car->tag,
-                            'bilingdate'=>$car->bilingdate,
-                            'vehicleidno'=>$car->vehicleidno,
-                            'engineno'=>$car->engineno,
-                            'productioncbunumber'=>$car->productioncbunumber,
-                            'bilingdocuments'=>$car->bilingdocuments,
-                            'vehiclestockyard'=>$car->vehiclestockyard,
-                            'blockings'=>$car->blockings,
-                            'receiveBy'=>$car->receiveBy,
-                            'dateIn'=>$car->dateIn,
-                            'dateEncode'=>$car->dateEncode
-                        ]
-                    );
-                    $car->delete();
+                    $car->status = 1;
+                    $car->update();
+                    $inv = inventory::firstOrCreate(['vehicleidno'=>$carid],
+                    [
+                        'vehicleidno'=>$carid,
+                        'status'=>1
+                    ]);
+                    $inv->status = 1;
+                    $inv->update();
+
                     return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
                     break;
                 case "2":
-                    $car = inventory::findOrFail($carid);
-                    recieving::create(
-                        [
-                            'mmpcmodelcode'=>$car->mmpcmodelcode,
-                            'mmpcmodelyear'=>$car->mmpcmodelyear,
-                            'mmpcoptioncode'=>$car->mmpcoptioncode,
-                            'extcolorcode'=>$car->extcolorcode,
-                            'modeldescription'=>$car->modeldescription,
-                            'exteriorcolor'=>$car->exteriorcolor,
-                            'csno'=>$car->csno,
-                            'tag'=>$car->tag,
-                            'bilingdate'=>$car->bilingdate,
-                            'vehicleidno'=>$car->vehicleidno,
-                            'engineno'=>$car->engineno,
-                            'productioncbunumber'=>$car->productioncbunumber,
-                            'bilingdocuments'=>$car->bilingdocuments,
-                            'vehiclestockyard'=>$car->vehiclestockyard,
-                            'blockings'=>$car->blockings,
-                            'receiveBy'=>$car->receiveBy,
-                            'dateIn'=>$car->dateIn,
-                            'dateEncode'=>$car->dateEncode
-                        ]
-                    );
-                    $car->delete();
+                    $car = inventory::firstOrCreate(['vehicleidno'=>$carid],
+                    [
+                        'vehicleidno'=>$carid,
+                        'status'=>1
+                    ]);
+                    $car->status = 0;
+                    $car->update();
+                    $receiving = recieving::firstOrCreate(['vehicleidno'=>$carid],
+                    [
+                        'vehicleidno'=>$carid,
+                        'status'=>1
+                    ]);
+                    $receiving->status = 0;
+                    $receiving->update();
                     return redirect()->route('show-inventory')->with(['success' => 'success:: UPDATE PROPERLY....']);
                     break;
                 default:

@@ -23,27 +23,11 @@ class Importinvoce implements ToModel,WithBatchInserts
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
             $car = inventory::where('vehicleidno',$row[11])->first();
-            $temp = $car;
-            $car->delete();
+            $car->status = 0;
+            $car->update();
             return new invoice([
-                'mmpcmodelcode'=> $temp->mmpcmodelcode,
-                'mmpcmodelyear'=> $temp->mmpcmodelyear ,
-                'mmpcoptioncode'=> $temp->mmpcoptioncode,
-                'extcolorcode'=> $temp->extcolorcode,
-                'modeldescription'=> $temp->modeldescription,
-                'exteriorcolor'=> $temp->exteriorcolor,
-                'csno'=> $temp->csno,
-                'tag'=>$temp->tag,
-                'bilingdate'=> Carbon::parse($temp->bilingdate)->format('Y-m-d'),
-                'vehicleidno'=> $temp->vehicleidno,
-                'engineno'=> $temp->engineno,
-                'productioncbunumber'=> $temp->productioncbunumber,
-                'bilingdocuments'=> $temp->bilingdocuments,
-                'vehiclestockyard'=> $temp->vehiclestockyard,
-                'blockings'=>$temp->blockings,
-                'receiveBy'=>$temp->receiveBy,
-                'dateIn'=>$temp->dateIn,
-                'dateEncode'=>$temp->dateEncode
+                'vehicleidno'=> $car->vehicleidno,
+                'status' => 0
             ]);
         }
         else

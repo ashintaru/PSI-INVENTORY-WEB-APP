@@ -13,27 +13,14 @@ class inventory extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
-        'mmpcmodelcode',
-        'mmpcmodelyear',
-        'mmpcoptioncode',
-        'extcolorcode',
-        'modeldescription',
-        'exteriorcolor',
-        'csno',
-        'tag',
-        'bilingdate',
         'vehicleidno',
-        'engineno',
-        'productioncbunumber',
-        'bilingdocuments',
-        'vehiclestockyard',
-        'blockings',
-        'receiveBy',
-        'dateIn',
-        'dateEncode'
+        'status'
     ];
     public function blocking(){
         return $this->hasOne(blockings::class,'id','blockings');
+    }
+    public function car(){
+        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }
     // class ,fk , ownkey
     public function invoice(){
