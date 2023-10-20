@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\car;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,27 +15,10 @@ class recieving extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
-        'mmpcmodelcode',
-        'mmpcmodelyear',
-        'mmpcoptioncode',
-        'extcolorcode',
-        'modeldescription',
-        'exteriorcolor',
-        'csno',
-        'tag',
-        'bilingdate',
-        'vehicleidno',
-        'engineno',
-        'productioncbunumber',
-        'bilingdocuments',
-        'vehiclestockyard',
-        'blockings',
-        'receiveBy',
-        'dateIn',
-        'dateEncode'
+        'vehicleidno'
     ];
-    public function blocking(){
-        return $this->hasOne(blockings::class,'id','blockings');
+    public function car(){
+        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }
     public function settools(){
         return $this->hasOne(set_tool::class,'vehicleidno','vehicleidno');

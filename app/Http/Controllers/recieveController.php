@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\carstatus as recieve;
 use App\Models\blocks;
 use App\Models\blockings;
-use App\Models\carstatus;
 use App\Models\recieving as units;
+use App\Models\cars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -19,11 +18,11 @@ class recieveController extends Controller
     {   $id = Auth()->user()->id;
         if (Cache::has("searchReceiveData-".$id)){
             $search = Cache::get("searchReceiveData-".$id);
-            $cars = units::where('vehicleidno',$search)
+            $cars = units::with(['car'])->where('vehicleidno',$search)
             ->get();
             return view('recieve.index',['data'=>$cars]);
         }else{
-            $cars = units::with('blocking')->paginate(25);
+            $cars = units::with(['car'])->paginate(25);
             return view('recieve.index',['data'=>$cars]);
         }
 
@@ -51,10 +50,10 @@ class recieveController extends Controller
     public function show(string $id)
     {
         //
-        $car = units::with('blocking','settools','loosetools','damage')->findOrFail($id);
+        $car = units::with('car','settools','loosetools','damage')->findOrFail($id);
         $blocks = blocks::all();
         // return dd($car);
-        return view('recieve.show-recieve-unit',['car'=>$car,'blocks'=>$blocks]);
+        return view('recieve.show-recieve-unit',['recieve'=>$car,'blocks'=>$blocks]);
     }
 
     public function resetSearchReceiveData(){
@@ -82,41 +81,6 @@ class recieveController extends Controller
         }
         return redirect()->route('recive');
     }
-
-
-
-    public function updatePersonel($id = null , Request $request){
-        $recieve = units::findOrFail($id);
-        $recieve->receiveBy = $request["personel"];
-        $recieve->update();
-        return redirect()->back()->with(['success'=>"Update Successfully"]);
-    }
-
-    public function updateBlockings( Request $request , $id = null ){
-        $validated = $request->validate([
-            'blockings'=> 'required',
-        ]);
-        $car = units::findOrFail($id);
-        if($car->blockings=="empty"){
-            $car->blockings = $request->blockings;
-            $car->update();
-            $blocks = blockings::findOrFail($request->blockings);
-            $blocks->blockstatus=1;
-            $blocks->update();
-        }else{
-            $oldBlocking = $car->blockings;
-            $car->blockings = $request->blockings;
-            $car->update();
-            $oldblocks = blockings::findOrFail($oldBlocking);
-            $oldblocks->blockstatus=0;
-            $oldblocks->update();
-            $newblocks = blockings::findOrFail($request->blockings);
-            $newblocks->blockstatus=1;
-            $newblocks->update();
-        }
-        return back()->with(['success'=>'Success:: the car have been update properly... ']);
-    }
-
     /**
      * Show the form for editing the specified resource.
      */

@@ -28,7 +28,7 @@
                         <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
-                        <span class="flex-1 ml-3 whitespace-nowrap text-sm font-mono">{{$invoice->car->vehicleidno}}</span>
+                        <span class="flex-1 ml-3 whitespace-nowrap text-sm font-mono">{{$invoice->vehicleidno}}</span>
                     </div>
                 </li>
             </ol>
@@ -37,65 +37,24 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
                 {{-- invoice blocking and date form --}}
                 <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <form class="" action="{{URL('updateinvoicedata/'.$invoice->id)}}" method="POST" >
+                    //HOLD NOT DONE*
+                    <form method="POST" class="flex" action="{{URL('update-blockings/'.$invoice->vehicleidno)}}">
                         @csrf
-                        @method("PUT")
-                        <div class="flex flex-col space-y-2">
-                            <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Form</label>
-                            <div class="flex flex-row justify-evenly gap-2">
-                                <div class="w-full">
-                                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Final Date</label>
-                                    <div class="relative max-w-sm">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                            </svg>
-                                        </div>
-                                        <input type="date"
-                                        @if ($invoice->dateModifier!=null)
-                                        value=""
-                                        @else
-                                            value="{{$invoice->dateModifier}}"
-                                        @endif
-                                        name="date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    </div>
-                                    @error('name')
-                                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
-                                    <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
-                                    <div class="w-full">
-                                        <select id="blocks" name="blocks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option  data-url="" value="null" >Select Blocks </option>
-                                            @if ($blocks)
-                                            @foreach ($blocks as $b)
-                                                <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">Ask the admin for the blcokings</option>
-                                        @endif
-                                        </select>
-                                    </div>
-                                    @error('mmpcoptioncode')
-                                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
-                                    <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
-                                    <div class="w-full">
-                                        <select  id="blockings" name="blockings" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option></option>
-                                        </select>
-                                    </div>
-                                    @error('mmpcoptioncode')
-                                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="space-x-4 space-y-4">
-                                <x-primary-button>Update</x-primary-button>
-                            </div>
+                        @method('PUT')
+                        <div class="flex-col ">
+                            <select id="blocks" name="blocks" class=" blocks bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option  data-url="" value="null" >Select Blocks </option>
+                                    @if ($blocks)
+                                        @foreach ($blocks as $b)
+                                            <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">Ask the admin for the blcokings</option>
+                                    @endif
+                            </select>
+                            <select  id="blockings" name="blockings" class="blockings bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </select>
+                            <x-primary-button>{{ __('Submit') }}</x-primary-button>
                         </div>
                     </form>
                 </div>
@@ -109,7 +68,7 @@
                                         Unit ID
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->car->id }}
+                                    {{$invoice->id }}
                                 </td>
                             </tr>
                         </thead>
@@ -119,19 +78,19 @@
                                     Vehicle Identity Number
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->car->vehicleidno }}
+                                    {{$invoice->vehicleidno }}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                     Engine Number
                                 </th>
                                 <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->car->engineno}}
+                                    {{$invoice->engineno}}
                                 </th>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                     CSNO
                                 </th>
                                 <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->car->csno}}
+                                    {{$invoice->csno}}
                                 </th>
                             </tr>
                             <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -139,16 +98,16 @@
                                     Model Description
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->car->modeldescription}}
+                                    {{$invoice->modeldescription}}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                     Blockings
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    @if ($invoice->car->blockings == "empty")
+                                    @if ($invoice->blockings == "empty")
                                         Null
                                     @else
-                                        {{$invoice->car->blocking->bloackname}}
+                                        {{$invoice->blocking->bloackname}}
                                     @endif
                                 </td>
                             </tr>

@@ -7,14 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class invoce extends Model
 {
-    use HasFactory;
-    protected $fillable =  [
-        'vehicleidno','status','stp','vehicletype','modeltype','salesremark','csrno','csrtype','csrdate','dateModifier'
+    use HasFactory;  protected $primaryKey = 'vehicleidno';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $fillable =
+    [
+        'mmpcmodelcode',
+        'mmpcmodelyear',
+        'mmpcoptioncode',
+        'extcolorcode',
+        'modeldescription',
+        'exteriorcolor',
+        'csno',
+        'tag',
+        'bilingdate',
+        'vehicleidno',
+        'engineno',
+        'productioncbunumber',
+        'bilingdocuments',
+        'vehiclestockyard',
+        'blockings',
+        'receiveBy',
+        'dateIn',
+        'dateEncode'
     ];
-    public function car(){
-        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
-    }
-    public function inventory(){
-        return $this->belongsTo(inventorys::class,'vehicleidno','vehicleidno');
+    public function blocking(){
+        return $this->hasOne(blockings::class,'id','blockings');
     }
 }

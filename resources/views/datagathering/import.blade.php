@@ -30,33 +30,16 @@
                         @csrf
                         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Client Tag</h3>
                         <p class="mb-4 text-xs font-mono text-gray-900 dark:text-white">To Identify to whome the unit's are.</p>
-                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-license" type="radio" value="1" name="tags" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="horizontal-list-radio-license" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mazda </label>
-                                </div>
-                            </li>
-                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-id" type="radio" value="2" name="tags" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="horizontal-list-radio-id" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">MMPC</label>
-                                </div>
-                            </li>
-                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-millitary" type="radio" value="3" name="tags" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="horizontal-list-radio-millitary" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subaru</label>
-                                </div>
-                            </li>
-                            <li class="w-full dark:border-gray-600">
-                                <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-passport" type="radio" value="4" name="tags" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="horizontal-list-radio-passport" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Others</label>
-                                </div>
-                            </li>
-                        </ul>
-
+                        @if($data)
+                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a Blocks</label>
+                            <select required id="countries" name="clientTag"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="block">
+                                @foreach ($data as $tag )
+                                    <option value="{{$tag->id}}">{{$tag->clientName}}</option>
+                                @endforeach
+                            </select>
+                        @else
+                            ....
+                        @endif
                         <div class="flex items-center justify-center w-full">
                             <label for="file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">

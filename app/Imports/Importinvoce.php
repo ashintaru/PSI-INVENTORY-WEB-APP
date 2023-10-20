@@ -19,22 +19,32 @@ class Importinvoce implements ToModel,WithBatchInserts
         $bin_number = $bin->pluck('vehicleidno');
         $invoice = invoice::get();
         $invoice_number = $invoice->pluck('vehicleidno');
+
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
             $car = inventory::where('vehicleidno',$row[11])->first();
-            return new invoice([
-                'vehicleidno'=>$row[11],
-                'status'=>0,
-                'stp'=>$row[0],
-                'vehicletype'=>$row[6],
-                'modeltype'=>$row[7],
-                'salesremark'=>$row[16],
-                'csrno'=>$row[17],
-                'csrtype'=>$row[18],
-                'csrdate'=>Carbon::parse($row[19]),
-                'dateModifier'=>null
-            ]);
+            $temp = $car;
             $car->delete();
+            return new invoice([
+                'mmpcmodelcode'=> $temp->mmpcmodelcode,
+                'mmpcmodelyear'=> $temp->mmpcmodelyear ,
+                'mmpcoptioncode'=> $temp->mmpcoptioncode,
+                'extcolorcode'=> $temp->extcolorcode,
+                'modeldescription'=> $temp->modeldescription,
+                'exteriorcolor'=> $temp->exteriorcolor,
+                'csno'=> $temp->csno,
+                'tag'=>$temp->tag,
+                'bilingdate'=> Carbon::parse($temp->bilingdate)->format('Y-m-d'),
+                'vehicleidno'=> $temp->vehicleidno,
+                'engineno'=> $temp->engineno,
+                'productioncbunumber'=> $temp->productioncbunumber,
+                'bilingdocuments'=> $temp->bilingdocuments,
+                'vehiclestockyard'=> $temp->vehiclestockyard,
+                'blockings'=>$temp->blockings,
+                'receiveBy'=>$temp->receiveBy,
+                'dateIn'=>$temp->dateIn,
+                'dateEncode'=>$temp->dateEncode
+            ]);
         }
         else
             return null;

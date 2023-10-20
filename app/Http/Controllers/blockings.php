@@ -17,7 +17,7 @@ class blockings extends Controller
     //
     public function importBlockings()
     {
-        Excel::import(new importBlockings, request()->file('file'));
+        Excel::import(new importBlockings(request()->block), request()->file('file'));
         return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
     }
 

@@ -19,17 +19,8 @@ class invoice extends Controller
     public function index()
     {
 
-        // $data  = DB::table('cars')
-        //          ->selectRaw('count(cars.modeldescription) as model_count ,cars.modeldescription')
-        //          ->groupBy('modeldescription')
-        //          ->get();
-
         $invoices = invoce::paginate(25);
-
-        // return dd($data);
         return view('invoice.invoce',['invoices'=>$invoices]);
-
-        //
     }
 
     public function import(){
@@ -56,7 +47,7 @@ class invoice extends Controller
     public function show($id = null)
     {
         //
-        $data = invoce::with('car')->findOrFail($id);
+        $data = invoce::findOrFail($id);
         $blockdata = blocks::select(['id','blockname'])->where('status',0)->get();
         return view('invoice.invoiceprofile',['invoice'=>$data,'blocks'=>$blockdata]);
     }

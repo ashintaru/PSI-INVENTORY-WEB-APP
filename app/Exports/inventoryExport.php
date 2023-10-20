@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(string $tag ,$start = null,$end = null)
+    public function __construct(string $tag = null ,$start = null,$end = null)
     {
         $this->start = $start;
         $this->end = $end;
@@ -19,29 +19,53 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
 
     public function query()
     {
-        return inventory::
-        select(
-            [
-                'cars.mmpcmodelcode',
-                'cars.mmpcmodelyear',
-                'cars.mmpcoptioncode',
-                'cars.extcolorcode',
-                'cars.modeldescription',
-                'cars.exteriorcolor',
-                'cars.csno',
-                'cars.bilingdate',
-                'cars.vehicleidno',
-                'cars.engineno',
-                'cars.productioncbunumber',
-                'cars.bilingdocuments',
-                'cars.vehiclestockyard',
-            ]
-        )
-        ->join('cars','cars.vehicleidno','=','inventories.vehicleidno')
-        ->getQuery()
-        ->where('cars.tag',$this->tag)
-        ->orderBy('cars.id','ASC')
-        ->whereBetween('inventories.created_at',[$this->start,$this->end]);
+        if($this->tag == null){
+            return inventory::
+            select(
+                [
+                    'mmpcmodelcode',
+                    'mmpcmodelyear',
+                    'mmpcoptioncode',
+                    'extcolorcode',
+                    'modeldescription',
+                    'exteriorcolor',
+                    'csno',
+                    'bilingdate',
+                    'vehicleidno',
+                    'engineno',
+                    'productioncbunumber',
+                    'bilingdocuments',
+                    'vehiclestockyard',
+                ]
+            )
+            ->getQuery()
+            ->orderBy('vehicleidno','ASC')
+            ->whereBetween('inventories.created_at',[$this->start,$this->end]);
+        }else{
+            return inventory::
+            select(
+                [
+                    'mmpcmodelcode',
+                    'mmpcmodelyear',
+                    'mmpcoptioncode',
+                    'extcolorcode',
+                    'modeldescription',
+                    'exteriorcolor',
+                    'csno',
+                    'bilingdate',
+                    'vehicleidno',
+                    'engineno',
+                    'productioncbunumber',
+                    'bilingdocuments',
+                    'vehiclestockyard',
+                ]
+            )
+            ->getQuery()
+            ->where('tag',$this->tag)
+            ->orderBy('id','ASC')
+            ->whereBetween('inventories.created_at',[$this->start,$this->end]);
+        }
+
     }
 
     public function headings(): array

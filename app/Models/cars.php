@@ -31,7 +31,14 @@ class cars extends Model
         'bilingdocuments',
         'vehiclestockyard',
         'blockings',
-        'recieveBy'
+        'recieveBy',
+        'dateIm',
+        'dateEncode',
+        'dateReleased',
+        'releasedBy',
+        'dealer',
+        'remark',
+        'status'
     ];
 
     public function batch(){
@@ -43,12 +50,11 @@ class cars extends Model
     public function loosetools(){
         return $this->hasOne(tool::class,'vehicleid','id');
     }
-
+    public function receive(){
+        return $this->belongsTo(recieving::class,'vehicleidno','vehicleidno');
+    }
     public function damage(){
         return $this->hasOne(damage::class,'vehicleid','id');
-    }
-    public function status(){
-        return $this->hasOne(carstatus::class,'vehicleid','id');
     }
     public function logs(){
         return $this->hasMany(Log::class,'idNum','vehicleidno');

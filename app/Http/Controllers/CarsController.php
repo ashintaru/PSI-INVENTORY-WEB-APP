@@ -7,16 +7,11 @@ use App\Models\cars;
 use App\Models\Log;
 use App\Models\tool;
 use App\Models\damage;
-use App\Models\invoicecount;
-use App\Models\invoicelist;
 use App\Models\invoce;
 use App\Models\inventory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\carstatus;
 use Exception;
-use Barryvdh\DomPDF\PDF;
-use App\Models\blocks;
 use App\Models\blockings;
 use App\Models\recieving;
 use App\Models\set_tool;
@@ -39,17 +34,17 @@ class CarsController extends Controller
         $id=Auth()->user()->id;
         if(Cache::has("searchUnitData-".$id)){
             $search = Cache::get("searchUnitData-".$id);
-            $data = cars::with(['batch','status'])->where('vehicleidno',$search)->get();
+            $data = cars::where('status',null)->with(['batch'])->where('vehicleidno',$search)->get();
             return view('data.recieve',['data'=>$data,'start'=>'','end'=>'']);
         }else{
             if(Cache::has('startUnitData-'.$id)&&Cache::has('endUnitData-'.$id)){
                 $start = Carbon::parse(Cache::get('startUnitData-'.$id))->toDateTimeString();
                 $end = Carbon::parse(Cache::get('endUnitData-'.$id))->toDateTimeString();
-                $data = cars::with(['batch','status'])->whereBetween('created_at',[$start, $end])->paginate(25);
+                $data = cars::where('status',null)->with(['batch'])->whereBetween('created_at',[$start, $end])->paginate(25);
                 // return dd($start);
                 return view('data.recieve',['data'=>$data,'start'=>Cache::get('startUnitData-'.$id),'end'=>Cache::get('endUnitData-'.$id)]);
             }else{
-                $data = cars::with(['batch','status'])->paginate(25);
+                $data = cars::where('status',null)->with(['batch'])->paginate(25);
                 return view('data.recieve',['data'=>$data,'start'=>'','end'=>'']);
             }
         }
@@ -321,7 +316,7 @@ class CarsController extends Controller
             'blockings'=> 'required',
         ]);
         $car = cars::findOrFail($id);
-        if($car->blockings=="empty"){
+        if($car->blockings==null){
             $car->blockings = $request->blockings;
             $car->update();
             $blocks = blockings::findOrFail($request->blockings);
@@ -340,7 +335,6 @@ class CarsController extends Controller
         }
         return back()->with(['success'=>'Success:: the car have been update properly... ']);
     }
-
     public function updatecardetails(Request $request, $id = null){
         $validated = $request->validate([
             'mmpcmodelcode'=> 'required',
@@ -474,30 +468,16 @@ class CarsController extends Controller
         $this->defaultloosetool($carid);
         $this->defaulttools($carid);
         $this->defaultdamage($carid);
-        $car = recieving::findOrFail($carid);
+        $car = cars::findOrFail($carid);
+        $receiving = recieving::findOrFail($carid);
         inventory::create(
             [
-                'mmpcmodelcode'=>$car->mmpcmodelcode,
-                'mmpcmodelyear'=>$car->mmpcmodelyear,
-                'mmpcoptioncode'=>$car->mmpcoptioncode,
-                'extcolorcode'=>$car->extcolorcode,
-                'modeldescription'=>$car->modeldescription,
-                'exteriorcolor'=>$car->exteriorcolor,
-                'csno'=>$car->csno,
-                'tag'=>$car->tag,
-                'bilingdate'=>$car->bilingdate,
-                'vehicleidno'=>$car->vehicleidno,
-                'engineno'=>$car->engineno,
-                'productioncbunumber'=>$car->productioncbunumber,
-                'bilingdocuments'=>$car->bilingdocuments,
-                'vehiclestockyard'=>$car->vehiclestockyard,
-                'blockings'=>$car->blockings,
-                'receiveBy'=>$car->receiveBy,
-                'dateIn'=>$car->dateIn,
-                'dateEncode'=>$car->dateEncode
+                'vehicleidno'=>$receiving->vehicleidno,
             ]
         );
-        $car->delete();
+        $car->status = 2;
+        $car->update();
+        $receiving->delete();
         return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
     }
 
@@ -556,6 +536,7 @@ class CarsController extends Controller
                         ]
                     );
                     $car->delete();
+                    return redirect()->route('show-inventory')->with(['success' => 'success:: UPDATE PROPERLY....']);
                     break;
                 default:
                     return dd('magic');

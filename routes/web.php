@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\client;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\receiving;
@@ -55,6 +56,15 @@ Route::middleware(['auth','web','isClient'])->group(function(){
         Route::post('trackproduct','show');
     });
 
+
+});
+
+// Admin and Super Admin Route
+
+Route::get('cars',[pdfcontroller::class,'showEmployees']);
+Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
+
+Route::middleware(['auth','web','areAdmin'])->group(function() {
     Route::controller(report::class)->group(function(){
         Route::get('report','index');
         Route::post('report','fetchdata');
@@ -63,14 +73,6 @@ Route::middleware(['auth','web','isClient'])->group(function(){
         Route::get('disapproved-units','showdisapproveunits');
     });
 
-});
-
-// Admin and Super Admin Route
-
-Route::get('cars',[pdfcontroller::class,'showEmployees']);
-Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
-Route::middleware(['auth','web','areAdmin'])->group(function() {
-
         Route::controller(recieveController::class)->group(function(){
             Route::get('recieve-units',"index")->name('recive');
             Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
@@ -78,7 +80,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('searchRecieveUnit','searchRecieveData');
             Route::put('updatereceiveblockings/{id}','updateBlockings');
         });
-
         Route::controller(invoicecontroller::class)->group(function(){
             Route::get('invoice/{id}','index');
         });
@@ -100,7 +101,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(inventory::class)->group(function(){
             Route::get('inventory', 'index')->name('show-inventory');
             Route::get('inventory/{id}','view');
-            Route::post('searchinventory','searchinventory');
+            Route::post('search-inventory','searchinventory');
             Route::get('viewinventory/{action}','show');
         });
 
@@ -128,7 +129,8 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('insert-car-details','savecardetail');// saving the detail's in the server`
             Route::post('import', 'import')->name('import');
             Route::get('import_export', 'carformupload');//  Displaying upload form for car detail's
-
+            Route::put('update-blockings/{id}','updateBlockings');
+            Route::put('update-cars-Personel/{id}','updateRecieveBy');
         });
 
         Route::controller(receiving::class)->group(function(){
@@ -148,7 +150,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
             Route::post('default-approve/{id}','defaultapprove');
             Route::post('update-inventory/{id}','updatecarstatus');
-            Route::put('update-blockings/{id}','updateBlockings');
             Route::post('searchUnitList','searchUnitData');
             Route::post('searchRawData','searchRawData');
 
@@ -162,14 +163,13 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('showcarprofile/{id}','showcarprofile');
             Route::get('edit-car-status/{id}','editcarstatus');
             Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
-            Route::put('update-car-details/{id}','updatecardetails');
         });
 
         Route::controller(batching::class)->group(function(){
             Route::get('batches', 'index')->name('batch');
             Route::get('delete-batch/{id}','destroy');
             Route::post('create-Recieve','store');
-            Route::put('update-cars-Personel/{id}','updatePersonel');
+            // Route::put('update-cars-Personel/{id}','updatePersonel');
         });
 
 
@@ -189,6 +189,12 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('health', HealthCheckResultsController::class);
 
+
+        Route::controller(client::class)->group(function(){
+            Route::get('client','index')->name('show-client');
+            Route::post('store-client','store');
+            Route::put('update-client-tag/{id}',"update");
+        });
 
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');

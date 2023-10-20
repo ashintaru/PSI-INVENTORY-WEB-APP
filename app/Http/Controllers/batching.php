@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\batching as batch;
-use Illuminate\Support\Carbon;
-use App\Models\carstatus as recieve;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 use App\Models\blocks;
 use App\Models\cars;
 use App\Models\recieving as unit;
-
 
 class batching extends Controller
 {
@@ -20,7 +18,7 @@ class batching extends Controller
     public function index()
     {
         $block = blocks::all();
-        $batch =  batch::where('userid',Auth::user()->id)->orderBy('id','asc')->get();
+        $batch =  batch::with('car')->where('userid',Auth::user()->id)->orderBy('id','asc')->get();
         return view('data.batch',['batches'=>$batch,'blocks'=>$block]);
     }
 
@@ -44,52 +42,34 @@ class batching extends Controller
                 'datereceive'=>['required']
             ]
         );
-        // $timestamp = Carbon::parse($inputs['datein']);
-        $batch =  batch::where('userid',Auth::user()->id)->get();
-        $vinarray = $batch->pluck('vehicleidno');
-        $cars = cars::whereIn('vehicleidno',$vinarray)->get();
-        if(count($cars) > 0 ){
-            foreach ($cars as $car) {
-                unit::create(
-                    [
-                        'mmpcmodelcode'=>$car->mmpcmodelcode,
-                        'mmpcmodelyear'=>$car->mmpcmodelyear,
-                        'mmpcoptioncode'=>$car->mmpcoptioncode,
-                        'extcolorcode'=>$car->extcolorcode,
-                        'modeldescription'=>$car->modeldescription,
-                        'exteriorcolor'=>$car->exteriorcolor,
-                        'csno'=>$car->csno,
-                        'tag'=>$car->tag,
-                        'bilingdate'=>$car->bilingdate,
-                        'vehicleidno'=>$car->vehicleidno,
-                        'engineno'=>$car->engineno,
-                        'productioncbunumber'=>$car->productioncbunumber,
-                        'bilingdocuments'=>$car->bilingdocuments,
-                        'vehiclestockyard'=>$car->vehiclestockyard,
-                        'blockings'=>$car->blockings,
-                        'receiveBy'=>$car->recieveBy,
-                        'dateIn'=>$inputs['datein'],
-                        'dateEncode'=>$inputs['datereceive']
-                    ]
-                );
-                $car->delete();
+        try {
+            //code...
+            $batch =  batch::where('userid',Auth::user()->id)->get();
+            $vinarray = $batch->pluck('vehicleidno');
+            $cars = cars::whereIn('vehicleidno',$vinarray)->get();
+            if(count($cars) > 0 ){
+                foreach ($cars as $car) {
+                    unit::create(
+                        [
+                            'vehicleidno'=>$car->vehicleidno,
+                            'status'=>0
+                        ]
+                    );
+                    $car->status = 1;
+                    $car->update();
+                }
+                batch::query()->where('userid',Auth::user()->id)->delete();
+                return redirect()->route('batch')->with(['success'=>"Success!!"]);
             }
-            batch::query()->where('userid',Auth::user()->id)->delete();
-            return redirect()->back()->with(['success'=>"Success!!"]);
+            else{
+               return redirect()->route('batch')->with(['msg'=>"Failled!!"]);
+            }
+        } catch (Exception $th) {
+            //throw $th;
+            return redirect()->route('batch')->with(['msg'=>$th]);
         }
-        else{
-           return redirect()->back()->with(['msg'=>"Failled!!"]);
-        }
+
     }
-
-    public function updatePersonel(Request $request , $id = null){
-        $recieve = cars::findOrFail($id);
-        $recieve->recieveBy = $request["personel"];
-        $recieve->update();
-        return redirect()->back()->with(['success'=>"Update Successfully"]);
-    }
-
-
     /**
      * Display the specified resource.
      */
@@ -121,6 +101,6 @@ class batching extends Controller
     {
         $batch = batch::findOrFail($id);
         $batch->delete();
-        return redirect()->route('batch');
+        return redirect()->route('batch')->with(['msg'=>'Removed Successfully']);
     }
 }
