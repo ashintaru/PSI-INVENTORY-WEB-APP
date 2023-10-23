@@ -54,17 +54,17 @@ class report extends Controller
             if($inputs['action'] == 1 ){
                 if( $inputs['start'] == null || $inputs['end'] == null){
                     if($tags == null)
-                        $data = inventory::paginate(25);
+                        $data = inventory::with(['car'])->paginate(25);
                     else{
-                        $data = inventory::where('tag',$tags)->paginate(25);
+                        $data = inventory::with(['car'])->where('tag',$tags)->paginate(25);
                     }
                 }else{
                     $startdate = Carbon::parse($inputs['start'])->toDateTimeString();
                     $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
                     if($tags == null)
-                        $data = inventory::whereBetween('inventories.created_at',[$startdate,$enddate])->paginate(25);
+                        $data = inventory::with(['car'])->whereBetween('inventories.created_at',[$startdate,$enddate])->paginate(25);
                     else{
-                        $data = inventory::where('tag',$tags)
+                        $data = inventory::with(['car'])->where('tag',$tags)
                         ->whereBetween('inventories.created_at',[$startdate,$enddate])
                         ->paginate(25);
                     }

@@ -21,6 +21,28 @@ class blockings extends Controller
         return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
     }
 
+    public function storeInvoice(Request $request){
+        $validate = request()->validate([
+            'blocks'=>['required']
+        ]);
+
+        try {
+            //code...
+            spots::create([
+                'blockId'=>000,
+                'bloackname'=>$request->blocks,
+                'blockstatus'=>false,
+            ]);
+
+            return redirect()->route('block');
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('block')->with(['msg',$th]);
+        }
+
+    }
+
     public function displayblockings($id=null)
     {
         $data = spots::with('block')->where('blockId',$id)->paginate(25);

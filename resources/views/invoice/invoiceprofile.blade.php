@@ -37,23 +37,71 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
                 {{-- invoice blocking and date form --}}
                 <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    //HOLD NOT DONE*
-                    <form method="POST" class="flex" action="{{URL('update-blockings/'.$invoice->vehicleidno)}}">
+                    <form method="POST" class="flex-col space-y-2" action="{{URL('update-blockings/'.$invoice->car->vehicleidno) }}">
                         @csrf
                         @method('PUT')
-                        <div class="flex-col ">
-                            <select id="blocks" name="blocks" class=" blocks bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option  data-url="" value="null" >Select Blocks </option>
+                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Block State</h3>
+                        <div class="flex flex-shrink-0 gap-3">
+                            <div class="w-1/3">
+                                <label for="blocks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocks</label>
+                                <div class="w-full">
+                                    <select id="blockings" name="blockings" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option  data-url="" value="null" >Select Blocks </option>
                                     @if ($blocks)
                                         @foreach ($blocks as $b)
-                                            <option  data-url="" value="{{URL('getblocks/'.$b->id)}}">{{$b->blockname}}</option>
+                                            <option  data-url="" value="{{$b->id}}">{{$b->bloackname}}</option>
                                         @endforeach
                                     @else
                                         <option value="">Ask the admin for the blcokings</option>
                                     @endif
-                            </select>
-                            <select  id="blockings" name="blockings" class="blockings bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            </select>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="py-2">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
+                {{-- invoice blocking and date form --}}
+                <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <form method="POST" action="{{URL('updatecarsreleasedata/'.$invoice->car->vehicleidno)}}" class="space-y-2">
+                        @csrf
+                        <div class="flex-col space-y-3">
+                            <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Released By</h3>
+                            <div class="flex">
+                            <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                </svg>
+                            </span>
+                            <input type="text" id="website-admin" name="personel" class="rounded-none roundZed-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500  min-w-0 w-1/2 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                            </div>
+                            <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Delear</h3>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                    </svg>
+                                </span>
+                                <input type="text" id="website-admin" name="dealer" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500  min-w-0 w-1/2 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                </div>
+
+                            <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Date Released</h3>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                    </svg>
+                                </span>
+                                <input type="date" id="website-admin" name="dateReleased" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500  min-w-0 w-1/2 ztext-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Remark</h3>
+                            <div class="flex">
+                                <textarea id="message" rows="4" name="remark" class="block p-2.5 min-w-0 w-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                            </div>
                             <x-primary-button>{{ __('Submit') }}</x-primary-button>
                         </div>
                     </form>
@@ -84,13 +132,13 @@
                                     Engine Number
                                 </th>
                                 <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->engineno}}
+                                    {{$invoice->car->engineno}}
                                 </th>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                     CSNO
                                 </th>
                                 <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->csno}}
+                                    {{$invoice->car->csno}}
                                 </th>
                             </tr>
                             <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -98,94 +146,100 @@
                                     Model Description
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->modeldescription}}
+                                    {{$invoice->car->modeldescription}}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                                     Blockings
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    @if ($invoice->blockings == "empty")
+                                    @if (!$invoice->car->blockings )
                                         Null
                                     @else
-                                        {{$invoice->blocking->bloackname}}
+                                        {{$invoice->car->blocking->bloackname}}
                                     @endif
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {{-- end --}}
-                {{-- table of invoice --}}
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-                            <tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Invoice ID
+                                    Model Code
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->id }}
+                                    {{$invoice->car->mmpcmodelcode}}
+                                </td>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                    Model Year
+                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{$invoice->car->mmpcmodelyear}}
                                 </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                   CSR no
+                                    Exterior Color Code
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->csrno }}
+                                    {{$invoice->car->extcolorcode}}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    CSR Type
+                                    Exterior Color
                                 </th>
-                                <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->csrtype}}
-                                </th>
-                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    CSR Date
-                                </th>
-                                <th class="px-6 py-3 text-lg font-mono">
-                                    {{Carbon\Carbon::parse($invoice->csrdate)->format('M d Y')}}
-                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                   {{$invoice->car->exteriorcolor}}
+                                </td>
                             </tr>
-                            <tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Sold to Party
+                                    Unit Date Encode
                                 </th>
                                 <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->stp }}
+                                    {{Carbon\Carbon::parse($invoice->car->dateEncode)->isoformat('MMMM D YYYY ')}}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Status
+                                    Unit Time/Date In
                                 </th>
-                                <th class="px-6 py-3 text-lg font-mono">
-                                    @if ($invoice->status)
-                                        <svg width="26px" height="26px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#77B255" d="M36 32a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v28z"></path><path fill="#FFF" d="M29.28 6.362a2.502 2.502 0 0 0-3.458.736L14.936 23.877l-5.029-4.65a2.5 2.5 0 1 0-3.394 3.671l7.209 6.666c.48.445 1.09.665 1.696.665c.673 0 1.534-.282 2.099-1.139c.332-.506 12.5-19.27 12.5-19.27a2.5 2.5 0 0 0-.737-3.458z"></path></svg>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{Carbon\Carbon::parse($invoice->car->dateIn)->isoformat('MMMM D YYYY h:mm a')}}
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                    Recieve BY
+                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{$invoice->car->recieveBy}}
+                                </td>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                    Released By
+                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{$invoice->car->releasedBy}}
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                    Released Date
+                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    @if ($invoice->car->dateReleased)
+                                        {{Carbon\Carbon::parse($invoice->car->dateReleased)->isoformat('MMMM D YYYY h:mm a')}}
                                     @else
-                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">R.F.I</span>
+                                        Not Yet Released...
                                     @endif
-                                </th>
-                            </tr>
-                            <tr>
-                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Vehicle Type
-                                </th>
-                                <td class="px-6 py-3 text-lg text-center font-mono">
-                                    {{$invoice->vehicletype }}
                                 </td>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Model Type
+                                    Dealer
                                 </th>
-                                <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->modeltype}}
-                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{$invoice->car->dealer}}
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Sales Remark
+                                    Remark
                                 </th>
-                                <th class="px-6 py-3 text-lg font-mono">
-                                    {{$invoice->salesremark}}
-                                </th>
+                                <td class="px-6 py-3 text-lg text-center font-mono">
+                                    {{$invoice->car->remark}}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -198,9 +252,26 @@
                 @include('invoice.partials.invoiceprofile',['data'=>$invoice])
             </div>
         </div>
+        @if ($invoice->car->dateReleased && $invoice->car->releasedBy && $invoice->car->dealer)
+        <div class="py-2">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
+                {{-- invoice blocking and date form --}}
+                <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <form method="POST" class="flex-col space-y-2" action="{{URL('released-Unit/'.$invoice->car->vehicleidno) }}">
+                        @csrf
+                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Released this Unit</h3>
+                        <x-primary-button>{{ __('Approve') }}</x-primary-button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
     @else
-
+        <p>No Record...</p>
     @endif
+
+
+
 </x-app-layout>
 <script>
     $(document).ready(function(){

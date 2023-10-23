@@ -22,7 +22,7 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
 use App\Http\Controllers\batching;
 use App\Http\Controllers\recieveController;
-
+use App\Http\Controllers\released;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,13 +65,14 @@ Route::get('cars',[pdfcontroller::class,'showEmployees']);
 Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
 
 Route::middleware(['auth','web','areAdmin'])->group(function() {
-    Route::controller(report::class)->group(function(){
-        Route::get('report','index');
-        Route::post('report','fetchdata');
-        Route::get('total-units','showtotalunits');
-        Route::get('approved-units','showapproveunits');
-        Route::get('disapproved-units','showdisapproveunits');
-    });
+
+        Route::controller(report::class)->group(function(){
+            Route::get('report','index');
+            Route::post('report','fetchdata');
+            Route::get('total-units','showtotalunits');
+            Route::get('approved-units','showapproveunits');
+            Route::get('disapproved-units','showdisapproveunits');
+        });
 
         Route::controller(recieveController::class)->group(function(){
             Route::get('recieve-units',"index")->name('recive');
@@ -105,15 +106,17 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         });
 
         Route::controller(invoice::class)->group(function(){
-            Route::get('invoice','index');
+            Route::get('invoice','index')->name('invoice');
             Route::post('createinvoicedata/{id}','store');
-            Route::get('invoice-get/{id}','show');
+            Route::get('invoice-get/{id}','show')->name('invoice-profile');
             Route::get('upload-Invoice','import');
             Route::put('updateinvoicedata/{id}','update');
-
+            Route::post('updatecarsreleasedata/{id}','updateReleasedDatas');
+            Route::post('released-Unit/{id}','release');
         });
+
         Route::controller(blocks::class)->group(function(){
-            Route::get('blocks','index');
+            Route::get('blocks','index')->name('block');
             Route::post('savedblock','store');
             Route::get('getblocks/{id}','fetchBlocks');
         });
@@ -134,6 +137,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
         Route::controller(receiving::class)->group(function(){
 
+        });
+
+        Route::controller(released::class)->group(function(){
+            Route::get('released-units','index')->name('released');
         });
 
         Route::controller(CarsController::class)->group(function(){
@@ -200,6 +207,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('blocking-list/{id}','displayblockings');
             Route::get('select-blockings/{id}','fetchCar');
             Route::patch('updateBlockings/{id}','update');
+            Route::post('saved-invoice-blocking','storeInvoice');
         });
 
 

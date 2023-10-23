@@ -100,27 +100,27 @@
                                     {{$tableRow->vehicleidno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($tableRow->blocking)
-                                        {{$tableRow->blocking->bloackname}}
+                                    @if ($tableRow->car->blocking)
+                                        {{$tableRow->car->blocking->bloackname}}
                                     @else
                                         Nothing..
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$tableRow->receiveBy}}
+                                    {{$tableRow->car->recieveBy}}
                                 </td>
 
                                 <td class="px-6 py-4">
-                                {{$tableRow->engineno}}
+                                {{$tableRow->car->engineno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                {{$tableRow->csno}}
+                                {{$tableRow->car->csno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                {{$tableRow->modeldescription}}
+                                {{$tableRow->car->modeldescription}}
                                 </td>
                                 <td class="px-6 py-4">
-                                {{$tableRow->vehiclestockyard}}
+                                {{$tableRow->car->vehiclestockyard}}
                                 </td>
                                 <td class="px-6 py-4 flex ">
                                     <a href="{{URL('invoice-get/'.$tableRow->vehicleidno)}}"

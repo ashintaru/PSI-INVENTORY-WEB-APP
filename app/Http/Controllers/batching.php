@@ -10,6 +10,7 @@ use App\Models\blocks;
 use App\Models\cars;
 use App\Models\recieving as unit;
 
+
 class batching extends Controller
 {
     /**
@@ -42,32 +43,29 @@ class batching extends Controller
                 'datereceive'=>['required']
             ]
         );
-        try {
-            //code...
-            $batch =  batch::where('userid',Auth::user()->id)->get();
-            $vinarray = $batch->pluck('vehicleidno');
-            $cars = cars::whereIn('vehicleidno',$vinarray)->get();
-            if(count($cars) > 0 ){
-                foreach ($cars as $car) {
-                    unit::create(
-                        [
-                            'vehicleidno'=>$car->vehicleidno,
-                            'status'=>0
-                        ]
-                    );
-                    $car->status = 1;
-                    $car->update();
-                }
-                batch::query()->where('userid',Auth::user()->id)->delete();
-                return redirect()->route('batch')->with(['success'=>"Success!!"]);
+        $batch =  batch::where('userid',Auth::user()->id)->get();
+        $vinarray = $batch->pluck('vehicleidno');
+        $cars = cars::whereIn('vehicleidno',$vinarray)->get();
+        if(count($cars) > 0 ){
+            foreach ($cars as $car) {
+                unit::create(
+                    [
+                        'vehicleidno'=>$car->vehicleidno,
+                        'status'=>0
+                    ]
+                );
+                $car->dateIn = $request->datein;
+                $car->dateEncode = $request->datereceive;
+                $car->status = 1;
+                $car->update();
             }
-            else{
-               return redirect()->route('batch')->with(['msg'=>"Failled!!"]);
-            }
-        } catch (Exception $th) {
-            //throw $th;
-            return redirect()->route('batch')->with(['msg'=>$th]);
+            batch::query()->where('userid',Auth::user()->id)->delete();
+            return redirect()->route('batch')->with(['success'=>"Success!!"]);
         }
+        else{
+           return redirect()->route('batch')->with(['msg'=>"Failled!!"]);
+        }
+
 
     }
     /**

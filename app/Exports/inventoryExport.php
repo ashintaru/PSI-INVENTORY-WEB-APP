@@ -1,6 +1,7 @@
 <?php
 namespace App\Exports;
 
+use App\Models\cars;
 use App\Models\inventory;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -20,7 +21,7 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
     public function query()
     {
         if($this->tag == null){
-            return inventory::
+            return cars::
             select(
                 [
                     'mmpcmodelcode',
@@ -31,15 +32,16 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
                     'exteriorcolor',
                     'csno',
                     'bilingdate',
-                    'vehicleidno',
+                    'cars.vehicleidno',
                     'engineno',
                     'productioncbunumber',
                     'bilingdocuments',
                     'vehiclestockyard',
                 ]
             )
+            ->join('inventories','inventories.vehicleidno','cars.vehicleidno')
             ->getQuery()
-            ->orderBy('vehicleidno','ASC')
+            ->orderBy('inventories.vehicleidno','ASC')
             ->whereBetween('inventories.created_at',[$this->start,$this->end]);
         }else{
             return inventory::
@@ -60,9 +62,10 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
                     'vehiclestockyard',
                 ]
             )
+            ->join('cars','vehicleidno','inventories.vehicleidno')
             ->getQuery()
             ->where('tag',$this->tag)
-            ->orderBy('id','ASC')
+            ->orderBy('inventories.vehicleidno','ASC')
             ->whereBetween('inventories.created_at',[$this->start,$this->end]);
         }
 

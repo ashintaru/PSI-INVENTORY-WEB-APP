@@ -88,19 +88,19 @@
                         @else
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <td class="px-6 py-4">
-                                    {{$d->vehicleidno}}
+                                    {{$d->car->vehicleidno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->engineno}}
+                                    {{$d->car->engineno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->csno}}
+                                    {{$d->car->csno}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->mmpcmodelcode}}
+                                    {{$d->car->mmpcmodelcode}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$d->modeldescription}}
+                                    {{$d->car->modeldescription}}
                                 </td>
                             </tr>
                         @endif

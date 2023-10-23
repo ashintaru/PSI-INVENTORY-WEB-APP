@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\blockings;
-use App\Models\invoce;
-use App\Models\blocks;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Models\cars;
+use App\Models\invoce;
+use Exception;
+use App\Models\released;
+use Illuminate\Http\Request;
 
 class invoice extends Controller
 {
@@ -19,7 +17,7 @@ class invoice extends Controller
     public function index()
     {
 
-        $invoices = invoce::paginate(25);
+        $invoices = invoce::with(['car'])->where('status',0)->paginate(25);
         return view('invoice.invoce',['invoices'=>$invoices]);
     }
 
@@ -48,18 +46,46 @@ class invoice extends Controller
     {
         //
         $data = invoce::findOrFail($id);
-        $blockdata = blocks::select(['id','blockname'])->where('status',0)->get();
+        $blockdata = blockings::select(['id','bloackname'])->where('blockstatus',0)->where('blockId',0)->get();
         return view('invoice.invoiceprofile',['invoice'=>$data,'blocks'=>$blockdata]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit(string $id)
     {
         //
     }
 
+    public function release($carid = null){
+
+        $invoice = invoce::findOrFail($carid);
+        $invoice->status = 1;
+        $invoice->update();
+        $release = released::firstOrCreate([
+            'vehicleidno'=>$invoice->vehicleidno
+        ],[
+            'vehicleidno'=>$invoice->vehicleidno,
+            'status'=>1
+        ]);
+        $release->status = 1;
+        $release->save();
+        return redirect()->route('invoice')->with(['success'=>'the Unit have been released']);
+    }
+
+
+    public function updateReleasedDatas(Request $request , $carid = null){
+        $car = cars::findOrFail($carid);
+        $inputs = $request->all();
+        $car->dateReleased = $request->dateReleased;
+        $car->releasedBy = $request->personel;
+        $car->dealer = $request->dealer;
+        $car->update();
+        // return dd('sc');
+        return redirect()->route('invoice');
+    }
     /**
      * Update the specified resource in storage.
      */
@@ -79,13 +105,13 @@ class invoice extends Controller
             $invoice->status = 1;
             $invoice->dateModifier = $inputs['date'];
 
-            $oldblocks = blockings::findOrFail($car->getOriginal('blockings'));
-            $oldblocks->blockstatus = 0;
-            $oldblocks->update();
+            $Block = blockings::findOrFail($car->getOriginal('blockings'));
+            $Block->blockstatus = 0;
+            $Block->update();
 
-            $newblocks = blockings::findOrFail($inputs['blockings']);
-            $newblocks->blockstatus = 1;
-            $newblocks->update();
+            $newBlock = blockings::findOrFail($inputs['blockings']);
+            $newBlock->blockstatus = 1;
+            $newBlock->update();
 
             $car->update();
             $invoice->update();

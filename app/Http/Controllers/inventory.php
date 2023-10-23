@@ -80,7 +80,6 @@ class inventory extends Controller
                 # code...
                 $this->searchRecieve($request['search']);
                 return redirect()->route('show-inventory');
-
                 break;
             case '2':
                 $this->resetSearch();

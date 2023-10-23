@@ -12,20 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invoces', function (Blueprint $table) {
-            $table->string('mmpcmodelcode');
-            $table->year('mmpcmodelyear');
-            $table->string('mmpcoptioncode');
-            $table->string('extcolorcode');
-            $table->string('modeldescription');
-            $table->string('exteriorcolor');
-            $table->string('csno');
-            $table->date('bilingdate');
+            $table->id();
             $table->string('vehicleidno')->unique();
-            $table->string('engineno');
-            $table->integer('productioncbunumber');
-            $table->bigInteger('bilingdocuments');
-            $table->string('vehiclestockyard');
-            $table->string('blockings');
+            $table->boolean('status');
             $table->timestamps();
         });
     }
