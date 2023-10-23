@@ -9,8 +9,8 @@
                     @if($car->loosetools)
                         <section>
                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                <form method="POST" action="{{URL('update-loose-item/'.$car->loosetools->id)}}">
-                                    @method('PATCH')
+                                <form method="POST" action="{{URL('update-loose-item/'.$car->vehicleidno)}}">
+                                    @method('PUT')
                                     @csrf
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
@@ -135,7 +135,7 @@
                     @else
                         <section>
                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                <form method="POST" action="{{URL('loose-item/'.$car->id)}}">
+                                <form method="POST" action="{{URL('loose-item/'.$car->vehicleidno)}}">
                                     @csrf
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">

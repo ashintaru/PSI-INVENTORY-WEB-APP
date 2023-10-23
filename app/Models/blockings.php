@@ -20,4 +20,8 @@ class blockings extends Model
     public function car(){
         return $this->belongsTo(cars::class,'blockings','id');
     }
+    public function receiving(){
+        return $this->belongsTo(recieving::class,'blockings','id');
+    }
+
 }

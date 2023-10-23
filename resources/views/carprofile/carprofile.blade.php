@@ -244,7 +244,6 @@
                         <div class="overflow-x-auto p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <form method="POST" action="{{URL('update-inventory/'.$car->id)}}" class="space-y-2">
                                 @csrf
-                                @method('PUT')
                                 <div class="flex-col space-y-3">
                                     <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Unit Status</h3>
                                     <ul class="space-y-2 w-1/2 items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">

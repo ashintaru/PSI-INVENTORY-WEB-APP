@@ -45,7 +45,8 @@ class subaruImport implements ToModel,WithBatchInserts,WithValidation,WithUpsert
             'productioncbunumber'=> $row[10],
             'bilingdocuments'=> $row[11],
             'vehiclestockyard'=> $row[12],
-            'blockings'=>"empty",
+            'blockings'=>'',
+            'recieveBy'=>'',
         ]),
         ];
     }

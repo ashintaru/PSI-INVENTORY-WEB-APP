@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno');
+            $table->string('vehicleidno')->unique();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

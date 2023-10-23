@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\batching as batch;
-use Illuminate\Support\Carbon;
-use App\Models\carstatus as recieve;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 use App\Models\blocks;
+use App\Models\cars;
+use App\Models\recieving as unit;
+
 
 class batching extends Controller
 {
@@ -17,7 +19,7 @@ class batching extends Controller
     public function index()
     {
         $block = blocks::all();
-        $batch =  batch::where('userid',Auth::user()->id)->orderBy('id','asc')->get();
+        $batch =  batch::with('car')->where('userid',Auth::user()->id)->orderBy('id','asc')->get();
         return view('data.batch',['batches'=>$batch,'blocks'=>$block]);
     }
 
@@ -41,31 +43,31 @@ class batching extends Controller
                 'datereceive'=>['required']
             ]
         );
-        // $timestamp = Carbon::parse($inputs['datein']);
         $batch =  batch::where('userid',Auth::user()->id)->get();
-        foreach ($batch as $key => $value) {
-
-            recieve::create(
-                [
-                    'vehicleid'=>$batch[$key]['unitid'],
-                    'havebeenpassed'=>false,
-                    'havebeenchecked'=>false,
-                    'havebeenreleased'=>false,
-                    'havebeenstored'=>false,
-                    'hasloosetool'=>false,
-                    'hassettool'=>false,
-                    'hasdamage'=>false,
-                    'datein'=>$inputs['datein'],
-                    'daterecieve'=>$inputs['datereceive'],
-                    'recieveBy'=>null,
-                ]
-            );
+        $vinarray = $batch->pluck('vehicleidno');
+        $cars = cars::whereIn('vehicleidno',$vinarray)->get();
+        if(count($cars) > 0 ){
+            foreach ($cars as $car) {
+                unit::create(
+                    [
+                        'vehicleidno'=>$car->vehicleidno,
+                        'status'=>0
+                    ]
+                );
+                $car->dateIn = $request->datein;
+                $car->dateEncode = $request->datereceive;
+                $car->status = 1;
+                $car->update();
+            }
+            batch::query()->where('userid',Auth::user()->id)->delete();
+            return redirect()->route('batch')->with(['success'=>"Success!!"]);
+        }
+        else{
+           return redirect()->route('batch')->with(['msg'=>"Failled!!"]);
         }
 
-        batch::query()->where('userid',Auth::user()->id)->delete();
-        return redirect()->back()->with(['msg'=>"Success!!"]);
-    }
 
+    }
     /**
      * Display the specified resource.
      */
@@ -97,6 +99,6 @@ class batching extends Controller
     {
         $batch = batch::findOrFail($id);
         $batch->delete();
-        return redirect()->route('batch');
+        return redirect()->route('batch')->with(['msg'=>'Removed Successfully']);
     }
 }

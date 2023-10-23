@@ -23,41 +23,48 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
 
     use Importable;
 
-public function model(array $row)
-{
-        $bin = DB::table('cars')->get();
-        $bin_number = $bin->pluck('vehicleidno');
-
-    if ($bin_number->contains($row[8]) == false)
+    private $tags;
+    public function __construct(int $tag)
     {
-        $description = explode(' ',$row[4]);
-        if( strtolower($description[0]) == strtolower("mirage") )
-            $tag = "MAZDA";
-        elseif ( strtolower($description[0]) == strtolower("l300") )
-            $tag = "MMPC";
-        else
-            $tag = "SUBURU";
-        return [
-            new cars([
-            'mmpcmodelcode'=> $row[0],
-            'mmpcmodelyear'=> $row[1] ,
-            'mmpcoptioncode'=> $row[2],
-            'extcolorcode'=> $row[3],
-            'modeldescription'=> $row[4],
-            'exteriorcolor'=> $row[5],
-            'csno'=> $row[6],
-            'tag'=>$tag,
-            'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
-            'vehicleidno'=> $row[8],
-            'engineno'=> $row[9],
-            'productioncbunumber'=> $row[10],
-            'bilingdocuments'=> $row[11],
-            'vehiclestockyard'=> $row[12],
-            'blockings'=>"empty",
-        ])
-        ];
+        $this->tags = $tag;
     }
-    else null;
+
+    public function model(array $row)
+    {
+            $bin = DB::table('cars')->get();
+            $bin_number = $bin->pluck('vehicleidno');
+
+        if ($bin_number->contains($row[8]) == false)
+        {
+            return [
+                new cars([
+                    'mmpcmodelcode'=> $row[0],
+                    'mmpcmodelyear'=> $row[1] ,
+                    'mmpcoptioncode'=> $row[2],
+                    'extcolorcode'=> $row[3],
+                    'modeldescription'=> $row[4],
+                    'exteriorcolor'=> $row[5],
+                    'csno'=> $row[6],
+                    'tag'=>$this->tags,
+                    'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
+                    'vehicleidno'=> $row[8],
+                    'engineno'=> $row[9],
+                    'productioncbunumber'=> $row[10],
+                    'bilingdocuments'=> $row[11],
+                    'vehiclestockyard'=> $row[12],
+                    'blockings'=>null,
+                    'recieveBy'=>null,
+                    'dateIn'=>null,
+                    'dateEncode'=>null,
+                    'dateReleased'=>null,
+                    'releasedBy'=>null,
+                    'dealer'=>null,
+                    'remark'=>null,
+                    'status'=>null
+                ])
+            ];
+        }
+        else null;
 
     }
     public function batchSize(): int

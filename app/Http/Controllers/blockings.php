@@ -6,8 +6,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Imports\importBlockings;
 use App\Models\blockings as spots;
+use App\Models\cars;
 use App\Models\invoicedata;
 use Exception;
+use App\Models\inventory;
 
 
 class blockings extends Controller
@@ -15,8 +17,30 @@ class blockings extends Controller
     //
     public function importBlockings()
     {
-        Excel::import(new importBlockings, request()->file('file'));
+        Excel::import(new importBlockings(request()->block), request()->file('file'));
         return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+    }
+
+    public function storeInvoice(Request $request){
+        $validate = request()->validate([
+            'blocks'=>['required']
+        ]);
+
+        try {
+            //code...
+            spots::create([
+                'blockId'=>000,
+                'bloackname'=>$request->blocks,
+                'blockstatus'=>false,
+            ]);
+
+            return redirect()->route('block');
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('block')->with(['msg',$th]);
+        }
+
     }
 
     public function displayblockings($id=null)
@@ -43,7 +67,8 @@ class blockings extends Controller
     }
 
     public function fetchCar($id = null){
-        $data = spots::join('cars','cars.blockings','=','blockings.id')
+        $car = cars::where('blockings',$id)->first();
+        $data = spots::join('inventories','inventories.blockings','=','blockings.id')
         ->where('blockings.id',$id)->get();
         return response()->json($data);
     }

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\cars;
-use App\Imports\mzdsImport;
-use App\Imports\mmpcImport;
-use App\Imports\subaruImport;
+// use App\Imports\mzdsImport;
+// use App\Imports\mmpcImport;
+// use App\Imports\subaruImport;
+use App\Imports\carsImport;
+use App\Models\client;
+use App\Models\blockings;
 use Exception;
 
 class car extends Controller
@@ -30,7 +33,8 @@ class car extends Controller
      */
     public function carformupload()
     {
-       return view('datagathering.import');
+       $client = client::all();
+       return view('datagathering.import',['data'=>$client]);
     }
     /**
      * Saving the details that came from manual form
@@ -90,48 +94,69 @@ class car extends Controller
         return redirect()->route('car-form')->with(['success'=>'The Unit have been upload successfully']);
     }
 
-    public function import(Request $request)
-    {
-        while(empty($error)){
-            try{
-                //asking if the post method have file
-                $validated = $request->validate([
-                    'file' => 'required|max:2000',
-                    'tags' => 'required'
-                ]);
-                $extension = request()->file('file')->extension();
-                if($extension === "xlsx"){
-                    switch ($request->tags) {
-                        case '1':
-                            $collection = (new mzdsImport)->import(request()->file('file'));
-                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
-                            break;
-                        case '2':
-                            //MMpc
-                            (new mmpcImport)->import(request()->file('file'));
-                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
-                            break;
-                        case '3':
-                            //Subaru import
-                            (new subaruImport)->import(request()->file('file'));
-                            return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
-                            break;
-                        default:
-                            return back()->with(['success' => 'Warning:: the file has been uploaded succesfully but it does not saved in databased','pr'=>'success']);
-                            break;
-                    }
-                }
-                else{
-                    request()->file('file') == null;
-                    return back()->with(['msg' => 'Error:: File must be in Excel Format']);
-                }
-            }
-            catch(Exception  $error){
-                // return dd($error);
-                return back()->with(['msg' => $error->getMessage()]);
-            }
+    public function updateRecieveBy(Request $request , $id = null){
+        $validated = $request->validate([
+            'personel'=>['required']
+        ]);
+        $car = cars::findOrFail($id);
+        $car->recieveBy = $request->personel;
+        $car->update();
+        return redirect()->back()->with(['success'=>"Personel Update"]);
+    }
+    public function updateBlockings(Request $request , $id = null){
+        $car = cars::findOrFail($id);
+        $validated = $request->validate([
+            'blockings'=> 'required',
+        ]);
+        switch ($car->blockings) {
+            case null:
+                $car->blockings = $request->blockings;
+                $car->update();
+                $blocks = blockings::findOrFail($request->blockings);
+                $blocks->blockstatus=1;
+                $blocks->update();
+                return back()->with(['success'=>'Success:: the car have been update properly... ']);
+                break;
+            default:
+                $oldBlocking = $car->blockings;
+                $car->blockings = $request->blockings;
+                $car->update();
+                $oldblocks = blockings::findOrFail($oldBlocking);
+                $oldblocks->blockstatus=0;
+                $oldblocks->update();
+                $newblocks = blockings::findOrFail($request->blockings);
+                $newblocks->blockstatus=1;
+                $newblocks->update();
+                return back()->with(['success'=>'Success:: the car have been update properly... ']);
+                break;
         }
     }
+    public function import(Request $request)
+    {
+        try{
+            //asking if the post method have file
+            $validated = $request->validate([
+                'file' => 'required|max:2000',
+                'clientTag' => 'required'
+            ]);
+            $extension = request()->file('file')->extension();
+            if($extension === "xlsx"){
+                (new carsImport(request()->clientTag))->import(request()->file('file'));
+                return back()->with(['success' => 'success:: the file has been uploaded succesfully...','pr'=>'success']);
+            }
+            else{
+                request()->file('file') == null;
+                return back()->with(['msg' => 'Error:: File must be in Excel Format']);
+            }
+        }
+        catch(Exception  $error){
+            // return dd($error);
+            return back()->with(['msg' => $error->getMessage()]);
+        }
+
+    }
+
+
 
 
 

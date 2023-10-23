@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class invoiceExport implements FromQuery,WithHeadings,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(string $tag ,$start = null,$end = null)
+    public function __construct(string $tag = null ,$start = null,$end = null)
     {
         $this->start = $start;
         $this->end = $end;
@@ -22,36 +22,53 @@ class invoiceExport implements FromQuery,WithHeadings,ShouldAutoSize
 
     public function query()
     {
-        return invoce::
-        select(
-            [
-                'cars.mmpcmodelcode',
-                'cars.mmpcmodelyear',
-                'cars.mmpcoptioncode',
-                'cars.extcolorcode',
-                'cars.modeldescription',
-                'cars.exteriorcolor',
-                'cars.csno',
-                'cars.bilingdate',
-                'cars.vehicleidno',
-                'cars.engineno',
-                'cars.productioncbunumber',
-                'cars.bilingdocuments',
-                'cars.vehiclestockyard',
-                'invoces.stp',
-                'invoces.vehicletype',
-                'invoces.modeltype',
-                'invoces.salesremark',
-                'invoces.csrno',
-                'invoces.csrtype',
-                'invoces.csrdate'
-            ]
-        )
-        ->join('cars','cars.vehicleidno','=','invoces.vehicleidno')
-        ->getQuery()
-        ->where('cars.tag',$this->tag)
-        ->orderBy('cars.id','ASC')
-        ->whereBetween('invoces.created_at',[$this->start,$this->end]);
+        if($this->tag == null){
+            return invoce::
+            select(
+                [
+                    'mmpcmodelcode',
+                    'mmpcmodelyear',
+                    'mmpcoptioncode',
+                    'extcolorcode',
+                    'modeldescription',
+                    'exteriorcolor',
+                    'csno',
+                    'bilingdate',
+                    'vehicleidno',
+                    'engineno',
+                    'productioncbunumber',
+                    'bilingdocuments',
+                    'vehiclestockyard',
+                ]
+            )
+            ->getQuery()
+            ->orderBy('vehicleidno','ASC')
+            ->whereBetween('invoces.created_at',[$this->start,$this->end]);
+        }else{
+            return invoce::
+            select(
+                [
+                    'mmpcmodelcode',
+                    'mmpcmodelyear',
+                    'mmpcoptioncode',
+                    'extcolorcode',
+                    'modeldescription',
+                    'exteriorcolor',
+                    'csno',
+                    'bilingdate',
+                    'vehicleidno',
+                    'engineno',
+                    'productioncbunumber',
+                    'bilingdocuments',
+                    'vehiclestockyard',
+                ]
+            )
+            ->getQuery()
+            ->where('tag',$this->tag)
+            ->orderBy('vehicleidno','ASC')
+            ->whereBetween('invoces.created_at',[$this->start,$this->end]);
+        }
+
     }
 
     public function headings(): array

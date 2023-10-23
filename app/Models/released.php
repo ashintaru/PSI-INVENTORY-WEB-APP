@@ -5,25 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class tool extends Model
+class released extends Model
 {
     use HasFactory;
-
-    protected $table = 'loose_tool';
+    protected $table = 'release_unit';
     protected $primaryKey = 'vehicleidno';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = [
+    protected $fillable =
+    [
         'vehicleidno',
-        'ownermanual',
-        'warantybooklet',
-        'key',
-        'remotecontrol',
-    	'others',
+        'status'
     ];
-
-
     public function car(){
-        return $this->BelongsTo(recieving::class,'vehicleid','vehicleidno');
+        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }
 }

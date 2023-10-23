@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class damage extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'vehicleidno';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $table = 'damage';
     protected $fillable = [
-        'vehicleid',
+        'vehicleidno',
         'dents',
         'dings',
         'scratches',

@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cars', function (Blueprint $table) {
-            $table->id();
             $table->string('mmpcmodelcode');
             $table->year('mmpcmodelyear');
             $table->string('mmpcoptioncode');
@@ -21,12 +20,18 @@ return new class extends Migration
             $table->string('exteriorcolor');
             $table->string('csno');
             $table->date('bilingdate');
-            $table->string('vehicleidno')->unique();
+            $table->string('vehicleidno')->primary();
             $table->string('engineno');
             $table->integer('productioncbunumber');
             $table->bigInteger('bilingdocuments');
             $table->string('vehiclestockyard');
             $table->string('blockings');
+            $table->timestamps('dateIn');
+            $table->date('dateEncode');
+            $table->date('dateReleased');
+            $table->string('blockings');
+            $table->string('blockings');
+
             $table->timestamps();
         });
     }

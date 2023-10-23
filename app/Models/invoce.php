@@ -8,13 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class invoce extends Model
 {
     use HasFactory;
-    protected $fillable =  [
-        'vehicleidno','status','stp','vehicletype','modeltype','salesremark','csrno','csrtype','csrdate','dateModifier'
+    protected $primaryKey = 'vehicleidno';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $fillable =
+    [
+        'vehicleidno',
+        'status'
     ];
     public function car(){
-        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
+        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }
-    public function inventory(){
-        return $this->belongsTo(inventorys::class,'vehicleidno','vehicleidno');
+    public function blocking(){
+        return $this->hasOne(blockings::class,'id','blockings');
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Models\cars;
-use App\Models\carstatus;
+use App\Models\recieving;
 use App\Models\Log;
 use App\Models\tool;
 use Exception;
@@ -24,7 +23,7 @@ class looseitems extends Controller
      */
     public function create(Request $request , $carid = null)
     {
-        $data = cars::with('loosetools')->findOrFail($carid);
+        $data = recieving::findOrFail($carid);
         return view('carprofile.loosetools',['car'=>$data]);
     }
 
@@ -49,23 +48,13 @@ class looseitems extends Controller
                 $othervalue = ($request->has('other'))?$inputs['othervalue']:false;
 
                 tool::create([
-                    'vehicleid'=>$carid,
+                    'vehicleidno'=>$carid,
                     'ownermanual'=>$manual,
                     'warantybooklet'=>$waranty,
                     'key'=>$keyvalue,
                     'remotecontrol'=>$remote,
                     'others'=>$othervalue
                 ]);
-                Log::create([
-                    'idNum'=>$carid,
-                    'logs'=>'Car VI#'. ' '. $carid .' have been checked the loose tools by '. $request->user()->name
-                ]);
-
-                // return dd($carid);
-                $car = cars::findOrFail($carid);
-                $status = carstatus::where('vehicleid',$carid)->first();
-                $status->hasloosetool = 1;
-                $status->update();
                 return redirect()->back()->with(['success' => 'success:: the Car '.$carid .' has been checked....']);
             }
         } catch (Exception $error) {
@@ -114,13 +103,6 @@ class looseitems extends Controller
                 $tools->remotecontrol = $remote;
                 $tools->others = $othervalue;
                 $tools->update();
-
-
-
-                Log::create([
-                    'idNum'=>$tools->car->vehicleidno,
-                    'logs'=>'Car VI#'. ' '. $tools->vehicleidno .' have been update the loose tools by '. $request->user()->name
-                ]);
                 return redirect()->back()->with(['success' => 'success:: the tools  has been update']);
             }
         } catch (Exception $th) {

@@ -15,27 +15,18 @@ class Importinvoce implements ToModel,WithBatchInserts
 {
     public function model(array $row)
     {
-        $bin = cars::join('inventories','inventories.vehicleid','=','cars.id')->where('invstatus',1)->get();
-        // dd($bin);
+        $bin = inventory::where('status',1)->get();
         $bin_number = $bin->pluck('vehicleidno');
-        $invoice = invoice::all();
+        $invoice = invoice::where('status',0)->get();
         $invoice_number = $invoice->pluck('vehicleidno');
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
-            // $inventory = inventory::where('vehicleidno',$row[11])->get();
-            // $inventory->invoicestatus =1;
-            // $inventory->update();
+            $car = inventory::where('vehicleidno',$row[11])->first();
+            $car->status = 0;
+            $car->update();
             return new invoice([
-                'vehicleidno'=>$row[11],
-                'status'=>0,
-                'stp'=>$row[0],
-                'vehicletype'=>$row[6],
-                'modeltype'=>$row[7],
-                'salesremark'=>$row[16],
-                'csrno'=>$row[17],
-                'csrtype'=>$row[18],
-                'csrdate'=>Carbon::parse($row[19]),
-                'dateModifier'=>null
+                'vehicleidno'=> $car->vehicleidno,
+                'status' => 0
             ]);
         }
         else

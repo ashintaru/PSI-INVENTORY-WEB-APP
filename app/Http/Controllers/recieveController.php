@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\carstatus as recieve;
 use App\Models\blocks;
-use App\Models\carstatus;
+use App\Models\blockings;
+use App\Models\recieving as units;
+use App\Models\cars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+
 
 class recieveController extends Controller
 {
@@ -16,13 +18,12 @@ class recieveController extends Controller
     {   $id = Auth()->user()->id;
         if (Cache::has("searchReceiveData-".$id)){
             $search = Cache::get("searchReceiveData-".$id);
-            $cars = recieve::join('cars','cars.id','carstatus.vehicleid')
-            ->where('cars.vehicleidno',$search)
+            $cars = units::where('status',0)->with(['car'])->where('vehicleidno',$search)
             ->get();
             return view('recieve.index',['data'=>$cars]);
         }else{
-            $cars = recieve::with(['car'])
-            ->paginate(25);
+            $cars = units::where('status',0)->with(['car'])->paginate(25);
+            // return dd($cars);
             return view('recieve.index',['data'=>$cars]);
         }
 
@@ -50,9 +51,10 @@ class recieveController extends Controller
     public function show(string $id)
     {
         //
-        $car = recieve::with(['car'])->findOrFail($id);
+        $car = units::with(['car','settools','loosetools','damage'])->findOrFail($id);
         $blocks = blocks::all();
-        return view('recieve.show-recieve-unit',['car'=>$car,'blocks'=>$blocks]);
+        // return dd($car);
+        return view('recieve.show-recieve-unit',['recieve'=>$car,'blocks'=>$blocks]);
     }
 
     public function resetSearchReceiveData(){
@@ -80,16 +82,6 @@ class recieveController extends Controller
         }
         return redirect()->route('recive');
     }
-
-
-
-    public function updatePersonel($id = null , Request $request){
-        $recieve = carstatus::findOrFail($id);
-        $recieve->recieveBy = $request["personel"];
-        $recieve->update();
-        return redirect()->back();
-    }
-
     /**
      * Show the form for editing the specified resource.
      */

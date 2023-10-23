@@ -29,7 +29,7 @@ class ImportExportController extends Controller
                     try {
                         // $import = new Importinvoce;
                         Excel::import( new Importinvoce, request()->file('file'));
-                        return view('invoice.importInvoice',['collection'=>'']);
+                        return view('invoice.importInvoice',['collection'=>''])->with(['success'=>'Update Succesfull']);
                     } catch ( \Maatwebsite\Excel\Validators\ValidationException $e) {
                          $failures = $e->failures();
                         return back()->with(['msg' =>$failures]);

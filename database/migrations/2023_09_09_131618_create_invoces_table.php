@@ -13,16 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoces', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno');
+            $table->string('vehicleidno')->unique();
             $table->boolean('status');
-            $table->string('stp');
-            $table->string('vehicletype');
-            $table->string('modeltype');
-            $table->string('salesremark');
-            $table->string('csmo');
-            $table->string('csrtype');
-            $table->date('csrdate');
-            $table->date('dateModified')->nullable();
             $table->timestamps();
         });
     }

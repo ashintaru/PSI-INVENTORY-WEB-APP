@@ -49,6 +49,7 @@ class blocks extends Controller
         }
     }
 
+
     public function fetchBlocks($id = null)
     {
         $block = bloke::findOrFail($id);

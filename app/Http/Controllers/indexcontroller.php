@@ -28,10 +28,8 @@ class indexcontroller extends Controller
 
             $inventory = DB::select('select COUNT(vehicleidno) as totalcount , updated_at
             FROM inventories
-            WHERE invstatus = 1
             GROUP by updated_at
             LIMIT 7');
-
             //   $format =
 
             // $result = json_decode($inventory,true);
