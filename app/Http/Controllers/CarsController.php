@@ -295,7 +295,6 @@ class CarsController extends Controller
             // return dd($car->vehicleidno);
         }
     }
-
     public function editloosetool($id = null){
         $tools = tool::findOrFail($id);
         return response()->json($tools);
@@ -308,8 +307,6 @@ class CarsController extends Controller
         $cars = cars::findorFail($id);
         return response()->json($cars);
     }
-
-
     public function updateBlockings( Request $request , $id = null ){
         $validated = $request->validate([
             'blockings'=> 'required',
@@ -499,25 +496,7 @@ class CarsController extends Controller
                     ]);
                     $inv->status = 1;
                     $inv->update();
-
                     return redirect()->route('recive')->with(['success' => 'success:: UPDATE PROPERLY....']);
-                    break;
-                case "2":
-                    $car = inventory::firstOrCreate(['vehicleidno'=>$carid],
-                    [
-                        'vehicleidno'=>$carid,
-                        'status'=>1
-                    ]);
-                    $car->status = 0;
-                    $car->update();
-                    $receiving = recieving::firstOrCreate(['vehicleidno'=>$carid],
-                    [
-                        'vehicleidno'=>$carid,
-                        'status'=>1
-                    ]);
-                    $receiving->status = 0;
-                    $receiving->update();
-                    return redirect()->route('show-inventory')->with(['success' => 'success:: UPDATE PROPERLY....']);
                     break;
                 default:
                     return dd('magic');
@@ -528,6 +507,7 @@ class CarsController extends Controller
             return redirect()->back()->with(['msg' => $error->getMessage()]);
         }
     }
+
 
     // public function preinvoice($description){
 

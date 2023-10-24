@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Cache;
 use App\Models\cars;
 use Illuminate\Support\Facades\Auth;
+use App\Models\recieving;
 
 class inventory extends Controller
 {
@@ -126,8 +127,14 @@ class inventory extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id = null)
     {
-
+        $car = inbentaryo::findOrFail($id);
+        $car->delete();
+        $receiving = recieving::findOrFail($id);
+        $receiving->status = 0;
+        $receiving->update();
+        // return dd($car);
+        return redirect()->route('show-inventory')->with(['success' => 'success:: UPDATE PROPERLY....']);
     }
 }

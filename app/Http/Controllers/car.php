@@ -103,32 +103,38 @@ class car extends Controller
         $car->update();
         return redirect()->back()->with(['success'=>"Personel Update"]);
     }
+
+
     public function updateBlockings(Request $request , $id = null){
         $car = cars::findOrFail($id);
         $validated = $request->validate([
             'blockings'=> 'required',
         ]);
-        switch ($car->blockings) {
-            case null:
-                $car->blockings = $request->blockings;
-                $car->update();
-                $blocks = blockings::findOrFail($request->blockings);
-                $blocks->blockstatus=1;
-                $blocks->update();
-                return back()->with(['success'=>'Success:: the car have been update properly... ']);
-                break;
-            default:
-                $oldBlocking = $car->blockings;
-                $car->blockings = $request->blockings;
-                $car->update();
-                $oldblocks = blockings::findOrFail($oldBlocking);
-                $oldblocks->blockstatus=0;
-                $oldblocks->update();
-                $newblocks = blockings::findOrFail($request->blockings);
-                $newblocks->blockstatus=1;
-                $newblocks->update();
-                return back()->with(['success'=>'Success:: the car have been update properly... ']);
-                break;
+        if($request->blockings == null){
+            return back()->with(['msg'=>'Fail']);
+        }else{
+            switch ($car->blockings) {
+                case null:
+                    $car->blockings = $request->blockings;
+                    $car->update();
+                    $blocks = blockings::findOrFail($request->blockings);
+                    $blocks->blockstatus=1;
+                    $blocks->update();
+                    return back()->with(['success'=>'Success:: the car have been update properly... ']);
+                    break;
+                default:
+                    $oldBlocking = $car->blockings;
+                    $car->blockings = $request->blockings;
+                    $car->update();
+                    $oldblocks = blockings::findOrFail($oldBlocking);
+                    $oldblocks->blockstatus=0;
+                    $oldblocks->update();
+                    $newblocks = blockings::findOrFail($request->blockings);
+                    $newblocks->blockstatus=1;
+                    $newblocks->update();
+                    return back()->with(['success'=>'Success:: the car have been update properly... ']);
+                    break;
+            }
         }
     }
     public function import(Request $request)

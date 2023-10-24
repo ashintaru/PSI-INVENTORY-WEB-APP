@@ -73,8 +73,9 @@
                                     </button>
                                 </td>
                                 <td class="text-center">
-                                    <form method="POST" action="{{URL('update-inventory/'.$d->vehicleidno)}}" class="space-y-2">
+                                    <form method="POST" action="{{URL('remove-receiving-units/'.$d->vehicleidno)}}" class="space-y-2">
                                         @csrf
+                                        @method('delete')
                                         <div class="flex-col space-y-3">
                                             <button type="submit" name="approved" value="2" class="inline-flex items-center ">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

@@ -103,6 +103,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('inventory/{id}','view');
             Route::post('search-inventory','searchinventory');
             Route::get('viewinventory/{action}','show');
+            Route::delete('remove-receiving-units/{id}','destroy');
         });
 
         Route::controller(invoice::class)->group(function(){

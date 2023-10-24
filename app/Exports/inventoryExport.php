@@ -70,7 +70,6 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
         }
 
     }
-
     public function headings(): array
     {
         return [
