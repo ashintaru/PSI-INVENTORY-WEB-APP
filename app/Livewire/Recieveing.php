@@ -2,45 +2,30 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\cars;
-use Livewire\WithPagination;
-use App\Models\blocks;
-use App\Models\damage;
+use App\Models\blocks as bloke;
+use App\Models\batching;
+use Illuminate\Support\Facades\Auth;
 
 class Recieveing extends Component
 {
-    use WithPagination;
-
-    public $status;
-    public $count = 0;
-    public $cars;
+    public $vehicleidno;
+    public $recievedBy;
+    public $blockId;
     public $id;
+    // public $recievedBy;
 
 
-    public function submitDamage(){
-
-        $car = cars::findOrFail($this->cars);
-
-        $damage = damage::firstOrCreate([],[]);
-    }
-    public function edit($id){
-        $this->id = $id;
-        $this->status = 1;
-    }
-
-    public function select($vehicleidno){
-        $this->cars = $vehicleidno;
-        return dd($this->cars);
-    }
-
-    public function increment()
-    {
-        $this->count++;
+    #[On('select-batch')]
+    public function setBatchId($batchId){
+        $batch = batching::find($batchId);
+        $this->vehicleidno = $batch->vehicleidno;
+        // return dd($batchId);
     }
     public function render()
     {
-        $data = cars::where('status',null)->paginate(10);
-        $blocks = blocks::get();
-        return view('livewire.recieveing',['data'=>$data,'blocks'=>$blocks]) ->layout('layouts.app');
+        $blocks = bloke::get();
+        return view('livewire.recieveing',['blocks'=>$blocks]) ->layout('layouts.app');
     }
 }
