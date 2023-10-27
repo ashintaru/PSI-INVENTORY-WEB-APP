@@ -44,17 +44,17 @@ class cars extends Model
     public function batch(){
         return $this->hasOne(batching::class,'vehicleidno','vehicleidno');
     }
-    public function settools(){
-        return $this->hasOne(set_tool::class,'vehicleid','id');
-    }
-    public function loosetools(){
-        return $this->hasOne(tool::class,'vehicleid','id');
-    }
     public function receive(){
         return $this->belongsTo(recieving::class,'vehicleidno','vehicleidno');
     }
+    public function settools(){
+        return $this->hasOne(set_tool::class,'vehicleidno','vehicleidno');
+    }
+    public function loosetools(){
+        return $this->hasOne(tool::class,'vehicleidno','vehicleidno');
+    }
     public function damage(){
-        return $this->hasOne(damage::class,'vehicleid','id');
+        return $this->hasOne(damage::class,'vehicleidno','vehicleidno');
     }
     public function logs(){
         return $this->hasMany(Log::class,'idNum','vehicleidno');

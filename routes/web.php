@@ -23,6 +23,7 @@ use App\Http\Controllers\pdfcontroller;
 use App\Http\Controllers\batching;
 use App\Http\Controllers\recieveController;
 use App\Http\Controllers\released;
+use App\Livewire\Recieveing;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,8 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('uploadInvoice','importInvoice');
         });
 
+
+
         Route::controller(car::class)->group(function(){
             Route::get('insert-data','carform')->name('car-form');//  Displaying form for car detail's
             Route::post('insert-car-details','savecardetail');// saving the detail's in the server`
@@ -144,11 +147,13 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('released-units','index')->name('released');
         });
 
+        Route::get('recieve',Recieveing::class);
+
         Route::controller(CarsController::class)->group(function(){
 
             Route::get('masterlist','index');
 
-            Route::get('recieve', 'unitindex')->name('unit-list');
+            // Route::get('recieve', 'unitindex')->name('unit-list');
             Route::get('rawdata', 'rawData')->name('raw-data');
             Route::post('batchingUnit','unitBatching');
 

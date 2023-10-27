@@ -36,14 +36,15 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         {{-- <script src="../path/to/flowbite/dist/datepicker.js"></script> --}}
+        @livewireStyles
     </head>
 
     <body class="font-mono antialiased bg-white dark:bg-gray-900">
 
         @include('layouts.navigation')
-        <div class="p-4 sm:ml-64 ">
+        <div class="p-2">
             <main >
-                {{ $slot }}
+                {{$slot}}
             </main>
         </div>
         {{--  --}}
@@ -51,6 +52,7 @@
         {{-- <script src="../path/to/flowbite/dist/datepicker.js"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/datepicker.min.js"></script>
         {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
+        @livewireScripts
         </body>
     <script>
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
