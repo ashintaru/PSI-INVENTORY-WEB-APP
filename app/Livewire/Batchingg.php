@@ -22,8 +22,10 @@ class Batchingg extends Component
 
         $this->batchId = $batchId;
         $this->dispatch('select-batch',$this->batchId);
+        request()->session()->flash('success','the unit have been selected !!');
     }
-    #[On('unit-batch')]
+
+    #[On('unit-batch'),On('select-batch'),on('relode-batchlist')]
     public function render()
     {
         $userid = Auth::user()->id;

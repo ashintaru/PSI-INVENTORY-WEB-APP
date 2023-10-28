@@ -11,10 +11,17 @@ class Blockings extends Component
 {
 
     public $blockings;
-    public $blocks;
+    public $blockingsId;
+
     #[On('get-blockings')]
     public function get($blocks){
-        $this->blockings = child::where('blockid',$blocks['id'])->get();
+        $this->blockings = child::select(['id','bloackname'])->where('blockid',$blocks)->where('blockstatus',0)->get();
+    }
+
+    public function select(){
+        $this->dispatch('select-blockings',$this->blockingsId);
+        // return dd();
+
     }
 
     public function render()

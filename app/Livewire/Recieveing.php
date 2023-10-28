@@ -14,8 +14,26 @@ class Recieveing extends Component
     public $recievedBy;
     public $blockId;
     public $id;
+    public $status;
     // public $recievedBy;
 
+    #[On('select-blockings')]
+    public function setBlockings($blockid){
+        $this->blockId = $blockid;
+    }
+
+    public function update(){
+        $cars = cars::where('vehicleidno',$this->vehicleidno)->first();
+        $cars->blockings = $this->blockId;
+        $cars->recieveBy = $this->recievedBy;
+        $status = ($this->status == 1 || $this->status == 2 )?1:9;
+        $cars->status = $status;
+        $cars->save();
+
+        $this->dispatch('relode-batchlist');
+        request()->session()->flash('success','the unit have been selected !!');
+        // $cars->blockings
+    }
 
     #[On('select-batch')]
     public function setBatchId($batchId){
@@ -23,6 +41,8 @@ class Recieveing extends Component
         $this->vehicleidno = $batch->vehicleidno;
         // return dd($batchId);
     }
+
+
     public function render()
     {
         $blocks = bloke::get();

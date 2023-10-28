@@ -8,8 +8,7 @@ class Blocks extends Component
 {
     public $blockid;
     public function select(){
-        $blocks = bloke::findOrFail($this->blockid);
-        $this->dispatch('get-blockings',$blocks);
+        $this->dispatch('get-blockings',$this->blockid);
     }
     public function render()
     {

@@ -1,4 +1,10 @@
 <div>
+    <div class="py-2">
+        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+        <div class="relative">
+            <input wire:model.live.debounce.500ms="search" type="search" id="default-search" class="block w-1/4 p-3 pl-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Vehicle id No, Csno...">
+        </div>
+    </div>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -44,23 +50,14 @@
                     </tr>
                 @endforeach
             @else
-                table are empty.......
+                <tr>
+                    <td>
+                        table are empty.......
+                    </td>
+                </tr>
             @endif
         </tbody>
     </table>
-    {{-- <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <th scope="col" class="">
-                    checkbox
-                </th>
-                <th scope="col" class="">
-                    VIN.
-                </th>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table> --}}
     <div id="config-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
         Configuration
         <div class="tooltip-arrow" data-popper-arrow></div>
@@ -71,5 +68,6 @@
         @endif
     </div>
 
+    <x-toast />
 </div>
 
