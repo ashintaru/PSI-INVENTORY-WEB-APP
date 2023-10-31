@@ -13,10 +13,15 @@
             <div class=" p-3">
                 <x-input-label for="Blockings" :value="__('Blockings')" />
                 @livewire('blockings')
+                <span class="text-sm text-center">
+                    @if ($blockId)
+                        Selected - {{$blockId}}
+                    @endif
+                </span>
             </div>
             <div class="w-1/8 p-3">
-                <x-input-label for="vin" :value="__('Recieved By')" />
-                <x-text-input wire:model="recievedBy" id="recieveby" class="block mt-1 w-full" type="text" name="vin" value="{{$recievedBy}}" required autocomplete="username" />
+                <x-input-label for="recieveby" :value="__('Received By')" />
+                <x-text-input wire:model="recievedBy" id="recieveby" class="block mt-1 w-full" type="text" name="recievedBy" value="{{$recievedBy}}" required autocomplete="username" />
             </div>
             <div class="w-1/8 p-3">
                 <x-input-label for="vin" :value="__('Status')" />
@@ -44,17 +49,34 @@
         @if ($status == 2 || $status == 3)
             <div class="flex justify-center">
                 <div class="w-1/8 p-3">
-                    <x-input-label for="set-tools" :value="__('Tools')" />
-                    <x-text-input :disabled="true" id="set-tools" class="block mt-1 w-full" type="text" name="vin" value="{{$vehicleidno}}" required autocomplete="username" />
-
+                    <label for="setTools" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Set Tools</label>
+                    <textarea wire:model="setTools" id="setTools" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                    @if ($status == 2)
+                        <div class="flex items-center mb-4">
+                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">All Goods</label>
+                        </div>
+                    @endif
                 </div>
                 <div class="w-1/8 p-3">
-                    <x-input-label for="loose-Item" :value="__('Loose Item')" />
-                    <x-text-input :disabled="true" id="loose-Item" class="block mt-1 w-full" type="text" name="vin" value="{{$vehicleidno}}" required autocomplete="username" />
+                    <label for="LooseItem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Loose Items</label>
+                    <textarea wire:model="looseItems" id="LooseItem" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                    @if ($status == 2)
+                        <div class="flex items-center mb-4">
+                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">All Goods</label>
+                        </div>
+                    @endif
                 </div>
                 <div class="w-1/8 p-3">
-                    <x-input-label for="damage" :value="__('Damage')" />
-                    <x-text-input :disabled="true" id="damage" class="block mt-1 w-full" type="text" name="vin" value="{{$vehicleidno}}" required autocomplete="username" />
+                    <label for="Damage Findings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Damage Findings</label>
+                    <textarea wire:model="damage" id="Damage Findings" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                    @if ($status == 2)
+                        <div class="flex items-center mb-4">
+                            <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">All Goods</label>
+                        </div>
+                    @endif
                 </div>
             </div>
         @else

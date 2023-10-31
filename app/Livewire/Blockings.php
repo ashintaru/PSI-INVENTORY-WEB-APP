@@ -13,7 +13,7 @@ class Blockings extends Component
     public $blockings;
     public $blockingsId;
 
-    #[On('get-blockings')]
+    #[On('get-blockings'),On('relode-batchlist')]
     public function get($blocks){
         $this->blockings = child::select(['id','bloackname'])->where('blockid',$blocks)->where('blockstatus',0)->get();
     }
@@ -21,7 +21,6 @@ class Blockings extends Component
     public function select(){
         $this->dispatch('select-blockings',$this->blockingsId);
         // return dd();
-
     }
 
     public function render()

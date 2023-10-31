@@ -14,7 +14,7 @@ class UnitRecieve extends Component
     use WithPagination;
     public $search;
 
-    #[On('unit-batch')]
+    #[On('unit-batch'),On('removed-batch')]
     public function render()
     {
         $data = cars::where('status',null)

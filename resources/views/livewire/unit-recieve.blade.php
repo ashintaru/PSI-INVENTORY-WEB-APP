@@ -28,11 +28,18 @@
         <tbody>
             @if (!is_null($data))
                 @foreach($data as $tableRow)
+                    <div wire:loading wire:target="select({{$tableRow->id}})" class="w-full" role="status">
+                        <span class="text-sm text-center text-green-500">Sending....</span>
+                    </div>
                     <tr wire:key="{{ $tableRow->vehicleidno }}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="flex items-center mb-4 gap-2" >
-                                <input wire:click="select({{$tableRow->id}})" id="{{$tableRow->id}}-check-box" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                {{$tableRow->vehicleidno}}
+                                <button  id="{{$tableRow->id}}-check-box" wire:click="select({{$tableRow->id}})" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                      </svg>
+                                  </button>
+                                  {{$tableRow->vehicleidno}}
                             </div>
                         </th>
                         <td class="px-6 py-4">
