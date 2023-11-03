@@ -10,6 +10,8 @@ use App\Models\blockings;
 use Livewire\Attributes\Rule;
 use App\Models\findings;
 use App\Models\inventory;
+use Illuminate\Support\Facades\Auth;
+
 
 class Recieveing extends Component
 {
@@ -37,6 +39,8 @@ class Recieveing extends Component
         $this->blockId = $blockid;
     }
 
+
+
     public function edit(){
 
     }
@@ -62,6 +66,7 @@ class Recieveing extends Component
         request()->session()->flash('success','the unit have been selected !!');
         // $cars->blockings
     }
+
 
     public function checkStatus(cars $cars = null , $status = null){
         if ($status == 2 || $status == 3) {

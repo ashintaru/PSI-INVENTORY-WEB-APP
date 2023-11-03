@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Imports;
 use App\Models\cars;
 use App\Models\invoce as invoice;
@@ -22,7 +21,7 @@ class Importinvoce implements ToModel,WithBatchInserts
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
             $car = inventory::where('vehicleidno',$row[11])->first();
-            $car->status = 0;
+            $car->status = 1;
             $car->update();
             return new invoice([
                 'vehicleidno'=> $car->vehicleidno,
