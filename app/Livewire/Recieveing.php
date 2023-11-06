@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Auth;
 class Recieveing extends Component
 {
     #[Rule(['required'])]
-    public $vehicleidno;
+    public $vehicleidno = null;
+    public $selectedBlocks = null;
+    public $selectedBlockings = [];
     #[Rule(['required'])]
     public $recievedBy;
     #[Rule(['required'])]
@@ -26,7 +28,7 @@ class Recieveing extends Component
     #[Rule(['required'])]
     public $status;
     // public $recievedBy;
-
+    public $blockings;
 
     public $looseItems;
 
@@ -34,21 +36,58 @@ class Recieveing extends Component
 
     public $damage;
 
-    #[On('select-blockings')]
-    public function setBlockings($blockid){
-        $this->blockId = $blockid;
+
+
+    public function updatedstatus(){
+        $this->dispatch('post-created');
+    }
+    public function select(){
+        $this->dispatch('post-created');
+    }
+    public function updatedselectedBlocks($value){
+        $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',$this->selectedBlocks)->where('blockstatus',0)->get();
+        // dump($this->selectedBlockings);
+    }
+    #[On('unit-inspection')]
+    public function setvehicleidno($vin){
+        $this->vehicleidno = $vin;
+        // return dd($this->vehicleidno);
+    }
+
+    public function goods(){
+        $car = cars::where('vehicleidno',$this->vehicleidno)->first();
+        if($car->blockings === null){
+            $car->blockings = $this->blockings;
+        }
+        $car->recieveBy = $this->recievedBy;
+        $car->status = 1;
+        $car->save();
+        findings::create(
+            [
+                'vehicleid'=>$car->id,
+                'vehicleidno'=>$car->vehicleidno,
+                'settool'=>'ALL GOODS',
+                'looseitem'=>'ALL GOODS',
+                'findings'=>'ALL GOODS',
+            ]
+        );
+        $blockings = blockings::find($this->blockings);
+        $blockings->blockstatus = 1;
+        $blockings->save();
+        $this->dispatch('relode-batchlist','');
+        batching::create([
+            'vehicleid'=>$car->id,
+            'vehicleidno'=>$car->vehicleidno,
+            'userid'=>Auth::user()->id
+        ]);
+
+        request()->session()->flash('success','the unit have been selected !!');
+        $this->reset(['vehicleidno','blockings','recievedBy']);
+
+
     }
 
 
-
-    public function edit(){
-
-    }
-
-
-    // public function reset(){
-
-    // }
     public function update(){
         $cars = cars::where('vehicleidno',$this->vehicleidno)->first();
         $cars->blockings = $this->blockId;
@@ -92,13 +131,10 @@ class Recieveing extends Component
             );
         }
     }
-
-    #[On('select-batch')]
-    public function setBatchId($batchId){
-        $batch = batching::find($batchId);
-        $this->vehicleidno = $batch->vehicleidno;
+    #[On('relode-batchlist')]
+    public function updatedselectedBlockings(){
+        $this->selectedBlockings = [];
     }
-
     public function render()
     {
         $blocks = bloke::get();

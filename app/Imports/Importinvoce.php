@@ -14,7 +14,7 @@ class Importinvoce implements ToModel,WithBatchInserts
 {
     public function model(array $row)
     {
-        $bin = inventory::where('status',1)->get();
+        $bin = inventory::where('status',0)->get();
         $bin_number = $bin->pluck('vehicleidno');
         $invoice = invoice::where('status',0)->get();
         $invoice_number = $invoice->pluck('vehicleidno');

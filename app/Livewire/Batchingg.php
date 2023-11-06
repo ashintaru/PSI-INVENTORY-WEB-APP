@@ -48,7 +48,7 @@ class Batchingg extends Component
             }
         }
         if( count($vinarray) > 0 ){
-            batching::where('vehicleidno',$vinarray)->delete();
+            batching::whereIn('vehicleidno',$vinarray)->delete();
             $this->dispatch('refresh-batch');
             request()->session()->flash('success','the unit have been selected !!');
         }else{

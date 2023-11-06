@@ -46,7 +46,7 @@ class invoice extends Controller
     {
         //
         $data = invoce::findOrFail($id);
-        $blockdata = blockings::select(['id','bloackname'])->where('blockstatus',0)->where('blockId',0)->get();
+        $blockdata = blockings::select(['id','bloackname'])->where('blockstatus',0)->where('blockId',12)->get();
         return view('invoice.invoiceprofile',['invoice'=>$data,'blocks'=>$blockdata]);
     }
 
