@@ -5,25 +5,27 @@
            <div class="w-1/8 p-3">
                 <x-input-label for="vin" :value="__('Vin')" />
                 <x-text-input :disabled="true" id="vin" class="block mt-1 w-full" type="text" name="vin" value="{{$vehicleidno}}" required autocomplete="username" />
+                <span class="text-xs text-red-700" >@error('vehicleidno') {{ $message }} @enderror</span>
             </div>
             <div class="p-3">
                 <x-input-label for="block" :value="__('Blocks')" />
-                <select  wire:model="selectedBlocks" name="blocks" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                {{-- <select  wire:model="selectedBlocks" name="blocks" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                     @if ($blocks)
-                        <option>....</option>
+                        <option value="">....</option>
                         @foreach ($blocks as $b)
                             <option  data-url="" value="{{$b->id}}">{{$b->blockname}}</option>
                         @endforeach
                     @else
                         <option  value="">Ask the admin for the blcokings</option>
                     @endif
-                </select>
+                </select> --}}
+                @livewire('blocks')
             </div>
             <div class=" p-3">
                 <x-input-label for="Blockings" :value="__('Blockings')" />
                 <select wire:model="blockings"  name="blocks" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                     @if ($selectedBlockings)
-                        <option>....</option>
+                        <option value="">....</option>
                         @foreach ($selectedBlockings as $b)
                             <option value="{{$b->id}}">{{$b->bloackname}}</option>
                         @endforeach
@@ -31,10 +33,13 @@
                         <option  value="">Ask the admin for the blcokings</option>
                     @endif
                 </select>
+                <span class="text-xs text-red-700" >@error('blockings') {{ $message }} @enderror</span>
             </div>
             <div class="w-1/8 p-3">
                 <x-input-label for="recieveby" :value="__('Received By')" />
                 <x-text-input wire:model="recievedBy" id="recieveby" class="block mt-1 w-full" type="text" name="recievedBy" value="{{$recievedBy}}" required autocomplete="username" />
+                <span class="text-xs text-red-700" >@error('recievedBy') {{ $message }} @enderror</span>
+
             </div>
             <div class="w-1/8 p-3">
                 <x-input-label for="vin" :value="__('inspection remarks')" />
@@ -44,24 +49,6 @@
                 </div>
             </div>
         </div>
-        @if ($status == 2 || $status == 3)
-            <div class="flex justify-center">
-                <div class="w-1/8 p-3">
-                    <label for="setTools" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Set Tools</label>
-                    <textarea wire:model="setTools" id="setTools" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                </div>
-                <div class="w-1/8 p-3">
-                    <label for="LooseItem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Loose Items</label>
-                    <textarea wire:model="looseItems" id="LooseItem" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                </div>
-                <div class="w-1/8 p-3">
-                    <label for="Damage Findings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Damage Findings</label>
-                    <textarea wire:model="damage" id="Damage Findings" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                </div>
-            </div>
-        @else
-
-        @endif
     </form>
     <div class="flex justify-evenly">
         <div class="">
