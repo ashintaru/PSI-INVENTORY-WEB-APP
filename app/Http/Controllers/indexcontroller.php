@@ -30,6 +30,8 @@ class indexcontroller extends Controller
             FROM inventories
             GROUP by updated_at
             LIMIT 7');
+
+            // return dd($inventory);
             //   $format =
 
             // $result = json_decode($inventory,true);

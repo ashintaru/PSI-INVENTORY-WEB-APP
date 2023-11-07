@@ -1,4 +1,4 @@
-<div>
+<div class="p-4 border-solid border-2 border-indigo-600 ">
     <div class="flex gap-4 justify-start" >
         <div class="relative z-0 w-full ">
             <input type="datetime-local" wire:model="datein" name="datein" id="datein" class="block w-full px-0 py-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
@@ -22,7 +22,10 @@
                     VIN
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Status
+                    Blocking
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Action
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Action
@@ -45,8 +48,10 @@
                         <th scope="row" class="flex-shrink-0 text-center flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$tableRow->car->blocking->bloackname}}
                         </th>
+                        <th scope="row" class="flex-shrink-0 text-center flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{$tableRow->car->recieveBy}}
+                        </th>
                         <td class="px-6 py-4 flex-shrink-0 flex-col">
-
                                 <button wire:click="select({{$tableRow->id}})"   type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                         <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
@@ -68,7 +73,7 @@
         </tbody>
     </table>
     <div class="py-2">
-        @if (count($batches)>1)
+        @if (isset($batches))
             {{$batches->links()}}
         @endif
     </div>

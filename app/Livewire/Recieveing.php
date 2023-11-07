@@ -10,7 +10,7 @@ use App\Models\blockings;
 use Livewire\Attributes\Rule;
 use App\Models\findings;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Validator;
 
 class Recieveing extends Component
 {
@@ -30,7 +30,9 @@ class Recieveing extends Component
     #[Rule('required')]
     public $blockings;
 
+    public $findings;
 
+    public $showfindings = false;
 
 
     #[On('get-blockings')]
@@ -49,7 +51,50 @@ class Recieveing extends Component
         $this->vehicleidno = $vin;
     }
 
+
+    public function triggerfinding(){
+        $this->dispatch('show-findings');
+        $this->showfindings = true;
+    }
+
+    public function goodswithfindings(){
+        $validate = Validator::make(
+            ['vehicleidno' => $this->vehicleidno, 'blockings' => $this->blockings,'recievedBy'=>$this->recievedBy,'findings'=>$this->findings],
+            // Validation rules to apply...
+            ['vehicleidno' => 'required', 'blockings' => 'required','recievedBy'=>'required|min:3','findings'=>'required'],
+            // Custom validation messages...
+            ['required' => 'The :attribute field is required'],
+        )->validate();
+
+
+
+
+        $car = cars::where('vehicleidno',$this->vehicleidno)->first();
+        $this->checkBlockings($car);
+        $car->recieveBy = $this->recievedBy;
+        $car->status = 1;
+        $car->save();
+        findings::create(
+            [
+                'vehicleid'=>$car->id,
+                'vehicleidno'=>$car->vehicleidno,
+                'findings'=>strtoupper($this->findings),
+            ]
+        );
+        batching::create([
+            'vehicleid'=>$car->id,
+            'vehicleidno'=>$car->vehicleidno,
+            'userid'=>Auth::user()->id
+        ]);
+        $this->dispatch('relode-batchlist');
+        request()->session()->flash('success','the unit have been selected !!');
+        $this->reset(['recievedBy','vehicleidno','blockings','findings']);
+        $this->showfindings = false;
+
+
+    }
     public function goods(){
+        $this->showfindings = false;
         $this->validate();
         $car = cars::where('vehicleidno',$this->vehicleidno)->first();
         $this->checkBlockings($car);
@@ -60,8 +105,6 @@ class Recieveing extends Component
             [
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
-                'settool'=>'ALL GOODS',
-                'looseitem'=>'ALL GOODS',
                 'findings'=>'ALL GOODS',
             ]
         );
@@ -73,6 +116,7 @@ class Recieveing extends Component
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
         $this->reset(['recievedBy','vehicleidno','blockings']);
+
         // return dd("hello");
     }
 

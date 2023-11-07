@@ -134,7 +134,7 @@
 
             console.log( 10 - inventories.length );
 
-            if(inventories.length >= 7){
+            if(inventories.length > 7){
                 return 0;
             }
             else{

@@ -13,8 +13,6 @@ class findings extends Model
     protected $fillable = [
         'vehicleid',
         'vehicleidno',
-        'settool',
-        'looseitem',
         'findings',
     ];
 

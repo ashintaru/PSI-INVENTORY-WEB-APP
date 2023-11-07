@@ -1,5 +1,5 @@
-<div wire:poll>
-    <form method="POST" >
+<div class="p-2">
+    <form class="p-4 border-solid border-2 border-indigo-600 " method="POST" >
         <!-- Email Address -->
         <div class="flex justify-center">
            <div class="w-1/8 p-3">
@@ -44,11 +44,22 @@
             <div class="w-1/8 p-3">
                 <x-input-label for="vin" :value="__('inspection remarks')" />
                 <div class="flex gap-2 justify-center">
-                    <button wire:click="goods" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Good</button>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Good with Findings</button>
+                    <button wire:click="goods" id="btn-goods" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Good</button>
+                    <button wire:click="triggerfinding" type="button" id="btn-findings" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Good with Findings</button>
                 </div>
             </div>
         </div>
+        @if ($showfindings)
+            <div class="flex flex-col justify-center" id="findings">
+                <div class="flex flex-col w-full p-2">
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Findings</label>
+                    <textarea wire:model.defer="findings" id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
+                    </textarea>
+                </div>
+                <button wire:click="goodswithfindings" type="button" id="btn-findings" class=" flex justify-start w-1/12 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            </div>
+        @endif
+
     </form>
     <div class="flex justify-evenly">
         <div class="">
@@ -63,10 +74,5 @@
 
 </div>
 <script>
-    document.addEventListener('livewire:initialized', () => {
-       @this.on('post-created', (event) => {
-           alert('click me');
-       });
-    });
 </script>
 

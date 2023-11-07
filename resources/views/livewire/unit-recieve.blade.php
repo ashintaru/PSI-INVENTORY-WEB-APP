@@ -1,4 +1,4 @@
-<div>
+<div class="p-4 border-solid border-2 border-indigo-600 ">
     <div class="py-2">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div class="relative">
@@ -70,7 +70,7 @@
         <div class="tooltip-arrow" data-popper-arrow></div>
     </div>
     <div class="py-2">
-        @if (count($data)>1)
+        @if (isset($data))
             {{$data->links()}}
         @endif
     </div>
