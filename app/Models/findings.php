@@ -16,5 +16,9 @@ class findings extends Model
         'findings',
     ];
 
+    public function car(){
+        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
+    }
+
 
 }

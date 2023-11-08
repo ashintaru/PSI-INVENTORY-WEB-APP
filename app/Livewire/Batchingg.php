@@ -76,8 +76,8 @@ class Batchingg extends Component
     }
 
     public function select($batchId){
-        $this->batchId = $batchId;
-        $this->dispatch('select-batch',$this->batchId);
+        $batch = batching::find($batchId);
+        $this->dispatch('select-batch',$batch->vehicleidno);
         request()->session()->flash('success','the unit have been selected !!');
     }
 

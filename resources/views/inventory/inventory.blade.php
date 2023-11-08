@@ -12,32 +12,32 @@
     </div>
     <div class="py-1">
         @if ($inventory)
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table class="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             Vehicle Identity No.
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             Recieved By
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             Blokcing
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             Engine No
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             CS No
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="">
                             Model Description
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Biling Date
+                        <th scope="col" class="">
+                            Receiving Status
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
+                        <th scope="col" class="">
+                            Findings
                         </th>
                     </tr>
                 </thead>
@@ -45,41 +45,46 @@
                         @if (!is_null($inventory))
                             @foreach($inventory as $d)
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" class=" font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{$d->vehicleidno}}
                                 </th>
-                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" class=" font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{$d->car->recieveBy}}
                                 </th>
-                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" class=" font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     @if ($d->car->blockings)
                                         {{$d->car->blocking->bloackname}}
                                     @else
                                         ...
                                     @endif
                                 </th>
-                                <td class="px-6 py-4">
+                                <td class="">
                                     {{$d->car->engineno}}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="">
                                     {{$d->car->csno}}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="">
                                     {{$d->car->modeldescription}}
                                 </td>
-                                <td class="px-6 py-4">
-                                    <button value="{{$d->vehicleidno}}" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="modal-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                        Toggle modal
-                                    </button>
+                                <td class="">
+                                    @if ($d->car->status === 1)
+                                        Good
+                                    @else
+                                        Good with Findings
+                                    @endif
+                                </td>
+                                <td>
+                                    {{$d->car->finding->findings}}
                                 </td>
                                 <td class="text-center">
                                     <form method="POST" action="{{URL('remove-receiving-units/'.$d->vehicleidno)}}" class="space-y-2">
                                         @csrf
                                         @method('delete')
-                                        <div class="flex-col space-y-3">
+                                        <div class="flex-col space-y-4">
                                             <button type="submit" name="approved" value="2" class="inline-flex items-center ">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.043-2.453-.138-3.332a4.003 4.003 0 00-3.7-3.7 48.378 48.378 0 00-7.324 0 4.003 4.003 0 00-3.7 3.7c-.017.22-.032.441-.043.332M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.043 2.453.138 3.332a4.003 4.003 0 003.7 3.7 48.353 48.353 0 007.324 0 4.003 4.003 0 003.7-3.7c.017-.22.032-.441.043-.332M4.5 12l3 3m-3-3l-3 3" />
                                                   </svg>
                                             </button>
                                         </div>
@@ -111,19 +116,19 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-400">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Terms of Service
                     </h3>
-                    <button type="button"  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                    <button type="button"  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-400 dark:hover:text-white" data-modal-hide="defaultModal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 3 3m0 0 3 3M7 7l3-3M7 7l-3 3"/>
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="p-6 space-y-6">
+                <div class="p-3 space-y-4">
                     <p id="vehicleidno" class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                     </p>
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -131,9 +136,9 @@
                     </p>
                 </div>
                 <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                    <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                <div class="flex items-center p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-400">
+                    <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                    <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-400 dark:focus:ring-gray-400">Decline</button>
                 </div>
             </div>
         </div>
@@ -141,9 +146,9 @@
 
 
 	    <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="max-w-7xl mx-auto sm:px-3 lg:px-8 space-y-4">
                 @if ($inventory)
-                    @if (count($inventory)>1)
+                    @if (isset($inventory))
                         {{$inventory->links()}}
                     @endif
                 @endif

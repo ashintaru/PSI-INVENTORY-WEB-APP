@@ -136,8 +136,8 @@
                     if(data.length == 0){
                         p.append("Open For car slot");
                     }
-                    else if(data.length == 1){
-                        p.append(data[0].vehicleidno);
+                    else {
+                        p.append(data.vehicleidno);
                     }
                     spinner.style.display = "none";
                     modalBody.append(p);

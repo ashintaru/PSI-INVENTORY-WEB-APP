@@ -11,6 +11,8 @@ use Livewire\Attributes\Rule;
 use App\Models\findings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
 
 class Recieveing extends Component
 {
@@ -29,9 +31,7 @@ class Recieveing extends Component
 
     #[Rule('required')]
     public $blockings;
-
     public $findings;
-
     public $showfindings = false;
 
 
@@ -46,8 +46,9 @@ class Recieveing extends Component
         $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',0)->where('blockstatus',0)->get();
     }
 
-    #[On('unit-inspection')]
+    #[On('unit-inspection'),On('select-batch')]
     public function setvehicleidno($vin){
+        // return dd($vin);
         $this->vehicleidno = $vin;
     }
 
@@ -66,53 +67,52 @@ class Recieveing extends Component
             ['required' => 'The :attribute field is required'],
         )->validate();
 
+        $this->receivingproccess($this->vehicleidno,2,$this->findings);
 
-
-
-        $car = cars::where('vehicleidno',$this->vehicleidno)->first();
-        $this->checkBlockings($car);
-        $car->recieveBy = $this->recievedBy;
-        $car->status = 1;
-        $car->save();
-        findings::create(
-            [
-                'vehicleid'=>$car->id,
-                'vehicleidno'=>$car->vehicleidno,
-                'findings'=>strtoupper($this->findings),
-            ]
-        );
-        batching::create([
-            'vehicleid'=>$car->id,
-            'vehicleidno'=>$car->vehicleidno,
-            'userid'=>Auth::user()->id
-        ]);
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
         $this->reset(['recievedBy','vehicleidno','blockings','findings']);
         $this->showfindings = false;
-
-
     }
-    public function goods(){
-        $this->showfindings = false;
-        $this->validate();
-        $car = cars::where('vehicleidno',$this->vehicleidno)->first();
-        $this->checkBlockings($car);
-        $car->recieveBy = $this->recievedBy;
-        $car->status = 1;
-        $car->save();
-        findings::create(
-            [
+
+    public function isexsist($vin = null){
+        return DB::table('batching')->where('vehicleidno', $vin)->exists();
+    }
+
+
+    public function receivingproccess($vin = null , $status = null , $findings = "ALL GOODS"){
+        if ($this->isexsist($vin)) {
+            $car = cars::where('vehicleidno',$vin)->first();
+            $this->checkBlockings($car);
+            $car->recieveBy = $this->recievedBy;
+            $car->status = $status;
+            $car->save();
+
+        }else{
+            $car = cars::where('vehicleidno',$vin)->first();
+            $this->checkBlockings($car);
+            $car->recieveBy = $this->recievedBy;
+            $car->status = 2;
+            $car->save();
+           findings::create(
+                [
+                    'vehicleid'=>$car->id,
+                    'vehicleidno'=>$car->vehicleidno,
+                    'findings'=>strtoupper($findings),
+                ]
+            );
+            batching::create([
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
-                'findings'=>'ALL GOODS',
-            ]
-        );
-        batching::create([
-            'vehicleid'=>$car->id,
-            'vehicleidno'=>$car->vehicleidno,
-            'userid'=>Auth::user()->id
-        ]);
+                'userid'=>Auth::user()->id
+            ]);
+        }
+
+    }
+
+    public function goods(){
+        $this->showfindings = false;
+        $this->receivingproccess($this->vehicleidno,1);
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
         $this->reset(['recievedBy','vehicleidno','blockings']);
@@ -121,7 +121,6 @@ class Recieveing extends Component
     }
 
     public function checkBlockings(cars $car){
-
         if($car->blockings === null){
             $car->blockings = $this->blockings;
             $blockings = blockings::find($this->blockings);

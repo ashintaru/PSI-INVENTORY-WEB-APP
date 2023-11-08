@@ -44,6 +44,9 @@ class cars extends Model
     public function batch(){
         return $this->hasOne(batching::class,'vehicleidno','vehicleidno');
     }
+    public function finding(){
+        return $this->hasOne(findings::class,'vehicleidno','vehicleidno');
+    }
     public function receive(){
         return $this->belongsTo(recieving::class,'vehicleidno','vehicleidno');
     }

@@ -30,7 +30,7 @@
                             <option value="{{$b->id}}">{{$b->bloackname}}</option>
                         @endforeach
                     @else
-                        <option  value="">Ask the admin for the blcokings</option>
+                        <option  value="">select a block</option>
                     @endif
                 </select>
                 <span class="text-xs text-red-700" >@error('blockings') {{ $message }} @enderror</span>
@@ -55,11 +55,11 @@
                     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Findings</label>
                     <textarea wire:model.defer="findings" id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">
                     </textarea>
+                    <span class="text-xs text-red-700" >@error('findings') {{ $message }} @enderror</span>
                 </div>
                 <button wire:click="goodswithfindings" type="button" id="btn-findings" class=" flex justify-start w-1/12 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
             </div>
         @endif
-
     </form>
     <div class="flex justify-evenly">
         <div class="">
