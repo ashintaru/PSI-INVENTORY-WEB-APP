@@ -21,9 +21,9 @@ use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
 use App\Http\Controllers\batching;
-use App\Http\Controllers\recieveController;
 use App\Http\Controllers\released;
-use App\Livewire\Recieveing;
+use App\Livewire\Inventory as LivewireInventory;
+use App\Livewire\Recieveing as LivewireRecieveing;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,13 +99,14 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::post('car-damage/{id}','store');
             Route::patch('update-car-damage/{id}','update');
         });
-        Route::controller(inventory::class)->group(function(){
-            Route::get('inventory', 'index')->name('show-inventory');
-            Route::get('inventory/{id}','view');
-            Route::post('search-inventory','searchinventory');
-            Route::get('viewinventory/{action}','show');
-            Route::delete('remove-receiving-units/{id}','destroy');
-        });
+
+        // Route::controller(inventory::class)->group(function(){
+        //     Route::get('inventory', 'index')->name('show-inventory');
+        //     Route::get('inventory/{id}','view');
+        //     Route::post('search-inventory','searchinventory');
+        //     Route::get('viewinventory/{action}','show');
+        //     Route::delete('remove-receiving-units/{id}','destroy');
+        // });
 
         Route::controller(invoice::class)->group(function(){
             Route::get('invoice','index')->name('invoice');
@@ -139,6 +140,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::put('update-cars-Personel/{id}','updateRecieveBy');
         });
 
+        //livewire
         Route::controller(receiving::class)->group(function(){
 
         });
@@ -147,7 +149,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('released-units','index')->name('released');
         });
 
-        Route::get('recieve',Recieveing::class);
+
+        //livewire
+        Route::get('inventory',LivewireInventory::class);
+        Route::get('recieve',LivewireRecieveing::class);
 
         Route::controller(CarsController::class)->group(function(){
 

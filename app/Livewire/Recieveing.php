@@ -55,7 +55,7 @@ class Recieveing extends Component
 
     public function triggerfinding(){
         $this->dispatch('show-findings');
-        $this->showfindings = true;
+        $this->showfindings = !$this->showfindings;
     }
 
     public function goodswithfindings(){
@@ -112,6 +112,7 @@ class Recieveing extends Component
 
     public function goods(){
         $this->showfindings = false;
+        $validatedData = $this->validate();
         $this->receivingproccess($this->vehicleidno,1);
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
@@ -140,6 +141,6 @@ class Recieveing extends Component
     public function render()
     {
         $blocks = bloke::get();
-        return view('livewire.recieveing',['blocks'=>$blocks]) ->layout('layouts.app');
+        return view('livewire.recieveing',['blocks'=>$blocks]);
     }
 }

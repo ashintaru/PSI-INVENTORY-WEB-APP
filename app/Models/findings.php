@@ -17,7 +17,7 @@ class findings extends Model
     ];
 
     public function car(){
-        return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
+        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
     }
 
 

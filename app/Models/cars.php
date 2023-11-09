@@ -45,7 +45,7 @@ class cars extends Model
         return $this->hasOne(batching::class,'vehicleidno','vehicleidno');
     }
     public function finding(){
-        return $this->hasOne(findings::class,'vehicleidno','vehicleidno');
+        return $this->hasMany(findings::class,'vehicleidno','vehicleidno');
     }
     public function receive(){
         return $this->belongsTo(recieving::class,'vehicleidno','vehicleidno');
@@ -63,7 +63,7 @@ class cars extends Model
         return $this->hasMany(Log::class,'idNum','vehicleidno');
     }
     public function inventory(){
-        return $this->hasOne(inventory::class,'vehicleid','id');
+        return $this->hasOne(inventory::class,'vehicleidno','vehicleidno');
     }
     public function blocking(){
         return $this->hasOne(blockings::class,'id','blockings');

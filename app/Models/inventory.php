@@ -16,9 +16,6 @@ class inventory extends Model
         'vehicleidno',
         'status'
     ];
-    public function blocking(){
-        return $this->hasOne(blockings::class,'id','blockings');
-    }
     public function car(){
         return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }

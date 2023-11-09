@@ -1,4 +1,4 @@
-<div class="p-4 border-solid border-2 border-indigo-600 ">
+<div class="p-4 border-solid border-2 bg-gray-100">
     <div class="flex gap-4 justify-start" >
         <div class="relative z-0 w-full ">
             <input type="datetime-local" wire:model="datein" name="datein" id="datein" class="block w-full px-0 py-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
@@ -16,7 +16,7 @@
 
     </div>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
                     VIN
