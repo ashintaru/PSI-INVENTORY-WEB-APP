@@ -195,13 +195,13 @@
               <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                   <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                     <li>
-                      <a href="{{URL('insert-data')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Input Form</a>
+                      <a wire:navigate href="{{URL('insert-data')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Input Form</a>
                     </li>
                     <li>
-                      <a href="{{URL('import_export')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Upload Excel</a>
+                      <a wire:navigate href="{{URL('import_export')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Upload Excel</a>
                     </li>
                     <li>
-                      <a href="{{URL('rawdata')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Master List</a>
+                      <a wire:navigate href="{{URL('rawdata')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Master List</a>
                     </li>
                   </ul>
                   <div class="py-1">
@@ -234,11 +234,11 @@
             <div id="dropdownNavbarinvoice" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                     <li>
-                    <a href="{{URL('upload-Invoice')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Upload Invoice Excel</a>
+                    <a wire:navigate href="{{URL('upload-Invoice')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Upload Invoice Excel</a>
                     </li>
                 </ul>
                 <div class="py-1">
-                    <a href="{{URL('invoice')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Invoice</a>
+                    <a wire:navigate href="{{URL('invoice')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Invoice</a>
                 </div>
             </div>
         </li>
@@ -260,20 +260,20 @@
             <div id="dropdownNavbarconfig" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                     <li>
-                        <a href="{{URL('account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account Management</a>
+                        <a wire:navigate href="{{URL('account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account Management</a>
                     </li>
                     <li>
-                        <a href="{{URL('client')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Client Management</a>
+                        <a wire:navigate href="{{URL('client')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Client Management</a>
                     </li>
                     <li>
-                        <a href="{{URL('blocks')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Blocking Management</a>
+                        <a wire:navigate href="{{URL('blocks')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Blocking Management</a>
                     </li>
                     <li>
-                        <a href="{{URL('report')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
+                        <a wire:navigate href="{{URL('report')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
                     </li>
                 </ul>
                 <div class="py-1">
-                    <a href="{{URL('invoice')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Invoice</a>
+                    <a wire:navigate href="{{URL('invoice')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Invoice</a>
                 </div>
             </div>
         </li>
@@ -291,7 +291,7 @@
           <div id="dropdownNavbarprofile" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
               <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                 <li>
-                  <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                  <a wire:navigate href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                 </li>
               </ul>
               <div class="py-1">

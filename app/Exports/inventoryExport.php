@@ -20,7 +20,7 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
 
     public function query()
     {
-        if($this->tag == null){
+        if($this->tag == null && $this->start || $this->end){
             return cars::
             select(
                 [
@@ -41,8 +41,7 @@ class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
             )
             ->join('inventories','inventories.vehicleidno','cars.vehicleidno')
             ->getQuery()
-            ->orderBy('inventories.vehicleidno','ASC')
-            ->whereBetween('inventories.created_at',[$this->start,$this->end]);
+            ->orderBy('inventories.vehicleidno','ASC');
         }else{
             return inventory::
             select(
