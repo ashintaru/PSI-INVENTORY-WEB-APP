@@ -100,8 +100,8 @@ class report extends Controller
                 $enddate = Carbon::parse($inputs['end'])->toDateTimeString();
                 $date = Carbon::now()->format('Y-m-d');
                 $name = "inventory-Report".$date;
-                if($tags == null)
-                    return (new inventoryExport('',$startdate,$enddate))->download($name.'.xlsx');
+                if($tags == null && $startdate == null || $enddate == null)
+                    return (new inventoryExport('','',''))->download($name.'.xlsx');
                 else{
                     return (new inventoryExport($tags,$startdate,$enddate))->download($name.'.xlsx');
                 }
@@ -113,8 +113,6 @@ class report extends Controller
                 $name = "inventory-Report".$date;
                 if($tags == null){
                     return (new invoiceExport('',$startdate,$enddate))->download($name.'.xlsx');
-
-                    return (new inventoryExport('',$startdate,$enddate))->download($name.'.xlsx');
                 }
                 else{
                     return (new inventoryExport($tags,$startdate,$enddate))->download($name.'.xlsx');

@@ -92,7 +92,7 @@ class Recieveing extends Component
             $car = cars::where('vehicleidno',$vin)->first();
             $this->checkBlockings($car);
             $car->recieveBy = $this->recievedBy;
-            $car->status = 2;
+            $car->status = $status;
             $car->save();
            findings::create(
                 [

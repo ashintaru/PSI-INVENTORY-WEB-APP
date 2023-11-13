@@ -11,18 +11,31 @@ use Livewire\WithPagination;
 use App\Models\inventory as modelinventory;
 use Carbon\Carbon;
 use App\Models\client;
+use App\Models\blockings;
 
 
 class Inventory extends Component
 {
     use WithPagination;
     public $search = '';
-    public $status = 2;
+    public $status = '';
     public $startdate ;
     public $enddate ;
     public $findings = [];
     public $clienttag ;
     public $display;
+    public $selectedUnit;
+    public $isEditBlocking=false;
+    public $selectedBlockings = [];
+    public $blocking;
+    public $unit = [];
+
+
+    #[On('get-blockings')]
+    public function selectedBlocks($blockid){
+        $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',$blockid)->where('blockstatus',0)->get();
+        // dd($this->selectedBlockings);
+    }
 
 
     public function getFindings($id = null){
@@ -31,22 +44,31 @@ class Inventory extends Component
         $this->display = true;
     }
 
+    public function editBlocking($id = null){
+        $this->isEditBlocking = !$this->isEditBlocking;
+        $this->selectedUnit = ( $this->isEditBlocking)?$id:null;
+        $this->unit = cars::where('id',$this->isEditBlocking)->first();
+        dump($this->unit);
+    }
+
+
+    public function updateBlocking(){
+        // $cars = cars:
+    }
+
     public function render()
     {
-
         $clients = client::get();
-
         // $this->enddate = Carbon::now();
         $inventory = modelinventory::where('status',0)
-        ->whereBetween('created_at',[$this->startdate, $this->enddate])
+        ->where('vehicleidno', 'LIKE', "%{$this->search}%")
+        ->where('created_at',[$this->startdate, $this->enddate])
         ->get();
 
-        $vinArray = $inventory->pluck('vehicleidno');
-        $cars = cars::with(['blocking','finding'])
-        ->whereIn('vehicleidno',$vinArray)
+        // $vinArray = $inventory->pluck('vehicleidno');
+        $cars = cars::with(['inventory','blocking'])
         ->where('vehicleidno', 'LIKE', "%{$this->search}%")
         ->Where('status', 'LIKE', "%{$this->status}%")
-        ->Where('tag', 'LIKE', "%{$this->clienttag}%")
         ->paginate(25);
 
         // return dd($cars);

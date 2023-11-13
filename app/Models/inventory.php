@@ -13,6 +13,7 @@ class inventory extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
+
         'vehicleidno',
         'status'
     ];
