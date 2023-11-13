@@ -29,6 +29,7 @@ class Inventory extends Component
     public $selectedBlockings = [];
     public $blocking;
     public $unit = [];
+    public $vin;
 
 
     #[On('get-blockings')]
@@ -40,15 +41,16 @@ class Inventory extends Component
 
     public function getFindings($id = null){
         $this->findings = findings::where('vehicleid',$id)->get();
-        // dd($this->findings);
         $this->display = true;
     }
 
+
     public function editBlocking($id = null){
-        $this->isEditBlocking = !$this->isEditBlocking;
-        $this->selectedUnit = ( $this->isEditBlocking)?$id:null;
-        $this->unit = cars::where('id',$this->isEditBlocking)->first();
-        dump($this->unit);
+        $this->isEditBlocking = true;
+        $this->selectedUnit = ($this->isEditBlocking)?$id:null;
+        $this->unit = cars::where('id',$this->selectedUnit)->first();
+        $this->vin = $this->unit->vehicleidno;
+        // dd($this->unit);
     }
 
 
