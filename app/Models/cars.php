@@ -68,8 +68,14 @@ class cars extends Model
     public function blocking(){
         return $this->hasOne(blockings::class,'id','blockings');
     }
+    public function invblocking(){
+        return $this->hasOne(blockings::class,'id','invoiceBlock');
+    }
     // class ,fk ,lk
     public function invoice(){
         return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
+    }
+    public function client(){
+        return $this->hasOne(client::class,'id','tag');
     }
 }

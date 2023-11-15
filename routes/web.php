@@ -22,8 +22,12 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
 use App\Http\Controllers\batching;
 use App\Http\Controllers\released;
+
+
 use App\Livewire\Inventory as LivewireInventory;
 use App\Livewire\Recieveing as LivewireRecieveing;
+use App\Livewire\Invoice as LivewireInvoice;
+use App\Livewire\InvoiceReleased;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,9 +85,9 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::put('update-personel/{id}','updatePersonel');
             Route::post('searchRecieveUnit','searchRecieveData');
         });
-        Route::controller(invoicecontroller::class)->group(function(){
-            Route::get('invoice/{id}','index');
-        });
+        // Route::controller(invoicecontroller::class)->group(function(){
+        //     Route::get('invoice/{id}','index');
+        // });
         Route::controller(looseitems::class)->group(function(){
             Route::get('createloosetools/{id}','create');
             Route::post('loose-item/{id}','store');
@@ -109,7 +113,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         // });
 
         Route::controller(invoice::class)->group(function(){
-            Route::get('invoice','index')->name('invoice');
+            // Route::get('invoice','index')->name('invoice');
             Route::post('createinvoicedata/{id}','store');
             Route::get('invoice-get/{id}','show')->name('invoice-profile');
             Route::get('upload-Invoice','import');
@@ -153,27 +157,22 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         //livewire
         Route::get('inventory',LivewireInventory::class);
         Route::get('recieve',LivewireRecieveing::class);
+        Route::get('invoice',LivewireInvoice::class);
+        Route::get('releasing',InvoiceReleased::class);
 
         Route::controller(CarsController::class)->group(function(){
-
             Route::get('masterlist','index');
-
             // Route::get('recieve', 'unitindex')->name('unit-list');
             Route::get('rawdata', 'rawData')->name('raw-data');
             Route::post('batchingUnit','unitBatching');
-
             Route::post('filter-rawdata','setFilter');
             Route::post('filter-recievedata','setFilterUnitList');
-
             Route::post('default-approve/{id}','defaultapprove');
             Route::post('update-inventory/{id}','updatecarstatus');
             Route::post('searchUnitList','searchUnitData');
             Route::post('searchRawData','searchRawData');
-
             Route::get('view/{id}', 'view')->name('show-profile');
-
             // Route::put('approved-inventory/{id}', 'approve')->name('approve');
-
             Route::get('edit-loose-tool/{id}','editloosetool')->name('edit-loose-tool');
             Route::get('edit-set-tool/{id}','editsettool')->name('edit-set-tool');
             Route::get('edit-damage-car/{id}','editdamgecar')->name('edit-damage-car');
@@ -181,7 +180,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::get('edit-car-status/{id}','editcarstatus');
             Route::get('edit-car-profile/{id}','editcarprofile')->name('edit-car');
         });
-
         Route::controller(batching::class)->group(function(){
             Route::get('batches', 'index')->name('batch');
             Route::get('delete-batch/{id}','destroy');

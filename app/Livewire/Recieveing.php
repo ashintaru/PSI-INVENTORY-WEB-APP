@@ -12,7 +12,6 @@ use App\Models\findings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\Return_;
 
 class Recieveing extends Component
 {
@@ -68,7 +67,6 @@ class Recieveing extends Component
         )->validate();
 
         $this->receivingproccess($this->vehicleidno,2,$this->findings);
-
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
         $this->reset(['recievedBy','vehicleidno','blockings','findings']);
@@ -117,10 +115,7 @@ class Recieveing extends Component
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
         $this->reset(['recievedBy','vehicleidno','blockings']);
-
-        // return dd("hello");
     }
-
     public function checkBlockings(cars $car){
         if($car->blockings === null){
             $car->blockings = $this->blockings;
