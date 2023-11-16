@@ -82,7 +82,10 @@ class Inventory extends Component
         $this->isEditFinding = false;
         request()->session()->flash('success','Update successfully !!');
     }
-
+    public function cancelBlocking(){
+        $this->isEditBlocking = false;
+        $this->selectedUnitforblocking = null;
+    }
     public function updateBlocking(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
         $oldBlocking = blockings::find($car->blockings);

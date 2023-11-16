@@ -136,7 +136,7 @@
                     </td>
                     <td scope="row" class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         @if ($car->invoiceBlock)
-                            <a href="" >Realising</a>
+                            <a href="{{URL('/releasing')}}" >Realising</a>
                         @else
                             ---
                         @endif
