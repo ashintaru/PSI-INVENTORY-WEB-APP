@@ -15,7 +15,7 @@ class Invoice extends Component
     public $selectedUnitforblocking;
     public $vin = '';
 
-    public function selectedUnit($id=null){
+    public function selectedUnit($id = null){
         $this->isEditBlocking = true;
         $this->selectedUnitforblocking = $id;
         $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
@@ -23,14 +23,14 @@ class Invoice extends Component
 
     public function setInvoiceBlocking(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
-        if($car->invoiceBlock == null){
+        // dd($car);
+    if(!isset($car->invoiceBlock)){
             $ivtblockings = blockings::find($this->selectedBlocking);
             $ivtblockings->blockstatus = 1;
             $car->invoiceBlock = $this->selectedBlocking;
             $invBlocking = blockings::find($car->blockings);
             $invBlocking->blockstatus = 0;
             $ivtblockings->save();
-
             $invBlocking->save();
             $car->save();
         }else{
@@ -44,8 +44,11 @@ class Invoice extends Component
             $invBlocking = blockings::find($car->blockings);
             $invBlocking->blockstatus = 0;
             $invBlocking->save();
+            $car->save();
+
         }
-        $this->dispatch('reset-block');
+        // dd($car);
+        // $this->dispatch('reset-block');
         request()->session()->flash('success','the unit have been selected !!');
 
     }

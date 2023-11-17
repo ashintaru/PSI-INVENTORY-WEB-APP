@@ -38,7 +38,9 @@ class cars extends Model
         'releasedBy',
         'dealer',
         'remark',
-        'status'
+        'status',
+        'invoiceBlock',
+        'movedBy'
     ];
 
     public function batch(){
