@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\DB;
 
 class Recieveing extends Component
 {
+
+    public $editFinding = false;
+
     #[Rule('required')]
-    public $vehicleidno;
+    public $vehicleidno = "";
 
     // #[Rule('required')]
     // public $selectedBlocks;
@@ -24,15 +27,16 @@ class Recieveing extends Component
     public $selectedBlockings = [];
 
     #[Rule('required')]
-    public $recievedBy;
+    public $recievedBy = "";
 
     // public $recievedBy;
 
     #[Rule('required')]
-    public $blockings;
-    public $findings;
+    public $blockings = "";
+    public $findings = "";
     public $showfindings = false;
-
+    public function isEditable(){
+    }
 
     #[On('get-blockings')]
     public function selectedBlocks($blockid){
@@ -45,12 +49,20 @@ class Recieveing extends Component
         $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',0)->where('blockstatus',0)->get();
     }
 
-    #[On('unit-inspection'),On('select-batch')]
-    public function setvehicleidno($vin){
-        // return dd($vin);
+    #[On('unit-inspection')]
+    public function setUnitforInspection($vin,$edit = null){
+        $this->reset(['vehicleidno','recievedBy','findings']);
         $this->vehicleidno = $vin;
     }
-
+    #[On('select-batch')]
+    public function setvehicleidno($car){
+        // return dd($car);
+        $this->reset(['vehicleidno','recievedBy','findings']);
+        $this->vehicleidno = $car['vehicleidno'];
+        $this->findings = $car['findings'];
+        $this->recievedBy = $car['recieveBy'];
+        $this->blockings = $car['blockings'];
+    }
 
     public function triggerfinding(){
         $this->dispatch('show-findings');
@@ -65,12 +77,10 @@ class Recieveing extends Component
             // Custom validation messages...
             ['required' => 'The :attribute field is required'],
         )->validate();
-
         $this->receivingproccess($this->vehicleidno,2,$this->findings);
         $this->dispatch('relode-batchlist');
         request()->session()->flash('success','the unit have been selected !!');
-        $this->reset(['recievedBy','vehicleidno','blockings','findings']);
-        $this->showfindings = false;
+        $this->reset(['recievedBy','vehicleidno','blockings']);
     }
 
     public function isexsist($vin = null){
@@ -85,31 +95,44 @@ class Recieveing extends Component
             $car->recieveBy = $this->recievedBy;
             $car->status = $status;
             $car->save();
-
-        }else{
-            $car = cars::where('vehicleidno',$vin)->first();
-            $this->checkBlockings($car);
-            $car->recieveBy = $this->recievedBy;
-            $car->status = $status;
-            $car->save();
-           findings::create(
+            $findinglists = findings::firstOrCreate(
+                ['vehicleid'=>$car->id],
                 [
                     'vehicleid'=>$car->id,
                     'vehicleidno'=>$car->vehicleidno,
                     'findings'=>strtoupper($findings),
                 ]
             );
-            batching::create([
+            $findinglists->findings =strtoupper( $findings);
+            $findinglists->save();
+        }else{
+            $car = cars::where('vehicleidno',$vin)->first();
+            $this->checkBlockings($car);
+            $car->recieveBy = $this->recievedBy;
+            $car->status = $status;
+            $car->save();
+            findings::create(
+                [
+                    'vehicleid'=>$car->id,
+                    'vehicleidno'=>$car->vehicleidno,
+                    'findings'=>strtoupper($findings),
+                ]
+            );
+             batching::create([
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
                 'userid'=>Auth::user()->id
             ]);
         }
 
+        $this->vehicleidno = "";
+        $this->findings = "";
+        $this->recievedBy = "";
+        $this->blockings = "";
+
     }
 
     public function goods(){
-        $this->showfindings = false;
         $validatedData = $this->validate();
         $this->receivingproccess($this->vehicleidno,1);
         $this->dispatch('relode-batchlist');
@@ -133,6 +156,7 @@ class Recieveing extends Component
             $blockings->save();
         }
     }
+
     public function render()
     {
         $blocks = bloke::get();

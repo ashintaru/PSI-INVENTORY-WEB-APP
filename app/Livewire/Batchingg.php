@@ -6,6 +6,7 @@ use App\Http\Controllers\receiving;
 use Livewire\Component;
 use App\Models\batching;
 use App\Models\cars;
+use App\Models\findings;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -21,6 +22,7 @@ class Batchingg extends Component
 
     public $datein;
     public $dateencode;
+    public $status = true;
 
 
     public function submitToInventory(){
@@ -65,6 +67,9 @@ class Batchingg extends Component
             $car = cars::where('id',$id)->first();
             $car->status = null;
             $car->save();
+
+            $finding = findings::where('vehicleid',$car->id)->first();
+            $finding->delete();
             $this->dispatch('delete-vin');
             $this->dispatch('removed-batch');
             request()->session()->flash('success','the unit have been selected !!');
@@ -77,7 +82,9 @@ class Batchingg extends Component
 
     public function select($batchId){
         $batch = batching::find($batchId);
-        $this->dispatch('select-batch',$batch->vehicleidno);
+        $car = cars::select(['blockings','findings','recieveBy','cars.vehicleidno','cars.id'])->where('cars.id',$batch->vehicleid)->join('findings','findings.vehicleid','cars.id')->first();
+        // dd($car);?
+        $this->dispatch('select-batch',$car,$this->status);
         request()->session()->flash('success','the unit have been selected !!');
     }
 
