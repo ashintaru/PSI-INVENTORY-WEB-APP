@@ -28,6 +28,7 @@ use App\Livewire\Inventory as LivewireInventory;
 use App\Livewire\Recieveing as LivewireRecieveing;
 use App\Livewire\Invoice as LivewireInvoice;
 use App\Livewire\InvoiceReleased;
+use App\Livewire\UnitProfile as LivewireUnitProfile;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('recieve',LivewireRecieveing::class);
         Route::get('invoice',LivewireInvoice::class);
         Route::get('releasing',InvoiceReleased::class);
+        Route::get('unit/{id}',LivewireUnitProfile::class);
 
         Route::controller(CarsController::class)->group(function(){
             Route::get('masterlist','index');
