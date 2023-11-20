@@ -78,6 +78,7 @@ class Inventory extends Component
             'vehicleidno'=>$car->vehicleidno,
             'findings'=>strtoupper($this->finding),
         ]);
+        // return dd($this->finding);
         $this->reset(['isEditFinding', 'selectedUnitforfinding','vin']);
         $this->isEditFinding = false;
         request()->session()->flash('success','Update successfully !!');
