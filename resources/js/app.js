@@ -1,9 +1,4 @@
 import './bootstrap';
-
-document.addEventListener('livewire:navigated', () => {
-    // ...
-    initFlowbite();
-});
 import 'flowbite';
 import 'flowbite-datepicker';
 
@@ -13,3 +8,8 @@ import { initFlowbite } from 'flowbite';
 window.Alpine = Alpine;
 
 Alpine.start();
+
+document.addEventListener('livewire:navigated', () => {
+    // ...
+    initFlowbite();
+});

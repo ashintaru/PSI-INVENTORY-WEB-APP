@@ -1,24 +1,4 @@
 <div>
-
-    {{-- <div class="gap-2 flex justify-start" id="filtering-tab">
-        <div class="py-2">
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-            <div class="relative">
-                <input wire:model.live.debounce.500ms="search" type="search" id="default-search" class="block w-full p-3 pl-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Vehicle id No, Csno...">
-            </div>
-        </div>
-        <div class="py-2">
-            <select id="clients" wire:model.live="clienttag" class="block w-full p-3 pl-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="" selected>Choose a Clients</option>
-                    @if (isset($clients))
-                        @foreach ($clients as $client)
-                            <option value={{$client->id}}>{{$client->clientName}}</option>
-                        @endforeach
-                    @endif
-            </select>
-        </div>
-    </div> --}}
-
     @if (isset($selectedUnitforblocking) && $isEditBlocking == true)
         <div class="py-5 flex flex-col justify-start p-2 m-2">
             <p class="text-sm">Vin {{$vin->vehicleidno}}</p>
@@ -33,12 +13,32 @@
                         @endif
                     </select>
                 </div>
-                <div class="">
-                    <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Default</button>
+                <div class="inline-flex items-center">
+                    <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>
+                    <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Cancel</button>
                 </div>
             </div>
         </div>
     @endif
+
+    @if (isset($selectedUnitforblocking) && $ismovedBy == true)
+        <div class="py-5 flex flex-col justify-start p-2 m-2">
+            <p class="text-sm">Vin {{$vin->vehicleidno}}</p>
+            <div class="gap-2 flex justify-start" id="filtering-tab">
+                <form >
+                    <div class="">
+                        <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Moved By</label>
+                        <input wire:model="movedBy" type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="inline-flex items-center">
+                        <button wire:click.prevent="setMovedBy" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>
+                        <button wire:click="setInvoiceBlocking" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex justify-between">
             <div class="flex gap-2">
@@ -61,13 +61,6 @@
                         </div>
                         <input wire:model.live.debounce.500ms="search" type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
                     </div>
-                </div>
-                <div class="px-2 py-2">
-                    <select wire:model="statusFinding" id="status" wire:model.live="status" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                        <option value="" selected>Default</option>
-                        <option value="1">Good</option>
-                        <option value="2">Good w/ Findings</option>
-                    </select>
                 </div>
                 <div class="px-2 py-2">
                     <div class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
@@ -123,6 +116,12 @@
                             Blockings
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Invoice Blocking
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Moved By
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
@@ -135,7 +134,6 @@
                                 {{$car->vehicleidno}}
                             </a>
                         </th>
-
                         <td class="w-4 p-4">
                             {{$car->engineno}}
                         </td>
@@ -155,29 +153,37 @@
                             {{$car->recieveBy}}
                         </td>
                         <td class="w-4 p-4">
-                            <div class=" flex justify-between">
-                                @if ($car->blockings)
-                                    {{$car->blocking->bloackname}}
-                                @else
-                                    ...
-                                @endif
-                            </div>
+                            @if ($car->blockings)
+                                {{$car->blocking->bloackname}}
+                            @else
+                                ...
+                            @endif
                         </td>
-                        <td class="w-4 p-4">
-                            <div class=" flex justify-between">
+                        <td class="w-4 p-4 whitespace-nowrap">
+                            <button id="btnBlockings-{{$car->id}}" wire:click="selectedUnit({{$car->id}},1)" type="button" class="border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 @if ($car->invoiceBlock)
                                     {{$car->invblocking->bloackname}}
                                 @else
-                                    ...
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                        <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                    </svg>
                                 @endif
-                                <svg id="block-{{$car->id}}" wire:click="selectedUnit({{$car->id}})" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                    <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                            </button>
                         </td>
                         <td class="w-4 p-4">
-                            @if ($car->invoiceBlock)
-                                <a href="{{URL('/releasing')}}" >Realising</a>
+                            <button type="button" id="btnmovedBy-{{$car->id}}"  wire:click="selectedUnit({{$car->id}},2)"  class="border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                @if ($car->movedBy)
+                                    {{$car->movedBy}}
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                        <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                    </svg>
+                                @endif
+                            </button>
+                        </td>
+                        <td class="w-4 p-4">
+                            @if ($car->invoiceBlock && $car->movedBy)
+                                <a href="{{URL('/releasing')}}" >Releasing</a>
                             @else
                                 ---
                             @endif

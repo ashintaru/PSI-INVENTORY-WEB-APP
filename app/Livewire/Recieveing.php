@@ -19,7 +19,7 @@ class Recieveing extends Component
     public $editFinding = false;
 
     #[Rule('required')]
-    public $vehicleidno = "";
+    public $vehicleidno = null;
 
     // #[Rule('required')]
     // public $selectedBlocks;
@@ -27,16 +27,14 @@ class Recieveing extends Component
     public $selectedBlockings = [];
 
     #[Rule('required')]
-    public $recievedBy = "";
+    public $recievedBy;
 
     // public $recievedBy;
 
     #[Rule('required')]
-    public $blockings = "";
-    public $findings = "";
+    public $blockings = null;
+    public $findings = null;
     public $showfindings = false;
-    public function isEditable(){
-    }
 
     #[On('get-blockings')]
     public function selectedBlocks($blockid){
@@ -105,6 +103,7 @@ class Recieveing extends Component
             );
             $findinglists->findings =strtoupper( $findings);
             $findinglists->save();
+        $this->reset(['vehicleidno','findings','recievedBy','blockings']);
         }else{
             $car = cars::where('vehicleidno',$vin)->first();
             $this->checkBlockings($car);
@@ -124,14 +123,11 @@ class Recieveing extends Component
                 'userid'=>Auth::user()->id
             ]);
         }
-
-        $this->vehicleidno = "";
-        $this->findings = "";
-        $this->recievedBy = "";
-        $this->blockings = "";
-
+        $this->dispatch('post-created');
+        $this->reset(['vehicleidno','findings','recievedBy','blockings']);
     }
-
+    public function test(){
+    }
     public function goods(){
         $validatedData = $this->validate();
         $this->receivingproccess($this->vehicleidno,1);
@@ -157,6 +153,7 @@ class Recieveing extends Component
         }
     }
 
+    #[On('reset-field')]
     public function render()
     {
         $blocks = bloke::get();

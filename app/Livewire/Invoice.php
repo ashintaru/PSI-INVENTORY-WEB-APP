@@ -11,14 +11,42 @@ use Livewire\Attributes\On;
 class Invoice extends Component
 {
     public $isEditBlocking = false;
+    #[Rule('required')]
     public $selectedBlocking ;
     public $selectedUnitforblocking;
+    #[Rule('required')]
+    public $movedBy = 'rOASA';
+    public $ismovedBy = false;
+    #[Rule('required')]
     public $vin = '';
 
-    public function selectedUnit($id = null){
-        $this->isEditBlocking = true;
-        $this->selectedUnitforblocking = $id;
-        $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
+    public function selectedUnit($id = null , $action = null){
+        if($action == null)
+            return ;
+        else{
+            if($action == 1){
+                $this->ismovedBy = false;
+                $this->isEditBlocking = true;
+                $this->selectedUnitforblocking = $id;
+                $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
+            }elseif($action == 2){
+                $this->isEditBlocking = false;
+                $this->ismovedBy = true;
+                $this->selectedUnitforblocking = $id;
+                $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
+            }else
+                return ;
+        }
+    }
+
+    public function setMovedBy(){
+        $car = cars::where('id',$this->selectedUnitforblocking)->first();
+        $car->movedBy = $this->movedBy ;
+        $car->save();
+        $this->reset(['selectedUnitforblocking','vin']);
+        $this->movedBy = "";
+        // request()->session()->flash('success','the unit have been selected !!');
+
     }
 
     public function setInvoiceBlocking(){
@@ -49,8 +77,6 @@ class Invoice extends Component
         request()->session()->flash('success','the unit have been selected !!');
     }
 
-
-    #[On('reset-block')]
     public function render()
     {
         $blockings = blockings::select(['id','bloackname'])->where('blockId',12)->where('blockstatus',0)->get();
