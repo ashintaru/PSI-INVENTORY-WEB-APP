@@ -10,7 +10,6 @@
     @if (isset($car))
         <div class="flex justify-evenly">
             <div class="w-2/3  sm:px-6 lg:px-8 space-y-6">
-
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="inline-flex items-center w-full justify-between">
                         <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
@@ -208,7 +207,6 @@
                             Blocking History
                         </p>
                     </div>
-
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -220,21 +218,33 @@
                                         to
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Moved By
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Date Encoded
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($car->finding as $finding )
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900  dark:text-white">
-                                            {{$finding->findings}}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            {{ $finding->created_at->format('M d Y ');}}
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                @if (isset($history))
+                                    @foreach ($history as $his )
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900  dark:text-white">
+                                                {{$his->fromblocking->bloackname}}
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{$his->toblocking->bloackname}}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$his->user}}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$his->created_at}}
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

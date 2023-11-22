@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\cars;
 use App\Models\findings;
+use App\Models\blockingHistory;
 
 class UnitProfile extends Component
 {
@@ -16,7 +17,9 @@ class UnitProfile extends Component
     {
         $car = cars::where('id',$this->id)->with(['blocking','receive','inventory'])->first();
         $findings = findings::where('vehicleid',$this->id)->orderBy('created_at','DESC')->paginate(3);
+        $history = blockingHistory::where('vehicleid',$this->id)->with(['car','fromblocking','toblocking'])->orderBy('created_at','DESC')->get();
+        // return dd($history);
         // return dd($findings);
-        return view('livewire.unit-profile',['car'=>$car,'findings'=>$findings]);
+        return view('livewire.unit-profile',['car'=>$car,'findings'=>$findings,'history'=>$history]);
     }
 }

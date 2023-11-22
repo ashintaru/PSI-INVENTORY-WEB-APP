@@ -29,6 +29,7 @@ use App\Livewire\Recieveing as LivewireRecieveing;
 use App\Livewire\Invoice as LivewireInvoice;
 use App\Livewire\InvoiceReleased;
 use App\Livewire\UnitProfile as LivewireUnitProfile;
+use App\Livewire\Account as LivewireAccount;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,15 @@ Route::post('create-pdf',[pdfcontroller::class,'createPDF']);
 
 Route::middleware(['auth','web','areAdmin'])->group(function() {
 
+        //livewire
+        Route::get('inventory',LivewireInventory::class);
+        Route::get('recieve',LivewireRecieveing::class);
+        Route::get('invoice',LivewireInvoice::class);
+        Route::get('releasing',InvoiceReleased::class);
+        Route::get('unit/{id}',LivewireUnitProfile::class);
+        Route::get('account',LivewireAccount::class);
+
+
         Route::controller(report::class)->group(function(){
             Route::get('report','index');
             Route::post('report','fetchdata');
@@ -86,24 +96,21 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
             Route::put('update-personel/{id}','updatePersonel');
             Route::post('searchRecieveUnit','searchRecieveData');
         });
-        // Route::controller(invoicecontroller::class)->group(function(){
-        //     Route::get('invoice/{id}','index');
+        // Route::controller(looseitems::class)->group(function(){
+        //     Route::get('createloosetools/{id}','create');
+        //     Route::post('loose-item/{id}','store');
+        //     Route::put('update-loose-item/{id}','update');
         // });
-        Route::controller(looseitems::class)->group(function(){
-            Route::get('createloosetools/{id}','create');
-            Route::post('loose-item/{id}','store');
-            Route::put('update-loose-item/{id}','update');
-        });
-        Route::controller(settools::class)->group(function(){
-            Route::get('createsettools/{id}','create');
-            Route::post('set-tool/{id}','store');
-            Route::patch('update-set-tool/{id}','update');
-        });
-        Route::controller(damage::class)->group(function(){
-            Route::get('createdamage/{id}','create');
-            Route::post('car-damage/{id}','store');
-            Route::patch('update-car-damage/{id}','update');
-        });
+        // Route::controller(settools::class)->group(function(){
+        //     Route::get('createsettools/{id}','create');
+        //     Route::post('set-tool/{id}','store');
+        //     Route::patch('update-set-tool/{id}','update');
+        // });
+        // Route::controller(damage::class)->group(function(){
+        //     Route::get('createdamage/{id}','create');
+        //     Route::post('car-damage/{id}','store');
+        //     Route::patch('update-car-damage/{id}','update');
+        // });
 
         // Route::controller(inventory::class)->group(function(){
         //     Route::get('inventory', 'index')->name('show-inventory');
@@ -155,13 +162,6 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         });
 
 
-        //livewire
-        Route::get('inventory',LivewireInventory::class);
-        Route::get('recieve',LivewireRecieveing::class);
-        Route::get('invoice',LivewireInvoice::class);
-        Route::get('releasing',InvoiceReleased::class);
-        Route::get('unit/{id}',LivewireUnitProfile::class);
-
         Route::controller(CarsController::class)->group(function(){
             Route::get('masterlist','index');
             // Route::get('recieve', 'unitindex')->name('unit-list');
@@ -197,13 +197,13 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
     //super admin Route
 
     Route::group(['middleware' => ['areSuperAdmin']], function (){
-        Route::get('account', [account::class, 'index']);
-        Route::post('create-account', [account::class, 'store']);
-        Route::get('profile/{id}', [account::class, 'edit'])->name('admin.profile.edit');
-        Route::patch('profile/{id}', [account::class, 'update'])->name('admin.profile.update');
-        Route::put('password/{id}', [account::class, 'updatepassword'])->name('admin.password.update');
-        Route::patch('updaterole/{id}',[account::class,'updaterole'])->name('admin.role.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        // Route::get('account', [account::class, 'index']);
+        // Route::post('create-account', [account::class, 'store']);
+        // Route::get('profile/{id}', [account::class, 'edit'])->name('admin.profile.edit');
+        // Route::patch('profile/{id}', [account::class, 'update'])->name('admin.profile.update');
+        // Route::put('password/{id}', [account::class, 'updatepassword'])->name('admin.password.update');
+        // Route::patch('updaterole/{id}',[account::class,'updaterole'])->name('admin.role.update');
+        // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('health', HealthCheckResultsController::class);
 
 
@@ -224,14 +224,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
     });
 
-
-
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
-
-
 
 require __DIR__.'/auth.php';

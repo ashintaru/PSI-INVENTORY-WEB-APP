@@ -1,31 +1,39 @@
 <div>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Inventory') }}
+        </h2>
+    </x-slot>
+    <br>
     @if (isset($selectedUnitforfinding) && $isEditFinding == true)
+    <form>
         <div class="py-5 flex flex-col justify-start p-2 m-2 ">
             <p class="text-sm">
-               @if (isset($vin))
+            @if (isset($vin))
                     {{$vin}}
-               @endif
+            @endif
             </p>
             <div class="flex gap-2" >
-                <select id="blockings" wire:model="statusFinding" name="blockings" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                    <option value="">Choose Status</option>
-                    <option value="1">Good</option>
-                    <option value="2">Good with Findings</option>
+                <select  wire:model="statusFinding" name="status" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                    <option value=''>Select Status</option>
+                    <option value='1'>Good</option>
+                    <option value='2'>Good with Findings</option>
                 </select>
+                <span class="text-xs text-red-700" >@error('statusFinding') {{ $message }} @enderror</span>
             </div>
             <div class="py-2">
                 <label for="findings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit Findings</label>
                 <textarea wire:model="finding" id="findings" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
             </div>
             <div class="py-1 flex">
-                <button wire:click="updateFinding" type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                <button wire:click="updateFinding" type="button"  class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                     Update
                 </button>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel</button>
+                <button wire:click="cancelFinding"  class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel</button>
             </div>
         </div>
+    </form>
     @endif
-
 
     @if (isset($selectedUnitforblocking) && $isEditBlocking == true)
         <div class="py-5 flex flex-col justify-start p-2 m-2">
@@ -47,10 +55,11 @@
                             @endif
                         @endif
                     </select>
+                    <span class="text-xs text-red-700" >@error('blockingselect') {{ $message }} @enderror</span>
                 </div>
                 <div class="">
                     <button wire:click="updateBlocking"  type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Update</button>
-                    <button wire:click="cancelBlocking" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel</button>
+                    <button wire:click="cancelBlocking"  class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel</button>
                 </div>
             </div>
         </div>
@@ -170,27 +179,29 @@
                         <td class="w-4 p-4">
                             {{$car->recieveBy}}
                         </td>
-                        <td id="blocking-{{$car->id}}"  wire:click="editBlocking({{$car->id}})" class="w-4 p-4">
+                        <td class="w-4 p-4">
+                            <button id="blocking-{{$car->id}}"  wire:click="editBlocking({{$car->id}})" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 @if ($car->blockings)
-                                    <p type="button">
-                                        {{$car->blocking->bloackname}}
-                                    </p>
+                                    {{$car->blocking->bloackname}}
                                 @else
                                     ...
                                 @endif
+                            </button>
                         </td>
-                        <td id="findings-{{$car->id}}" wire:click="editFinding({{$car->id}})" class="w-4 p-4">
-                            @if ($car->status == 1)
-                                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
-                                    <span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0">
-                                    </span>Good
-                                </span>
-                            @else
-                                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
-                                    <span class="flex w-2.5 h-2.5 bg-yellow-500 rounded-full me-1.5 flex-shrink-0">
-                                    </span>Good with findings
-                                </span>
-                            @endif
+                        <td class="w-4 p-4">
+                            <button id="findings-{{$car->id}}" wire:click="editFinding({{$car->id}})" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                @if ($car->status == 1)
+                                    <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                                        <span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0">
+                                        </span>Good
+                                    </span>
+                                @else
+                                    <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                                        <span class="flex w-2.5 h-2.5 bg-yellow-500 rounded-full me-1.5 flex-shrink-0">
+                                        </span>Good with findings
+                                    </span>
+                                @endif
+                            </button>
                         </td>
                     </tr>
                     @endforeach

@@ -12,6 +12,7 @@ use App\Models\findings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\blockingHistory as history;
 
 class Recieveing extends Component
 {
@@ -77,14 +78,11 @@ class Recieveing extends Component
         )->validate();
         $this->receivingproccess($this->vehicleidno,2,$this->findings);
         $this->dispatch('relode-batchlist');
-        request()->session()->flash('success','the unit have been selected !!');
-        $this->reset(['recievedBy','vehicleidno','blockings']);
     }
 
     public function isexsist($vin = null){
         return DB::table('batching')->where('vehicleidno', $vin)->exists();
     }
-
 
     public function receivingproccess($vin = null , $status = null , $findings = "ALL GOODS"){
         if ($this->isexsist($vin)) {
@@ -103,7 +101,6 @@ class Recieveing extends Component
             );
             $findinglists->findings =strtoupper( $findings);
             $findinglists->save();
-        $this->reset(['vehicleidno','findings','recievedBy','blockings']);
         }else{
             $car = cars::where('vehicleidno',$vin)->first();
             $this->checkBlockings($car);
@@ -125,27 +122,40 @@ class Recieveing extends Component
         }
         $this->dispatch('post-created');
         $this->reset(['vehicleidno','findings','recievedBy','blockings']);
+        request()->session()->flash('success','Action Have been finished!!');
     }
-    public function test(){
+
+    public function blockingHistory(cars $car , $blockings)
+    {
+        history::create(
+            [
+                'vehicleid'=>$car->id,
+                'from'=>$car->blockings,
+                'to'=>$blockings,
+                'user'=>Auth::user()->name
+            ]
+        );
+
     }
+
     public function goods(){
         $validatedData = $this->validate();
         $this->receivingproccess($this->vehicleidno,1);
         $this->dispatch('relode-batchlist');
-        request()->session()->flash('success','the unit have been selected !!');
-        $this->reset(['recievedBy','vehicleidno','blockings']);
     }
+
     public function checkBlockings(cars $car){
         if($car->blockings === null){
             $car->blockings = $this->blockings;
+            $this->blockingHistory($car,$this->blockings);
             $blockings = blockings::find($this->blockings);
             $blockings->blockstatus = 1;
             $blockings->save();
         }else{
+            $this->blockingHistory($car,$this->blockings);
             $oldblockings = blockings::find($car->blockings);
             $oldblockings->blockstatus = 0;
             $oldblockings->save();
-
             $car->blockings = $this->blockings;
             $blockings = blockings::find($this->blockings);
             $blockings->blockstatus = 1;
@@ -153,7 +163,6 @@ class Recieveing extends Component
         }
     }
 
-    #[On('reset-field')]
     public function render()
     {
         $blocks = bloke::get();

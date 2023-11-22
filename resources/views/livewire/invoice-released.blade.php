@@ -1,7 +1,6 @@
-<div>
+<div>0
     {{-- The whole world belongs to you. --}}
     <div class="py-2">
-
         <div class=" max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
             {{-- invoice blocking and date form --}}
             <a href="{{url('invoice')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

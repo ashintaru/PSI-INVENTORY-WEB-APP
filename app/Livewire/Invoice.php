@@ -6,7 +6,8 @@ use Livewire\Component;
 use App\Models\cars;
 use App\Models\invoce;
 use App\Models\blockings;
-use Livewire\Attributes\On;
+use App\Models\blockingHistory as history;
+use Illuminate\Support\Facades\Auth;
 
 class Invoice extends Component
 {
@@ -51,6 +52,7 @@ class Invoice extends Component
 
     public function setInvoiceBlocking(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
+        $this->blockingHistory($car,$this->selectedBlocking);
         if(!isset($car->invoiceBlock)){
             $ivtblockings = blockings::find($this->selectedBlocking);
             $ivtblockings->blockstatus = 1;
@@ -75,6 +77,19 @@ class Invoice extends Component
 
         }
         request()->session()->flash('success','the unit have been selected !!');
+    }
+
+    public function blockingHistory(cars $car , $blockings)
+    {
+        history::create(
+            [
+                'vehicleid'=>$car->id,
+                'from'=>$car->blockings,
+                'to'=>$blockings,
+                'user'=>Auth::user()->name
+            ]
+        );
+
     }
 
     public function render()

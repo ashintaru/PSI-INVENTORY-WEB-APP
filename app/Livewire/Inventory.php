@@ -6,13 +6,15 @@ use App\Http\Controllers\blocks;
 use App\Models\cars;
 use App\Models\findings;
 use Livewire\Component;
-use Livewire\Attributes\Rule;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\inventory as modelinventory;
-use Carbon\Carbon;
 use App\Models\client;
 use App\Models\blockings;
+use App\Models\blockingHistory as history;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class Inventory extends Component
@@ -33,8 +35,8 @@ class Inventory extends Component
     public $vin;
     public $isEditFinding = false;
     public $selectedUnitforfinding;
-    public $statusFinding;
     public $finding;
+    public $statusFinding;
 
 
     #[On('get-blockings'),On('reset-block')]
@@ -66,6 +68,14 @@ class Inventory extends Component
     }
 
     public function updateFinding(){
+        $validate = Validator::make(
+            ['statusFinding' => $this->statusFinding],
+            // Validation rules to apply...
+            ['statusFinding' => 'required'],
+            // Custom validation messages...
+            ['required' => 'the Unit is required to give  a status'],
+        )->validate();
+        // dd($this->statusFinding);
         $car = cars::where('id',$this->selectedUnitforfinding)->first();
         $car->status = $this->statusFinding;
         $car->save();
@@ -87,9 +97,24 @@ class Inventory extends Component
         $this->isEditBlocking = false;
         $this->selectedUnitforblocking = null;
     }
+
+    public function cancelFinding(){
+        $this->isEditFinding = false;
+        $this->selectedUnitforfinding = null;
+    }
+
     public function updateBlocking(){
+        // $validatedData = $this->validate();
+        $validate = Validator::make(
+            ['blockingselect'=> $this->blockingselect],
+            // Validation rules to apply...
+            ['blockingselect'=> 'required'],
+            // Custom validation messages...
+            ['required' => 'the Unit is required to give Blocking'],
+        )->validate();
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
         $oldBlocking = blockings::find($car->blockings);
+        $this->blockingHistory($car,$this->blockingselect);
         if(isset($oldBlocking)){
             $oldBlocking->blockstatus = 0;
             $oldBlocking->save();
@@ -109,8 +134,21 @@ class Inventory extends Component
         $this->reset(['blockingselect']);
         $this->dispatch('reset-block','');
         request()->session()->flash('success','the unit have been selected !!');
+    }
+
+    public function blockingHistory(cars $car , $blockings)
+    {
+        history::create(
+            [
+                'vehicleid'=>$car->id,
+                'from'=>$car->blockings,
+                'to'=>$blockings,
+                'user'=>Auth::user()->name
+            ]
+        );
 
     }
+
 
     // #[On('reload')]
     public function render()
