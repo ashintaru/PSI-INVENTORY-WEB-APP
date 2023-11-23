@@ -14,6 +14,7 @@ class released extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
+        'vehicleid',
         'vehicleidno',
         'status'
     ];

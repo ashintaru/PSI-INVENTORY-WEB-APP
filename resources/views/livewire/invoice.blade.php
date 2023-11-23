@@ -183,7 +183,7 @@
                         </td>
                         <td class="w-4 p-4">
                             @if ($car->invoiceBlock && $car->movedBy)
-                                <a href="{{URL('/releasing')}}" >Releasing</a>
+                                <a href="{{URL('releasing/'.$car->id)}}" >Releasing</a>
                             @else
                                 ---
                             @endif

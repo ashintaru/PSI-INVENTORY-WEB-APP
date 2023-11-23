@@ -1,10 +1,10 @@
 <div>
-    <a href="{{ url()->previous() }}" class="inline-flex items-center  gap-1">
+    {{-- <a href="{{ url()->previous() }}" class="inline-flex items-center  gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
             <path d="M7.712 4.819A1.5 1.5 0 0110 6.095v2.973c.104-.131.234-.248.389-.344l6.323-3.905A1.5 1.5 0 0119 6.095v7.81a1.5 1.5 0 01-2.288 1.277l-6.323-3.905a1.505 1.505 0 01-.389-.344v2.973a1.5 1.5 0 01-2.288 1.276l-6.323-3.905a1.5 1.5 0 010-2.553L7.712 4.82z" />
         </svg>
         Back
-    </a>
+    </a> --}}
 
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
     @if (isset($car))
@@ -343,6 +343,19 @@
                                     @endif
                                 </li>
                             </ul>
+                        </li>
+                    @endif
+                    @if ($car->released)
+                        <li class="mb-10 ms-6">
+                            <span class="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
+                                <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </span>
+                            <h3 class="font-medium leading-tight">Released</h3>
+                            <span class="text-xs">
+                                {{Carbon\Carbon::parse($car->dateReleased)->format('M-d-Y')}}
+                            </span>
                         </li>
                     @endif
                 </ol>

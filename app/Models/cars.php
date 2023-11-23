@@ -80,4 +80,7 @@ class cars extends Model
     public function client(){
         return $this->hasOne(client::class,'id','tag');
     }
+    public function released(){
+        return $this->hasOne(released::class,'vehicleidno','vehicleidno');
+    }
 }

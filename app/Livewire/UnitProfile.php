@@ -15,7 +15,7 @@ class UnitProfile extends Component
     }
     public function render()
     {
-        $car = cars::where('id',$this->id)->with(['blocking','receive','inventory'])->first();
+        $car = cars::where('id',$this->id)->with(['blocking','receive','inventory','released'])->first();
         $findings = findings::where('vehicleid',$this->id)->orderBy('created_at','DESC')->paginate(3);
         $history = blockingHistory::where('vehicleid',$this->id)->with(['car','fromblocking','toblocking'])->orderBy('created_at','DESC')->get();
         // return dd($history);

@@ -76,8 +76,8 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         //livewire
         Route::get('inventory',LivewireInventory::class);
         Route::get('recieve',LivewireRecieveing::class);
-        Route::get('invoice',LivewireInvoice::class);
-        Route::get('releasing',InvoiceReleased::class);
+        Route::get('invoice',LivewireInvoice::class)->name('invoice');
+        Route::get('releasing/{id}',InvoiceReleased::class);
         Route::get('unit/{id}',LivewireUnitProfile::class);
         Route::get('account',LivewireAccount::class);
 

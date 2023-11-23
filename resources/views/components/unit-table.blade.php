@@ -98,7 +98,9 @@
                     @endif
                 </th>
                 <td class="px-6 py-4">
-                {{$tableRow->vehicleidno}}
+                    <a href="{{URL('unit/'.$tableRow->vehicleidno)}}">
+                        {{$tableRow->vehicleidno}}
+                    </a>
                 </td>
                 <td class="px-6 py-4">
                 {{$tableRow->engineno}}

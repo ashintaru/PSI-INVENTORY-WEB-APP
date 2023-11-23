@@ -99,6 +99,7 @@ class Recieveing extends Component
                     'findings'=>strtoupper($findings),
                 ]
             );
+            $this->dispatch('post-created');
             $findinglists->findings =strtoupper( $findings);
             $findinglists->save();
         }else{
@@ -119,8 +120,8 @@ class Recieveing extends Component
                 'vehicleidno'=>$car->vehicleidno,
                 'userid'=>Auth::user()->id
             ]);
+            $this->dispatch('post-created');
         }
-        $this->dispatch('post-created');
         $this->reset(['vehicleidno','findings','recievedBy','blockings']);
         request()->session()->flash('success','Action Have been finished!!');
     }
