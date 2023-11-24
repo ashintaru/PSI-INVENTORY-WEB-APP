@@ -32,12 +32,26 @@
                 <div class="flex justify-start items-end" >
                     <div class="p-3">
                         <label for="roles" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Account Role</label>
-                        <select id="roles" wire:model="accountForm.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select wire:click="updateRole" id="roles" wire:model="accountForm.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">Choose a role</option>
                         <option value="1">Super Admin</option>
                         <option value="2">Admin</option>
                         <option value="3">Client</option>
                         </select>
+                    </div>
+                    <div class="p-3">
+                        @if ($accountForm->role == 2 || $accountForm->role == 3)
+                            <div class=" flex p-3">
+                                <select id="roles" wire:model="accountForm.client" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="">Choose a client</option>
+                                    @if (isset($clients))
+                                        @foreach ($clients as $client )
+                                            <option value="{{$client->id}}">{{$client->clientName}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        @endif
                     </div>
                     <div class=" p-3">
                         <button wire:click="store" type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -49,28 +63,27 @@
         </section>
     @endif
 
-    <section class=" py-2 flex justify-evenly gap-3">
-        <form class="p-4 bg-slate-100 w-full" >
-            <div class="inline-flex items-center justify-start " >
-                <div class="p-3">
-                    <label for="roles" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Account Role</label>
-                </div>
-                <div class=" flex p-3">
-                    <select id="roles" wire:model="accountForm.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">Choose a role</option>
-                        <option value="1">Super Admin</option>
-                        <option value="2">Admin</option>
-                        <option value="3">Client</option>
+    @if(isset($selectedAcct) && $isEditinngClient == true)
+        <div class="flex justify-start items-end" >
+            <div class=" inline-flex items-end gap-2">
+                <div>
+                    <label>Client</label>
+                    <select id="roles" wire:model="accountForm.client" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">Choose a client</option>
+                        @if (isset($clients))
+                            @foreach ($clients as $client )
+                                <option value="{{$client->id}}">{{$client->clientName}}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
-                <div class=" flex p-3">
-                    <button wire:click="store" type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        submit
-                    </button>
-                </div>
+                <button wire:click="store" type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    submit
+                </button>
             </div>
-        </form>
-    </section>
+        </div>
+    @endif
+
 
     <section class="py-2">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -131,7 +144,7 @@
                             </td>
                             <td class="w-4 p-4 whitespace-nowrap">
                                 @if ($d->role != 1)
-                                    <button id="blocking-{{$d->id}}"  wire:click="editBlocking({{$d->id}})" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                    <button id="blocking-{{$d->id}}"  wire:click="selectAcct({{$d->id}},2)" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                             <path fill-rule="evenodd" d="M5.5 3A2.5 2.5 0 003 5.5v2.879a2.5 2.5 0 00.732 1.767l6.5 6.5a2.5 2.5 0 003.536 0l2.878-2.878a2.5 2.5 0 000-3.536l-6.5-6.5A2.5 2.5 0 008.38 3H5.5zM6 7a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                                           </svg>

@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Livewire\Forms\accountForm;
 use Livewire\Component;
 use App\Models\User;
+use App\Models\client;
+
 
 class Account extends Component
 {
@@ -12,12 +14,12 @@ class Account extends Component
 
     public accountForm $accountForm;
     //toggleling button
-    public $isAdding = false;
-
-    public $isEditinngRoles = false;
-    public $editRole = '';
-
     public $selectedAcct ='';
+
+    public $isAdding = false;
+    public $isEditinngRoles = false;
+    public $isEditinngClient = false;
+
     public $action = '';
 
 
@@ -26,16 +28,22 @@ class Account extends Component
         if($id == null && $action == null)
             return ;
         elseif($action == 1){
-            $this->isEditinngRoles == true;
-            $this->selectedAcct == $id;
-        }else
+            $this->reset(['selectedAcct','isEditinngClient','isEditinngRoles']);
+            $this->isEditinngRoles = true;
+            $this->selectedAcct = $id;
+        }
+        elseif($action == 2){
+            $this->reset(['selectedAcct','isEditinngClient','isEditinngRoles']);
+            $this->isEditinngClient = true;
+            $this->selectedAcct = $id;
+        }
+        else
             return;
     }
 
     public function updateRole(){
-
+        $this->accountForm->role =  $this->accountForm->role;
     }
-
     public function toggleCreate(){
         $this->isAdding =  !$this->isAdding;
     }
@@ -45,6 +53,7 @@ class Account extends Component
     public function render()
     {
         $accounts = User::all();
-        return view('livewire.account',['accounts'=>$accounts]);
+        $clients = client::all();
+        return view('livewire.account',['accounts'=>$accounts,'clients'=>$clients]);
     }
 }
