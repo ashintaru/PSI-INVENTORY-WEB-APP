@@ -12,7 +12,9 @@
                     <input onfocus="this.value=''" wire:model="recievedBy" placeholder="Received by who?" id="recievedBy" class="block w-full p-3 pl-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Vehicle id No, Csno...">
                     <span class="text-xs text-red-700" >@error('recievedBy') {{ $message }} @enderror</span>
                 </div>
-
+                <div class="w-full p-3">
+                    @livewire('siteselection')
+                </div>
                 <div class="w-full p-3">
                     @livewire('blocks')
                 </div>

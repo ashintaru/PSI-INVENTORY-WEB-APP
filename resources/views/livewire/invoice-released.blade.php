@@ -45,9 +45,25 @@
                             <div class="flex">
                                 <textarea  wire:model="remark" id="message" rows="4" name="remark" class="block p-2.5 min-w-0 w-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                             </div>
+                            <div class="flex">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                                <input wire:model="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                            </div>
                             <x-primary-button>{{ __('Submit') }}</x-primary-button>
                         </div>
                     </form>
+                </div>
+            </div>
+            {{-- end --}}
+        </div>
+        <div class=" max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-3">
+            {{-- invoice blocking and date form --}}
+
+            <div class="flex gap-2">
+                <div class="overflow-x-auto w-1/2 p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    @if($photo)
+                        <img class="h-auto max-w-full" src="{{ $photo->temporaryUrl() }}" alt="image description">
+                    @endif
                 </div>
             </div>
             {{-- end --}}

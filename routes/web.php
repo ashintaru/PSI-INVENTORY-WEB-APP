@@ -31,6 +31,9 @@ use App\Livewire\InvoiceReleased;
 use App\Livewire\UnitProfile as LivewireUnitProfile;
 use App\Livewire\Account as LivewireAccount;
 use App\Livewire\Site as LivewireSite;
+use App\Livewire\Released as LivewireReleased;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -81,6 +84,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('unit/{id}',LivewireUnitProfile::class);
         Route::get('account',LivewireAccount::class);
         Route::get('site',LivewireSite::class);
+        Route::get('released',LivewireReleased::class);
 
 
         Route::controller(report::class)->group(function(){

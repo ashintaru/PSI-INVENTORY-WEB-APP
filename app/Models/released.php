@@ -16,6 +16,7 @@ class released extends Model
     [
         'vehicleid',
         'vehicleidno',
+        'photo',
         'status'
     ];
     public function car(){

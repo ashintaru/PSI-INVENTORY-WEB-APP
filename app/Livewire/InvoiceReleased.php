@@ -8,9 +8,15 @@ use App\Models\invoce;
 use App\Models\released;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
+use Livewire\WithFileUploads;
 
 class InvoiceReleased extends Component
 {
+    use WithFileUploads;
+
+    #[Rule('nullable|sometimes|image|max:1028')]
+    public $photo;
+
     public $unitId;
     #[Rule('required|min:3')]
     public $releasedBy;
@@ -24,6 +30,7 @@ class InvoiceReleased extends Component
         $this->unitId = $id;
     }
     public function store(){
+
         $validate = $this->validate();
         $car = cars::where('id',$this->unitId)->first();
         // dd($car);
@@ -36,9 +43,14 @@ class InvoiceReleased extends Component
             $car->remark = $this->remark;
         $car->save();
 
+        if($this->photo){
+            $this->photo->store('uploads','public');
+        }
+
         released::create([
             'vehicleid'=>$car->id,
             'vehicleidno'=>$car->vehicleidno,
+            'photo'=>$this->photo,
             'status'=>1
         ]);
 
@@ -49,7 +61,6 @@ class InvoiceReleased extends Component
         $invoiceBlockings = blockings::where('id',$car->invoiceBlock)->first();
         $invoiceBlockings->blockstatus = 0;
         $invoiceBlockings->save();
-
         return redirect('/invoice')->with('status', 'Profile updated!');
         // return dd("done");
 
