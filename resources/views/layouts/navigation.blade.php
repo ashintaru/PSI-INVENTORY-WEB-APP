@@ -157,7 +157,7 @@
           <img src="{{asset('images/PSI-Logo-Main.png')}}" class="h-16 mr-2" alt="Flowbite Logo" />
           <div class="flex flex-col">
               <span class="self-center text-base font-semibold whitespace-nowrap dark:text-white">Automotive Warehouse</span>
-              <span class="self-center text-xs font-semibold whitespace-nowrap dark:text-white">Management System</span>
+              <span class="self-center text-base font-semibold whitespace-nowrap dark:text-white">Management System</span>
           </div>
       </a>
       <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
@@ -247,6 +247,13 @@
                 </div>
             </div>
         </li>
+        <li>
+            <a wire:navigate href="{{URL('released')}}" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+            </a>
+          </li>
         @if(Auth::user()->role == 1)
             <li>
                 <button data-tooltip-target="config" id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarconfig" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">

@@ -8,6 +8,7 @@ use App\Models\invoce;
 use App\Models\blockings;
 use App\Models\blockingHistory as history;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Rule;
 
 class Invoice extends Component
 {
@@ -16,33 +17,29 @@ class Invoice extends Component
     public $selectedBlocking ;
     public $selectedUnitforblocking;
     #[Rule('required')]
-    public $movedBy = 'rOASA';
+    public $movedBy ='';
     public $ismovedBy = false;
     #[Rule('required')]
     public $vin = '';
+    public $carblockings;
 
     public function selectedUnit($id = null , $action = null){
         if($action == null)
             return ;
         else{
-            if($action == 1){
-                $this->ismovedBy = false;
-                $this->isEditBlocking = true;
-                $this->selectedUnitforblocking = $id;
-                $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
-            }elseif($action == 2){
-                $this->isEditBlocking = false;
-                $this->ismovedBy = true;
-                $this->selectedUnitforblocking = $id;
-                $this->vin = cars::select('vehicleidno')->where('id',$id)->first();
-            }else
-                return ;
+            $this->reset(['movedBy','vin','selectedBlocking','carblockings']);
+            $this->isEditBlocking = true;
+            $car = cars::where('id',$id)->first();
+            $this->vin = $car->vehicleidno;
+            $this->selectedUnitforblocking = $id;
+            $this->movedBy = ($car->movedBy)?$car->movedBy:'';
+            $this->selectedBlocking = ($car->invoiceBlock)?$car->invoiceBlock:'';
+            $this->carblockings = $car->blockings;
         }
     }
 
     public function setMovedBy(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
-        $car->movedBy = $this->movedBy ;
         $car->save();
         $this->reset(['selectedUnitforblocking','vin']);
         $this->movedBy = "";
@@ -52,11 +49,12 @@ class Invoice extends Component
 
     public function setInvoiceBlocking(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
-        $this->blockingHistory($car,$this->selectedBlocking);
+        $this->blockingHistory($car,$this->selectedBlocking,$this->movedBy);
         if(!isset($car->invoiceBlock)){
             $ivtblockings = blockings::find($this->selectedBlocking);
             $ivtblockings->blockstatus = 1;
             $car->invoiceBlock = $this->selectedBlocking;
+            $car->movedBy = $this->movedBy ;
             $invBlocking = blockings::find($car->blockings);
             $invBlocking->blockstatus = 0;
             $ivtblockings->save();
@@ -69,6 +67,7 @@ class Invoice extends Component
             $ivtblockings = blockings::find($this->selectedBlocking);
             $ivtblockings->blockstatus = 1;
             $car->invoiceBlock = $this->selectedBlocking;
+            $car->movedBy = $this->movedBy ;
             $ivtblockings->save();
             $invBlocking = blockings::find($car->blockings);
             $invBlocking->blockstatus = 0;
@@ -79,14 +78,14 @@ class Invoice extends Component
         request()->session()->flash('success','the unit have been selected !!');
     }
 
-    public function blockingHistory(cars $car , $blockings)
+    public function blockingHistory(cars $car = null  , $blockings = null ,$movedBy = null)
     {
         history::create(
             [
                 'vehicleid'=>$car->id,
                 'from'=>$car->blockings,
                 'to'=>$blockings,
-                'user'=>Auth::user()->name
+                'user'=>$movedBy
             ]
         );
 

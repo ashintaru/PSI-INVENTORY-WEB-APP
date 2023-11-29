@@ -32,6 +32,8 @@ use App\Livewire\UnitProfile as LivewireUnitProfile;
 use App\Livewire\Account as LivewireAccount;
 use App\Livewire\Site as LivewireSite;
 use App\Livewire\Released as LivewireReleased;
+use App\Livewire\Masterlist as livewireMasterList;
+use App\Livewire\Report as LivewireReport;
 
 
 /*
@@ -85,15 +87,16 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('account',LivewireAccount::class);
         Route::get('site',LivewireSite::class);
         Route::get('released',LivewireReleased::class);
+        Route::get('rawdata',livewireMasterList::class);
+        Route::get('report',LivewireReport::class);
 
-
-        Route::controller(report::class)->group(function(){
-            Route::get('report','index');
-            Route::post('report','fetchdata');
-            Route::get('total-units','showtotalunits');
-            Route::get('approved-units','showapproveunits');
-            Route::get('disapproved-units','showdisapproveunits');
-        });
+        // Route::controller(report::class)->group(function(){
+        //     Route::get('report','index');
+        //     Route::post('report','fetchdata');
+        //     Route::get('total-units','showtotalunits');
+        //     Route::get('approved-units','showapproveunits');
+        //     Route::get('disapproved-units','showdisapproveunits');
+        // });
 
         Route::controller(recieveController::class)->group(function(){
             Route::get('recieve-units',"index")->name('recive');
@@ -170,7 +173,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::controller(CarsController::class)->group(function(){
             Route::get('masterlist','index');
             // Route::get('recieve', 'unitindex')->name('unit-list');
-            Route::get('rawdata', 'rawData')->name('raw-data');
+            // Route::get('rawdata', 'rawData')->name('raw-data');
             Route::post('batchingUnit','unitBatching');
             Route::post('filter-rawdata','setFilter');
             Route::post('filter-recievedata','setFilterUnitList');
