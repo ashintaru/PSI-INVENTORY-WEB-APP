@@ -1,73 +1,22 @@
 <?php
 namespace App\Exports;
 
-use App\Models\cars;
-use App\Models\inventory;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
+// use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class inventoryExport implements FromQuery,WithHeadings,ShouldAutoSize
+class inventoryExport implements FromCollection,WithHeadings,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(string $tag = null ,$start = null,$end = null)
+    public function __construct($data = null)
     {
-        $this->start = $start;
-        $this->end = $end;
-        $this->tag = $tag;
+        $this->data = $data;
     }
-
-    public function query()
+    public function collection()
     {
-        if($this->tag == null && $this->start || $this->end){
-            return cars::
-            select(
-                [
-                    'mmpcmodelcode',
-                    'mmpcmodelyear',
-                    'mmpcoptioncode',
-                    'extcolorcode',
-                    'modeldescription',
-                    'exteriorcolor',
-                    'csno',
-                    'bilingdate',
-                    'cars.vehicleidno',
-                    'engineno',
-                    'productioncbunumber',
-                    'bilingdocuments',
-                    'vehiclestockyard',
-                ]
-            )
-            ->join('inventories','inventories.vehicleidno','cars.vehicleidno')
-            ->getQuery()
-            ->orderBy('inventories.vehicleidno','ASC');
-        }else{
-            return inventory::
-            select(
-                [
-                    'mmpcmodelcode',
-                    'mmpcmodelyear',
-                    'mmpcoptioncode',
-                    'extcolorcode',
-                    'modeldescription',
-                    'exteriorcolor',
-                    'csno',
-                    'bilingdate',
-                    'vehicleidno',
-                    'engineno',
-                    'productioncbunumber',
-                    'bilingdocuments',
-                    'vehiclestockyard',
-                ]
-            )
-            ->join('cars','vehicleidno','inventories.vehicleidno')
-            ->getQuery()
-            ->where('tag',$this->tag)
-            ->orderBy('inventories.vehicleidno','ASC')
-            ->whereBetween('inventories.created_at',[$this->start,$this->end]);
-        }
-
+        return $this->data;
     }
     public function headings(): array
     {

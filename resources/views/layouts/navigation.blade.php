@@ -279,7 +279,7 @@
                             <a wire:navigate href="{{URL('client')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Client Management</a>
                         </li>
                         <li>
-                            <a wire:navigate href="{{URL('blocks')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Blocking Management</a>
+                            <a wire:navigate href="{{URL('site')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Site Management</a>
                         </li>
                         <li>
                             <a wire:navigate href="{{URL('report')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>

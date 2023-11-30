@@ -128,28 +128,28 @@
                             VIN
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Product name
+                            Engine no.
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Color
+                            CS no
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Category
+                            Description
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Price
+                            Client
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Date / Time in
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Recieved By
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Blockings
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Status
                         </th>
                     </tr>
                 </thead>

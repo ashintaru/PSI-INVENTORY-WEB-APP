@@ -53,11 +53,12 @@
                                             <td class="px-6 py-4">
                                                 {{$site->created_at}}
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 ">
                                                 {{$site->updated_at}}
                                             </td>
-                                            <td class="px-6 py-4 text-right">
+                                            <td class="px-6 py-4 whitespace-nowrap">
                                                 <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                             </td>
                                         </tr>
                                     @endforeach
