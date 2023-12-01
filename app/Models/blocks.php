@@ -10,6 +10,7 @@ class blocks extends Model
     use HasFactory;
 
     protected $fillable = [
+        'siteId',
         'blockname',
         'status'
     ];

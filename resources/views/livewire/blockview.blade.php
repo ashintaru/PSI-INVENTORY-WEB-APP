@@ -1,21 +1,87 @@
 <div>
-
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Block/s Management') }}
+        </h2>
+    </x-slot>
 
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex gap-2">
-                <button data-modal-target="createNewBlockModal" data-modal-toggle="createNewBlockModal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    Create New Blocks
-                  </button>
-                  <button data-modal-target="createNewBlockingModals" data-modal-toggle="createNewBlockingModals" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    Upload New Blockings
-                  </button>
-                  <button data-modal-target="invoice-modal" data-modal-toggle="invoice-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    Create New Invoice Blockings
-                  </button>
+                <x-primary-button wire:click="toogleCreateBlock">
+                    Create Blocks
+                </x-primary-button>
+                <x-primary-button wire:click="toogleCreateBlocking">
+                    Create Blocking/s
+                </x-primary-button>
             </div>
         </div>
     </div>
+
+    @if ($isCreatingBlock)
+        <div class="py-4">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="inline-flex text-center gap-2">
+                    <div>
+                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
+                        <input wire:model="blockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <x-primary-button wire:click="createBlock">
+                        Submit
+                    </x-primary-button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($isCreatingBlockings)
+        <div class="py-4">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="inline-flex text-center gap-2">
+                    <div>
+                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
+                        <select wire:model="selectedBlock" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected value="">----</option>
+                                @if (isset($blocks))
+                                    @foreach ($blocks as $block )
+                                        <option value="{{$block->id}}">{{$block->blockname}}</option>
+                                    @endforeach
+                                @endif
+                        </select>
+                    </div>
+                    <div>
+                        <label for="blockings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocking Name</label>
+                        <input wire:model="blockingName" type="text" id="blockings" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <x-primary-button wire:click="createBlockings">
+                        Submit
+                    </x-primary-button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    @if ($editedBlock && $isEditingBlock)
+        <div class="py-4">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="inline-flex text-center gap-2">
+                    <div>
+                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Update Block Name</label>
+                        <input wire:model="updateBlockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <x-primary-button wire:click="updateBlock">
+                        Update
+                    </x-primary-button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+
+
+
     <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -55,7 +121,15 @@
                                         {{$d->updated_at}}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{URL('blocking-list/'.$d->id)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Blocking List</a>
+                                        <a href="{{URL('blocking-list/'.$d->id)}}" class=" inline-flex items-center px-4 py-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            View
+                                        </a>
+                                        <x-primary-button wire:click="editBlock({{$d->id}})">
+                                            Edit
+                                        </x-primary-button>
+                                        <x-secondary-button wire:click="createBlockings">
+                                            Delete
+                                        </x-secondary-button>
                                     </td>
                             </tr>
                         @endforeach

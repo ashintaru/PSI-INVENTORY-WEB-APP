@@ -14,10 +14,9 @@ class Blocks extends Component
     public function select(){
         $this->dispatch('get-blockings',$this->blockid);
     }
-
     #[On('get-site')]
     public function selectedBlocks($siteid){
-        // dd($value);
+        $this->blockid = "";
         $this->selectedBlocks = bloke::select(['id','blockname'])->where('siteid',$siteid)->get();
     }
 

@@ -39,7 +39,7 @@ class Recieveing extends Component
 
     #[On('get-blockings')]
     public function selectedBlocks($blockid){
-        // dd($value);
+        $this->selectedBlockings=[];
         $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',$blockid)->where('blockstatus',0)->get();
     }
     #[On('relode-batchlist')]
@@ -67,6 +67,10 @@ class Recieveing extends Component
         $this->dispatch('show-findings');
         $this->showfindings = !$this->showfindings;
     }
+    #[On('get-site')]
+    public function setToNUllBlockings(){
+        $this->selectedBlockings = [];
+    }
 
     public function goodswithfindings(){
         $validate = Validator::make(
@@ -83,6 +87,7 @@ class Recieveing extends Component
     public function isexsist($vin = null){
         return DB::table('batching')->where('vehicleidno', $vin)->exists();
     }
+
 
     public function receivingproccess($vin = null , $status = null , $findings = "ALL GOODS"){
         if ($this->isexsist($vin)) {
@@ -136,7 +141,6 @@ class Recieveing extends Component
                 'user'=>Auth::user()->name
             ]
         );
-
     }
 
     public function goods(){

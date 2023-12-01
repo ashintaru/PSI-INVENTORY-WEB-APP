@@ -34,7 +34,7 @@ use App\Livewire\Site as LivewireSite;
 use App\Livewire\Released as LivewireReleased;
 use App\Livewire\Masterlist as livewireMasterList;
 use App\Livewire\Report as LivewireReport;
-
+use App\Livewire\Blockview as LivewireBlocks;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +89,8 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('released',LivewireReleased::class);
         Route::get('rawdata',livewireMasterList::class);
         Route::get('report',LivewireReport::class);
+        Route::get('block-list/{id}',LivewireBlocks::class);
+
 
         // Route::controller(report::class)->group(function(){
         //     Route::get('report','index');
