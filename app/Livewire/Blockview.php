@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\blocks;
 use App\Models\blockings;
-
+use App\Models\site;
 
 class Blockview extends Component
 {
@@ -68,7 +68,8 @@ class Blockview extends Component
     }
     public function render()
     {
+        $site = site::where('id',$this->siteId)->first();
         $blocks = blocks::where('siteId',$this->siteId)->get();
-        return view('livewire.blockview',['blocks'=>$blocks]);
+        return view('livewire.blockview',['blocks'=>$blocks,'site'=>$site]);
     }
 }

@@ -38,36 +38,15 @@
         </div>
     </div>
 
-
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex gap-2">
-                <x-primary-button wire:click="toogleCreateBlock">
-                    Create Blocks
-                </x-primary-button>
                 <x-primary-button wire:click="toogleCreateBlocking">
                     Create Blocking/s
                 </x-primary-button>
             </div>
         </div>
     </div>
-
-    @if ($isCreatingBlock)
-        <div class="py-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="inline-flex text-center gap-2">
-                    <div>
-                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
-                        <input wire:model="blockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    </div>
-                    <x-primary-button wire:click="createBlock">
-                        Submit
-                    </x-primary-button>
-                </div>
-            </div>
-        </div>
-    @endif
-
     @if ($isCreatingBlockings)
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -96,22 +75,6 @@
     @endif
 
 
-    @if ($editedBlock && $isEditingBlock)
-        <div class="py-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="inline-flex text-center gap-2">
-                    <div>
-                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Update Block Name</label>
-                        <input wire:model="updateBlockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    </div>
-                    <x-primary-button wire:click="updateBlock">
-                        Update
-                    </x-primary-button>
-                </div>
-            </div>
-        </div>
-    @endif
-
     <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -121,10 +84,7 @@
                             #
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Block Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Blockings Total Count
+                            Blockig Name
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Date Created
@@ -135,8 +95,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($blocks)
-                        @foreach ($blocks as $d )
+                    @if(isset($blockings))
+                        @foreach ($blocking as $d )
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{$d->id}}
@@ -164,11 +124,10 @@
                             </tr>
                         @endforeach
                     @else
-
+                    ----
                     @endif
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>
