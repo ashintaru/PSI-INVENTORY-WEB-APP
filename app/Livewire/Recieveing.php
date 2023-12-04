@@ -138,7 +138,8 @@ class Recieveing extends Component
                 'vehicleid'=>$car->id,
                 'from'=>$car->blockings,
                 'to'=>$blockings,
-                'user'=>Auth::user()->name
+                'user'=>$this->recievedBy,
+                'createdBy'=>Auth::user()->id
             ]
         );
     }

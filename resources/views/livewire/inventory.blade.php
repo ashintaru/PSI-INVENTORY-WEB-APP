@@ -40,6 +40,9 @@
             <p class="text-sm">Vin {{$vin}}</p>
             <div class="gap-2 flex justify-start" id="filtering-tab">
                 <div class="">
+                    <input wire:model="movedBy" >
+                </div>
+                <div class="">
                     @livewire('siteselection')
                 </div>
                 <div class="">

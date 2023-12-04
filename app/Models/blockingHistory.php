@@ -13,7 +13,8 @@ class blockingHistory extends Model
         'vehicleid',
         'from',
         'to',
-        'user'
+        'user',
+        'createdBy'
     ];
     public function car(){
         return $this->hasOne(cars::class,'id','vehicleid');
