@@ -12,14 +12,25 @@
                     <input wire:model="movedBy" type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <div class="">
-                    <select id="blockings" wire:model="selectedBlocking" name="blockings" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                    @livewire('siteselection')
+                </div>
+                <div class="">
+                    @livewire('blocks')
+                </div>
+                <div class="">
+                    <select id="blockings" wire:model="blockingselect" name="blockings" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         <option value="">Blockings</option>
-                        @if (isset($blockings))
-                            @foreach ($blockings as $b)
-                                <option  value="{{$b->id}}">{{$b->bloackname}}</option>
-                            @endforeach
+                        @if (isset($selectedBlockings))
+                            @if ($selectedBlockings)
+                                @foreach ($selectedBlockings as $b)
+                                    <option  value="{{$b->id}}">{{$b->bloackname}}</option>
+                                @endforeach
+                            @else
+                                <option  value="">Ask the admin for the blcokings</option>
+                            @endif
                         @endif
                     </select>
+                    <span class="text-xs text-red-700" >@error('blockingselect') {{ $message }} @enderror</span>
                 </div>
                 <div class="inline-flex items-center">
                     <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>

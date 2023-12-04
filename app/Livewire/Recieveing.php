@@ -74,7 +74,7 @@ class Recieveing extends Component
 
     public function goodswithfindings(){
         $validate = Validator::make(
-            ['vehicleidno' => $this->vehicleidno, 'blockings' => $this->blockings,'recievedBy'=>$this->recievedBy,'findings'=>$this->findings],
+            ['vehicleidno' => $this->vehicleidno, 'blockings' =>$this->blockings,'recievedBy'=>$this->recievedBy,'findings'=>$this->findings],
             // Validation rules to apply...
             ['vehicleidno' => 'required', 'blockings' => 'required','recievedBy'=>'required|min:3','findings'=>'required'],
             // Custom validation messages...
@@ -92,10 +92,10 @@ class Recieveing extends Component
     public function receivingproccess($vin = null , $status = null , $findings = "ALL GOODS"){
         if ($this->isexsist($vin)) {
             $car = cars::where('vehicleidno',$vin)->first();
-            $this->checkBlockings($car);
             $car->recieveBy = $this->recievedBy;
             $car->status = $status;
             $car->save();
+            $this->checkBlockings($car);
             $findinglists = findings::firstOrCreate(
                 ['vehicleid'=>$car->id],
                 [
@@ -109,10 +109,10 @@ class Recieveing extends Component
             $findinglists->save();
         }else{
             $car = cars::where('vehicleidno',$vin)->first();
-            $this->checkBlockings($car);
             $car->recieveBy = $this->recievedBy;
             $car->status = $status;
             $car->save();
+            $this->checkBlockings($car);
             findings::create(
                 [
                     'vehicleid'=>$car->id,
@@ -138,7 +138,8 @@ class Recieveing extends Component
                 'vehicleid'=>$car->id,
                 'from'=>$car->blockings,
                 'to'=>$blockings,
-                'user'=>Auth::user()->name
+                'user'=>$car->recieveBy,
+                'createdBy'=>Auth::user()->id
             ]
         );
     }

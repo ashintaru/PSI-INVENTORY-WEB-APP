@@ -14,7 +14,7 @@ class InvoiceReleased extends Component
 {
     use WithFileUploads;
 
-    #[Rule('nullable|sometimes|image|max:1028')]
+    #[Rule('nullable|image|max:1028')]
     public $photo;
 
     public $unitId;
@@ -43,14 +43,17 @@ class InvoiceReleased extends Component
             $car->remark = $this->remark;
         $car->save();
 
+        $name = null;
         if($this->photo){
-            $this->photo->store('uploads','public');
+            $name = $this->photo->hashName(); // Generate a unique, random name...
+            // dd($name
+            $this->photo->storeAs('uploads', $name,'public');
         }
 
         released::create([
             'vehicleid'=>$car->id,
             'vehicleidno'=>$car->vehicleidno,
-            'photo'=>$this->photo,
+            'photo'=>$name,
             'status'=>1
         ]);
 
