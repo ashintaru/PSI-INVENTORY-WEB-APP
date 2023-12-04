@@ -7,8 +7,8 @@ use App\Models\cars;
 use App\Models\invoce;
 use App\Models\blockings;
 use App\Models\blockingHistory as history;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
-use Livewire\Attributes\On;
 
 class Invoice extends Component
 {
@@ -22,16 +22,6 @@ class Invoice extends Component
     #[Rule('required')]
     public $vin = '';
     public $carblockings;
-    public $selectedBlockings = [];
-    #[Rule('required')]
-    public $blockingselect = '';
-
-
-    #[On('get-blockings'),On('reset-block')]
-    public function selectedBlocks($blockid){
-        $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',$blockid)->where('blockstatus',0)->get();
-        // dd($this->selectedBlockings);
-    }
 
     public function selectedUnit($id = null , $action = null){
         if($action == null)
@@ -48,13 +38,43 @@ class Invoice extends Component
         }
     }
 
+    public function setMovedBy(){
+        $car = cars::where('id',$this->selectedUnitforblocking)->first();
+        $car->save();
+        $this->reset(['selectedUnitforblocking','vin']);
+        $this->movedBy = "";
+        // request()->session()->flash('success','the unit have been selected !!');
+
+    }
+
     public function setInvoiceBlocking(){
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
         $this->blockingHistory($car,$this->selectedBlocking,$this->movedBy);
+        if(!isset($car->invoiceBlock)){
+            $ivtblockings = blockings::find($this->selectedBlocking);
+            $ivtblockings->blockstatus = 1;
+            $car->invoiceBlock = $this->selectedBlocking;
+            $car->movedBy = $this->movedBy ;
+            $invBlocking = blockings::find($car->blockings);
+            $invBlocking->blockstatus = 0;
+            $ivtblockings->save();
+            $invBlocking->save();
+            $car->save();
+        }else{
+            $oldblockings = blockings::find($car->invoiceBlock);
+            $oldblockings->blockstatus = 0;
+            $oldblockings->save();
+            $ivtblockings = blockings::find($this->selectedBlocking);
+            $ivtblockings->blockstatus = 1;
+            $car->invoiceBlock = $this->selectedBlocking;
+            $car->movedBy = $this->movedBy ;
+            $ivtblockings->save();
+            $invBlocking = blockings::find($car->blockings);
+            $invBlocking->blockstatus = 0;
+            $invBlocking->save();
+            $car->save();
 
-
-
-
+        }
         request()->session()->flash('success','the unit have been selected !!');
     }
 

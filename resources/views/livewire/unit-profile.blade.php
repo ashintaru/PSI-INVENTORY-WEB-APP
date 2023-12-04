@@ -10,41 +10,6 @@
     @if (isset($car))
         <div class="flex justify-evenly">
             <div class="w-2/3  sm:px-6 lg:px-8 space-y-6">
-                @if ($isUpploading)
-                <div class="flex">
-                    <input wire:model="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" accept="image/png, image/jpeg" type="file">
-                </div>
-                <x-primary-button wire:click="uploadImage">{{ __('Submit') }}</x-primary-button>
-                @endif
-                @if (isset($car->released))
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <div class="inline-flex items-center w-full justify-between">
-                            <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
-                                Photo of Released Form
-                            </p>
-                            @if (isset($car->released->photo))
-                                <button wire:click="tooglePhoto" type="button" class="inline-flex items-center gap-1 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                                    </svg>
-                                    Show Image
-                                </button>
-                            @endif
-                            <button wire:click="toggleUploading" type="button" class="inline-flex items-center gap-1 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                                </svg>
-                                Upload Image
-                            </button>
-                        </div>
-                        @if ($showPhoto)
-                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                    <img src="{{asset('storage/uploads/'.$car->released->photo)}}">
-                            </div>
-                        @endif
-                    </div>
-                @endif
-
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="inline-flex items-center w-full justify-between">
                         <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
@@ -256,12 +221,8 @@
                                         Moved By
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Created By
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
                                         Date Encoded
                                     </th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -278,13 +239,9 @@
                                                 {{$his->user}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                @if (isset($his->account))
-                                                    {{$his->account->name}}
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4">
                                                 {{$his->created_at}}
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 @endif
@@ -292,6 +249,7 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="inline-flex items-center w-full justify-between">
                         <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
@@ -335,6 +293,7 @@
                         </table>
                     </div>
                 </div>
+
             </div>
             <div class="sticky">
                 <ol class="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">

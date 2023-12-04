@@ -13,12 +13,8 @@ class blockingHistory extends Model
         'vehicleid',
         'from',
         'to',
-        'user',
-        'createdBy',
+        'user'
     ];
-    public function account(){
-        return $this->hasOne(User::class,'id','createdBy');
-    }
     public function car(){
         return $this->hasOne(cars::class,'id','vehicleid');
     }
@@ -28,6 +24,5 @@ class blockingHistory extends Model
     public function toblocking(){
         return $this->hasOne(blockings::class,'id','to');
     }
-
 
 }

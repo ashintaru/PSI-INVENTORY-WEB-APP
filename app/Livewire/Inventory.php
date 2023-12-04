@@ -37,7 +37,6 @@ class Inventory extends Component
     public $selectedUnitforfinding;
     public $finding;
     public $statusFinding;
-    public $movedBy = '';
 
 
     #[On('get-blockings'),On('reset-block')]
@@ -107,14 +106,13 @@ class Inventory extends Component
     public function updateBlocking(){
         // $validatedData = $this->validate();
         $validate = Validator::make(
-            ['blockingselect'=> $this->blockingselect,'movedBy'=>$this->movedBy],
+            ['blockingselect'=> $this->blockingselect],
             // Validation rules to apply...
-            ['blockingselect'=> 'required','movedBy'=>'required|min:3'],
+            ['blockingselect'=> 'required'],
             // Custom validation messages...
             ['required' => 'the Unit is required to give Blocking'],
         )->validate();
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
-        $car->movedBy = $this->movedBy;
         $oldBlocking = blockings::find($car->blockings);
         $this->blockingHistory($car,$this->blockingselect);
         if(isset($oldBlocking)){
@@ -145,8 +143,7 @@ class Inventory extends Component
                 'vehicleid'=>$car->id,
                 'from'=>$car->blockings,
                 'to'=>$blockings,
-                'user'=>$car->movedBy,
-                'createdBy'=>Auth::user()->id
+                'user'=>Auth::user()->name
             ]
         );
 
