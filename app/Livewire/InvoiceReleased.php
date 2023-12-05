@@ -14,9 +14,8 @@ class InvoiceReleased extends Component
 {
     use WithFileUploads;
 
-    #[Rule('nullable|sometimes|image|max:1028')]
+    #[Rule('nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048')]
     public $photo;
-
     public $unitId;
     #[Rule('required|min:3')]
     public $releasedBy;
@@ -29,8 +28,8 @@ class InvoiceReleased extends Component
     public function mount($id){
         $this->unitId = $id;
     }
-    public function store(){
 
+    public function store(){
         $validate = $this->validate();
         $car = cars::where('id',$this->unitId)->first();
         // dd($car);
@@ -43,14 +42,16 @@ class InvoiceReleased extends Component
             $car->remark = $this->remark;
         $car->save();
 
+        $name = null;
         if($this->photo){
-            $this->photo->store('uploads','public');
+            $name = $this->photo->hashName(); // Generate a unique
+            $this->photo->storeAs('uploads', $name,'public');
         }
 
         released::create([
             'vehicleid'=>$car->id,
             'vehicleidno'=>$car->vehicleidno,
-            'photo'=>$this->photo,
+            'photo'=>$name,
             'status'=>1
         ]);
 
@@ -58,12 +59,10 @@ class InvoiceReleased extends Component
         $invoiceUnit->status = 1;
         $invoiceUnit->save();
 
-        $invoiceBlockings = blockings::where('id',$car->invoiceBlock)->first();
+        $invoiceBlockings = blockings::where('id',$car->blockings)->first();
         $invoiceBlockings->blockstatus = 0;
         $invoiceBlockings->save();
         return redirect('/invoice')->with('status', 'Profile updated!');
-        // return dd("done");
-
     }
 
 

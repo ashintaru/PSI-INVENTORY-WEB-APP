@@ -15,6 +15,10 @@ class blocks extends Model
         'status'
     ];
 
+    public function site(){
+        return $this->belongsTo(site::class,'siteId','id');
+    }
+
     public function invoice(){
         return $this->belongsTo(invoicedata::class,'block','id');
     }

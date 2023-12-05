@@ -11,7 +11,6 @@ class Blockview extends Component
 {
     public $siteId = '';
 
-    public $isCreatingBlock = false;
     public $isCreatingBlockings = false;
     public $isEditingBlock = false;
 
@@ -29,9 +28,6 @@ class Blockview extends Component
         $this->siteId = $id;
     }
 
-    public function toogleCreateBlock(){
-        $this->isCreatingBlock = !$this->isCreatingBlock;
-    }
     public function toogleCreateBlocking(){
         $this->isCreatingBlockings = !$this->isCreatingBlockings;
     }

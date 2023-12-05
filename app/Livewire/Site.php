@@ -23,7 +23,6 @@ class Site extends Component
     }
 
     public function updateSite(){
-
         $validate = Validator::make(
             ['siteNameEdit' => $this->siteNameEdit, 'siteId'=>$this->siteid ],
             // Validation rules to apply...

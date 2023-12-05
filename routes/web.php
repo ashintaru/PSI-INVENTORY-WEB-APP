@@ -35,6 +35,7 @@ use App\Livewire\Released as LivewireReleased;
 use App\Livewire\Masterlist as livewireMasterList;
 use App\Livewire\Report as LivewireReport;
 use App\Livewire\Blockview as LivewireBlocks;
+use App\Livewire\Blockingview as LivewireBlockings;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('rawdata',livewireMasterList::class);
         Route::get('report',LivewireReport::class);
         Route::get('block-list/{id}',LivewireBlocks::class);
-
+        Route::get('blocking-list/{id}',LivewireBlockings::class);
 
         // Route::controller(report::class)->group(function(){
         //     Route::get('report','index');
@@ -225,7 +226,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
 
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');
-            Route::get('blocking-list/{id}','displayblockings');
+            // Route::get('blocking-list/{id}','displayblockings');
             Route::get('select-blockings/{id}','fetchCar');
             Route::patch('updateBlockings/{id}','update');
             Route::post('saved-invoice-blocking','storeInvoice');

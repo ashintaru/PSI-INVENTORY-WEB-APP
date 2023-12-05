@@ -42,31 +42,29 @@
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex gap-2">
-                <x-primary-button wire:click="toogleCreateBlock">
-                    Create Blocks
-                </x-primary-button>
                 <x-primary-button wire:click="toogleCreateBlocking">
                     Create Blocking/s
                 </x-primary-button>
             </div>
         </div>
     </div>
-
-    @if ($isCreatingBlock)
-        <div class="py-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="inline-flex text-center gap-2">
-                    <div>
-                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
-                        <input wire:model="blockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    </div>
-                    <x-primary-button wire:click="createBlock">
-                        Submit
-                    </x-primary-button>
+    <div class="py-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="inline-flex text-center gap-2">
+                <div>
+                    <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
+                    <input wire:model="blockName" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
+                <x-primary-button wire:click="createBlock">
+                    Submit
+                </x-primary-button>
             </div>
         </div>
-    @endif
+    </div>
+
+
+    {{-- @if ($isCreatingBlock)
+    @endif --}}
 
     @if ($isCreatingBlockings)
         <div class="py-4">
@@ -151,7 +149,7 @@
                                         {{$d->updated_at}}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{URL('blocking-list/'.$d->id)}}" class=" inline-flex items-center px-4 py-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        <a wire:navigate href="{{URL('blocking-list/'.$d->id)}}" class=" inline-flex items-center px-4 py-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                             View
                                         </a>
                                         <x-primary-button wire:click="editBlock({{$d->id}})">
