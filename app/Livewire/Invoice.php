@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use App\Models\cars;
 use App\Models\invoce;
@@ -9,55 +10,65 @@ use App\Models\blockings;
 use App\Models\blockingHistory as history;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Auth;
 
 
 class Invoice extends Component
 {
-    public $isEditBlocking = false;
-    #[Rule('required')]
-    public $selectedBlocking ;
-    public $selectedUnitforblocking;
-    #[Rule('required')]
-    public $movedBy ='';
-    public $ismovedBy = false;
-    #[Rule('required')]
-    public $vin = '';
-    public $carblockings;
     public $selectedBlockings = [];
-    #[Rule('required')]
-    public $blockingselect = '';
-
+    public $blockings ='';
+    public $movedBy ='';
+    public $unitId;
+    public $vin = '';
+    //REMOVED INVOICE BLOCKING
 
     #[On('get-blockings'),On('reset-block')]
     public function selectedBlocks($blockid){
         $this->selectedBlockings = blockings::select(['id','bloackname'])->where('blockId',$blockid)->where('blockstatus',0)->get();
-        // dd($this->selectedBlockings);
     }
 
     public function selectedUnit($id = null , $action = null){
-        if($action == null)
-            return ;
-        else{
-            $this->reset(['movedBy','vin','selectedBlocking','carblockings']);
-            $this->isEditBlocking = true;
-            $car = cars::where('id',$id)->first();
-            $this->vin = $car->vehicleidno;
-            $this->selectedUnitforblocking = $id;
-            $this->movedBy = ($car->movedBy)?$car->movedBy:'';
-            $this->selectedBlocking = ($car->invoiceBlock)?$car->invoiceBlock:'';
-            $this->carblockings = $car->blockings;
+        // $this->reset(['movedBy','vin']);
+        $this->unitId = $id;
+        $car = cars::where('id',$this->unitId)->first();
+        $this->vin = $car->vehicleidno;
+    }
+
+    public function updateUnit(){
+        $validate = Validator::make(
+            ['blockings' => $this->blockings , 'movedBy'=> $this->movedBy ],
+            // Validation rules to apply...
+            ['blockings' => 'required' , 'movedBy' => 'required|min:3'],
+            // Custom validation messages...
+            ['required' => 'the Unit is required to give  a status'],
+        )->validate();
+        $car = cars::where('id',$this->unitId)->first();
+        $this->blockingHistory($car,$this->blockings,$this->movedBy);
+        $this->checkBlockings($car);
+        $car->movedBy = $this->movedBy;
+        $car->save();
+        $this->reset(['selectedBlockings','movedBy','selectedBlockings','unitId','vin']);
+
+
+    }
+
+    public function checkBlockings(cars $car){
+        if($car->blockings === null){
+            $car->blockings = $this->blockings;
+            $blockings = blockings::find($this->blockings);
+            $blockings->blockstatus = 1;
+            $blockings->save();
+        }else{
+            $oldblockings = blockings::find($car->blockings);
+            $oldblockings->blockstatus = 0;
+            $oldblockings->save();
+            $car->blockings = $this->blockings;
+            $blockings = blockings::find($this->blockings);
+            $blockings->blockstatus = 1;
+            $blockings->save();
         }
     }
 
-    public function setInvoiceBlocking(){
-        $car = cars::where('id',$this->selectedUnitforblocking)->first();
-        $this->blockingHistory($car,$this->selectedBlocking,$this->movedBy);
-
-
-
-
-        request()->session()->flash('success','the unit have been selected !!');
-    }
 
     public function blockingHistory(cars $car = null  , $blockings = null ,$movedBy = null)
     {

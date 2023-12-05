@@ -16,6 +16,9 @@ class blockingHistory extends Model
         'user',
         'createdBy'
     ];
+    public function account(){
+        return $this->hasOne(User::class,'id','createdBy');
+    }
     public function car(){
         return $this->hasOne(cars::class,'id','vehicleid');
     }

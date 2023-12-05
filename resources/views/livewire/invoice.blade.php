@@ -4,45 +4,41 @@
             {{ __('Invoice') }}
         </h2>
     </x-slot>
-    @if (isset($selectedUnitforblocking) && $isEditBlocking == true)
+    @if (isset($unitId))
         <div class="py-5 flex flex-col justify-start p-2 m-2">
             <p class="text-sm">Vin {{$vin}}</p>
-             <div class="gap-2 inline-flex items-center" id="filtering-tab">
+            <div class="gap-2 flex justify-start" id="filtering-tab">
                 <div class="">
-                    <input wire:model="movedBy" type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <input wire:model="movedBy" >
                 </div>
                 <div class="">
-                    <select id="blockings" wire:model="selectedBlocking" name="blockings" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                    @livewire('siteselection')
+                </div>
+                <div class="">
+                    @livewire('blocks')
+                </div>
+                <div class="">
+                    <select id="blockings" wire:model="blockings" name="blockings" class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         <option value="">Blockings</option>
-                        @if (isset($blockings))
-                            @foreach ($blockings as $b)
-                                <option  value="{{$b->id}}">{{$b->bloackname}}</option>
-                            @endforeach
+                        @if (isset($selectedBlockings))
+                            @if ($selectedBlockings)
+                                @foreach ($selectedBlockings as $b)
+                                    <option  value="{{$b->id}}">{{$b->bloackname}}</option>
+                                @endforeach
+                            @else
+                                <option  value="">Ask the admin for the blcokings</option>
+                            @endif
                         @endif
                     </select>
+                    <span class="text-xs text-red-700" >@error('blockingselect') {{ $message }} @enderror</span>
                 </div>
-                <div class="inline-flex items-center">
-                    <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>
-                    <button wire:click="setInvoiceBlocking"  type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Cancel</button>
+                <div class="">
+                    <button wire:click="updateUnit"  type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Update</button>
+                    <button wire:click="cancelBlocking"  class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel</button>
                 </div>
             </div>
         </div>
     @endif
-
-    @if (isset($selectedUnitforblocking) && $ismovedBy == true)
-        <div class="py-5 flex flex-col justify-start p-2 m-2">
-            <p class="text-sm">Vin {{$vin->vehicleidno}}</p>
-            <div class="gap-2 flex justify-start" id="filtering-tab">
-                <form >
-                    <div class="inline-flex items-center">
-                        <button wire:click.prevent="setMovedBy" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>
-                        <button wire:click="setInvoiceBlocking" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 block mt-1 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    @endif
-
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex justify-between">
             <div class="flex gap-2">
@@ -120,9 +116,6 @@
                             Blockings
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Invoice Blocking
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Moved By
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -157,36 +150,19 @@
                             {{$car->recieveBy}}
                         </td>
                         <td class="w-4 p-4">
-                            @if ($car->blockings)
-                                {{$car->blocking->bloackname}}
-                            @else
-                                ...
-                            @endif
-                        </td>
-                        <td class="w-4 p-4 whitespace-nowrap">
                             <button id="btnBlockings-{{$car->id}}" wire:click="selectedUnit({{$car->id}},1)" type="button" class="border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                                @if ($car->invoiceBlock)
-                                    {{$car->invblocking->bloackname}}
+                                @if ($car->blockings)
+                                    {{$car->blocking->bloackname}}
                                 @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                        <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                                    </svg>
+                                    ...
                                 @endif
                             </button>
                         </td>
                         <td class="w-4 p-4">
-                            @if ($car->movedBy)
                                 {{$car->movedBy}}
-                            @else
-                                ---
-                            @endif
                         </td>
                         <td class="w-4 p-4">
-                            @if ($car->invoiceBlock && $car->movedBy)
-                                <a href="{{URL('releasing/'.$car->id)}}" >Releasing</a>
-                            @else
-                                ---
-                            @endif
+                            <a href="{{URL('releasing/'.$car->id)}}" >Releasing</a>
                         </td>
                     </tr>
                     @endforeach

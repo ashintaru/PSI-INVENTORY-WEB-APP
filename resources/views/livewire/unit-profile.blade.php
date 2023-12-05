@@ -221,6 +221,9 @@
                                         Moved By
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Encoded By
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Date Encoded
                                     </th>
                                 </tr>
@@ -230,18 +233,26 @@
                                     @foreach ($history as $his )
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900  dark:text-white">
-                                                {{$his->fromblocking->bloackname}}
+                                                @if(isset($his->fromblocking))
+                                                    {{$his->fromblocking->bloackname}}
+                                                @endif
                                             </th>
                                             <td class="px-6 py-4">
-                                                {{$his->toblocking->bloackname}}
+                                                @if(isset($his->toblocking))
+                                                    {{$his->toblocking->bloackname}}
+                                                @endif
                                             </td>
                                             <td class="px-6 py-4">
                                                 {{$his->user}}
                                             </td>
                                             <td class="px-6 py-4">
+                                                @if (isset($his->account))
+                                                    {{$his->account->name}}
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4">
                                                 {{$his->created_at}}
                                             </td>
-
                                         </tr>
                                     @endforeach
                                 @endif

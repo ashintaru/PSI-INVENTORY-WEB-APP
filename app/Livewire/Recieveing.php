@@ -152,8 +152,8 @@ class Recieveing extends Component
 
     public function checkBlockings(cars $car){
         if($car->blockings === null){
-            $car->blockings = $this->blockings;
             $this->blockingHistory($car,$this->blockings);
+            $car->blockings = $this->blockings;
             $blockings = blockings::find($this->blockings);
             $blockings->blockstatus = 1;
             $blockings->save();

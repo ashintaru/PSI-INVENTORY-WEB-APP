@@ -46,7 +46,10 @@
                             {{$tableRow->vehicleidno}}
                         </th>
                         <th scope="row" class="flex-shrink-0 text-center flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @if (isset($tableRow->car->blockings))
                             {{$tableRow->car->blocking->bloackname}}
+
+                            @endif
                         </th>
                         <th scope="row" class="flex-shrink-0 text-center flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$tableRow->car->recieveBy}}
