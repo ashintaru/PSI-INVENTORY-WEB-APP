@@ -13,10 +13,13 @@ class Blockview extends Component
 
     public $isCreatingBlockings = false;
     public $isEditingBlock = false;
+    public $number = 0;
 
 
+    public $loopVal = false;
     public $blockName = '';
     public $updateBlockName = '';
+
 
     public $selectedBlock = '';
     public $blockingName = '';
@@ -26,6 +29,10 @@ class Blockview extends Component
     public function mount($id){
 
         $this->siteId = $id;
+    }
+
+    public function toggleLoop(){
+        $this->loopVal = !$this->loopVal;
     }
 
     public function toogleCreateBlocking(){
@@ -53,14 +60,24 @@ class Blockview extends Component
     }
     public function createBlockings(){
         // dd($this->selectedBlock);
-        blockings::create([
-            'blockId'=>$this->selectedBlock,
-            'bloackname'=>strtoupper($this->blockingName),
-            'blockstatus'=>0,
-        ]);
-
-
-
+        if($this->loopVal && $this->number > 0){
+            $index = 1;
+            while($this->number >= $index){
+                $name = strtoupper($this->blockingName).' '.$index;
+                blockings::create([
+                    'blockId'=>$this->selectedBlock,
+                    'bloackname'=>$name,
+                    'blockstatus'=>0,
+                ]);
+            $index++;
+            }
+        }else{
+            blockings::create([
+                'blockId'=>$this->selectedBlock,
+                'bloackname'=>strtoupper($this->blockingName),
+                'blockstatus'=>0,
+            ]);
+        }
     }
     public function render()
     {

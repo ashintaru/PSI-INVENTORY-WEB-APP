@@ -67,32 +67,42 @@
     @endif --}}
 
     @if ($isCreatingBlockings)
-        <div class="py-4">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="inline-flex text-center gap-2">
-                    <div>
-                        <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
-                        <select wire:model="selectedBlock" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">----</option>
-                                @if (isset($blocks))
-                                    @foreach ($blocks as $block )
-                                        <option value="{{$block->id}}">{{$block->blockname}}</option>
-                                    @endforeach
-                                @endif
-                        </select>
-                    </div>
-                    <div>
-                        <label for="blockings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocking Name</label>
-                        <input wire:model="blockingName" type="text" id="blockings" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    </div>
-                    <x-primary-button wire:click="createBlockings">
-                        Submit
-                    </x-primary-button>
+
+    @endif
+    <div class="py-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-1">
+            <div class="inline-flex text-center gap-2">
+                <div>
+                    <label for="block" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block Name</label>
+                    <select wire:model="selectedBlock" type="text" id="block" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">----</option>
+                            @if (isset($blocks))
+                                @foreach ($blocks as $block )
+                                    <option value="{{$block->id}}">{{$block->blockname}}</option>
+                                @endforeach
+                            @endif
+                    </select>
                 </div>
+                <div>
+                    <label for="blockings" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blocking Name</label>
+                    <input wire:model="blockingName" type="text" id="blockings" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+                <x-primary-button wire:click="createBlockings">
+                    Submit
+                </x-primary-button>
+            </div>
+            <div class="flex items-center gap-2">
+                <x-primary-button wire:click="toggleLoop">
+                    Loop
+                </x-primary-button>
+                @if ($loopVal)
+                    <div class="flex gap-2">
+                        <input wire:model="number" type="number" id="number" class="block p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                @endif
             </div>
         </div>
-    @endif
-
+    </div>
 
     @if ($editedBlock && $isEditingBlock)
         <div class="py-4">
