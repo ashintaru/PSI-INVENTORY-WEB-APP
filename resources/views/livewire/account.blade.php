@@ -84,6 +84,39 @@
         </div>
     @endif
 
+    @if(isset($selectedAcct) && $isEditinngRoles == true)
+        <div class="inline-flex gap-2" >
+            <select wire:click="updateEditRole" id="roles" wire:model="editRole" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected value="">Choose a role</option>
+                <option value="1">Super Admin</option>
+                <option value="2">Admin</option>
+                <option value="3">Client</option>
+            </select>
+
+            @if ($editRole == 2 || $editRole == 3)
+                <select id="roles" wire:model="editClient" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected value="">Choose a client</option>
+                    @if (isset($clients))
+                        @foreach ($clients as $client )
+                            <option value="{{$client->id}}">{{$client->clientName}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            @endif
+
+            <button wire:click="submitUpdateRole" type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                submit
+            </button>
+            <div class="p-3">
+            </div>
+            <div class="p-3">
+
+            </div>
+            <div class=" p-3">
+
+            </div>
+        </div>
+    @endif
 
     <section class="py-2">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -123,7 +156,7 @@
                                 {{$d->email}}
                             </td>
                             <td class="w-4 p-4">
-                                <button id="blocking-{{$d->id}}"  wire:click="editBlocking({{$d->id}})" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                <button id="blocking-{{$d->id}}"  wire:click="selectAcct({{$d->id}},1)" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                     @if ($d->role == 1)
                                         SUper Admin
                                     @elseif($d->role == 2)

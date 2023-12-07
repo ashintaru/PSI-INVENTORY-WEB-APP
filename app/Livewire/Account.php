@@ -22,6 +22,10 @@ class Account extends Component
 
     public $action = '';
 
+    public $editRole = '';
+    public $editClient = null;
+
+
 
 
     public function selectAcct( $id = null , $action = null){
@@ -41,6 +45,16 @@ class Account extends Component
             return;
     }
 
+    public function submitUpdateRole(){
+        $user = User::find($this->selectedAcct);
+        $user->role = $this->editRole;
+        $user->tags = $this->editClient;
+        $user->save();
+        // $user->role
+    }
+    public function updateEditRole(){
+        $this->editRole = $this->editRole;
+    }
     public function updateRole(){
         $this->accountForm->role =  $this->accountForm->role;
     }
