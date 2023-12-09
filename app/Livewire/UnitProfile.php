@@ -8,7 +8,7 @@ use App\Models\findings;
 use App\Models\blockingHistory;
 use App\Models\released;
 use Livewire\WithFileUploads;
-
+use Illuminate\Support\Facades\File;
 
 class UnitProfile extends Component
 {
@@ -39,7 +39,7 @@ class UnitProfile extends Component
                 return ;
             }
         }else{
-            unlink('storage/uploads/'.$unit->photo);
+            File::delete(public_path('storage/uploads/'.$unit->photo));
             $name = $this->photo->hashName(); // Generate a unique, random name...
             $this->photo->storeAs('uploads', $name,'public');
             $unit->photo = $name;

@@ -47,7 +47,6 @@ class InvoiceReleased extends Component
             $name = $this->photo->hashName(); // Generate a unique
             $this->photo->storeAs('uploads', $name,'public');
         }
-
         released::create([
             'vehicleid'=>$car->id,
             'vehicleidno'=>$car->vehicleidno,
