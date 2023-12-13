@@ -15,6 +15,7 @@ class UnitRecieve extends Component
     public $search;
     public $vin = null;
     public $edit = true;
+    public $selectedUnit;
 
     #[On('unit-batch'),On('removed-batch'),On('relode-batchlist')]
     public function render()
