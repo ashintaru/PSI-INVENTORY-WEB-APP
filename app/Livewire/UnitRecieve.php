@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use App\Models\batching;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
+use App\Events\selectedUnit;
 
 class UnitRecieve extends Component
 {
@@ -33,7 +34,7 @@ class UnitRecieve extends Component
         $this->vin = $cars->vehicleidno;
         $this->dispatch('unit-inspection',$this->vin);
         request()->session()->flash('success','the unit have been moved to batch!!');
-        // return dd($cars);
-
+        // return dd($cars)
+        selectedUnit::dispatch();
     }
 }

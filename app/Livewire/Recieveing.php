@@ -36,6 +36,14 @@ class Recieveing extends Component
     public $blockings = null;
     public $findings = null;
     public $showfindings = false;
+    public $dummy=0;
+
+
+    #[On('echo:selected,selectedUnit')]
+    public function toggledata(){
+        $this->dummy++;
+    }
+
 
     #[On('get-blockings')]
     public function selectedBlocks($blockid){

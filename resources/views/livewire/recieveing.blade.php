@@ -4,6 +4,7 @@
             {{ __('Receiving & Inspecting') }}
         </h2>
     </x-slot>
+    <p class="text-lg">{{$dummy}}</p>
     <div class="flex justify-evenly gap-3">
         <form class="p-4 bg-slate-100 w-full" >
             <p  class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
