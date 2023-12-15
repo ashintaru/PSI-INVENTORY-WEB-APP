@@ -40,9 +40,13 @@ class cars extends Model
         'remark',
         'status',
         'invoiceBlock',
-        'movedBy'
+        'movedBy',
+        'touchBy'
     ];
 
+    public function user(){
+        return $this->hasOne(User::class,'id','touchBy');
+    }
     public function batch(){
         return $this->hasOne(batching::class,'vehicleidno','vehicleidno');
     }

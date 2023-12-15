@@ -60,7 +60,10 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
                     'releasedBy'=>null,
                     'dealer'=>null,
                     'remark'=>null,
-                    'status'=>null
+                    'status'=>null,
+                    'invoiceBlock'=>null,
+                    'movedBy'=>null,
+                    'touchBy'=>null
                 ])
             ];
         }

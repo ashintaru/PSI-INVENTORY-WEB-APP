@@ -31,7 +31,6 @@ return new class extends Migration
             $table->date('dateReleased');
             $table->string('blockings');
             $table->string('blockings');
-
             $table->timestamps();
         });
     }
