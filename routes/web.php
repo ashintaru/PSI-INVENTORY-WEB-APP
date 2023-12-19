@@ -36,6 +36,7 @@ use App\Livewire\Masterlist as livewireMasterList;
 use App\Livewire\Report as LivewireReport;
 use App\Livewire\Blockview as LivewireBlocks;
 use App\Livewire\Blockingview as LivewireBlockings;
+use App\Livewire\Stencil as LivewireStencil;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('report',LivewireReport::class);
         Route::get('block-list/{id}',LivewireBlocks::class);
         Route::get('blocking-list/{id}',LivewireBlockings::class);
+        Route::get('stencil',LivewireStencil::class);
 
         // Route::controller(report::class)->group(function(){
         //     Route::get('report','index');
@@ -101,12 +103,12 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         //     Route::get('disapproved-units','showdisapproveunits');
         // });
 
-        Route::controller(recieveController::class)->group(function(){
-            Route::get('recieve-units',"index")->name('recive');
-            Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
-            Route::put('update-personel/{id}','updatePersonel');
-            Route::post('searchRecieveUnit','searchRecieveData');
-        });
+        // Route::controller(recieveController::class)->group(function(){
+        //     Route::get('recieve-units',"index")->name('recive');
+        //     Route::get('view-recieve-unit/{id}',"show")->name('showrecieveunit');
+        //     Route::put('update-personel/{id}','updatePersonel');
+        //     Route::post('searchRecieveUnit','searchRecieveData');
+        // });
         // Route::controller(looseitems::class)->group(function(){
         //     Route::get('createloosetools/{id}','create');
         //     Route::post('loose-item/{id}','store');

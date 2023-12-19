@@ -77,9 +77,11 @@ class cars extends Model
     public function invblocking(){
         return $this->hasOne(blockings::class,'id','invoiceBlock');
     }
-    // class ,fk ,lk
     public function invoice(){
         return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
+    }
+    public function stencil(){
+        return $this->hasOne(stencil::class,'cars_id','id');
     }
     public function client(){
         return $this->hasOne(client::class,'id','tag');
