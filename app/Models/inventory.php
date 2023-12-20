@@ -13,10 +13,15 @@ class inventory extends Model
     protected $keyType = 'string';
     protected $fillable =
     [
-
+        'car_id',
         'vehicleidno',
-        'status'
+        'status',
+        'selectBy'
     ];
+    public function user(){
+        return $this->hasOne(User::class,'id','selectBy');
+    }
+
     public function car(){
         return $this->hasOne(cars::class,'vehicleidno','vehicleidno');
     }
@@ -24,4 +29,8 @@ class inventory extends Model
     public function invoice(){
         return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
     }
+    public function stencil(){
+        return $this->hasOne(stencil::class,'cars_id','car_id');
+    }
+
 }

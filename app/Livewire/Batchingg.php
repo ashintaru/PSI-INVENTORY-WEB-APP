@@ -25,10 +25,6 @@ class Batchingg extends Component
     public $status = true;
 
 
-    public function submitToInventory(){
-
-    }
-
     public function submit(){
         $batches = batching::join('cars','cars.vehicleidno','batching.vehicleidno')->where('cars.status','!=',null)->where('cars.status','>',0)->where('batching.userid',Auth::user()->id)->get();
         $vinarray = $batches->pluck('vehicleidno');
@@ -41,8 +37,11 @@ class Batchingg extends Component
                     'status'=>1
                 ]);
                 inventory::create([
+                    'car_id'=>$car->id,
                     'vehicleidno'=>$car->vehicleidno,
-                    'status'=>0
+                    'status'=>0,
+                    'selectBy'=>null
+
                 ]);
                 $car->dateIn = $this->datein;
                 $car->dateEncode = $this->dateencode;
@@ -91,8 +90,10 @@ class Batchingg extends Component
     #[On('unit-batch'),On('select-batch'),On('relode-batchlist'),On('removed-batch'),On('refresh-batch')]
     public function render()
     {
+        //1 is for receiving
+        $actions = 1;
         $userid = Auth::user()->id;
-        $batching = batching::where('userid',$userid)->paginate(10);
+        $batching = batching::where('userid',$userid)->where('actions',$actions)->paginate(10);
         return view('livewire.batchingg',['batches'=>$batching]);
     }
 }

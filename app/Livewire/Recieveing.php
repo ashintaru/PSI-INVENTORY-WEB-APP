@@ -85,7 +85,7 @@ class Recieveing extends Component
     }
 
     public function isexsist($vin = null){
-        return DB::table('batching')->where('vehicleidno', $vin)->exists();
+        return DB::table('batching')->where('vehicleidno', $vin)->where('actions', 1)->exists();
     }
 
 
@@ -120,10 +120,13 @@ class Recieveing extends Component
                     'findings'=>strtoupper($findings),
                 ]
             );
+            //1 is for receiving
+            $actions = 1;
              batching::create([
                 'vehicleid'=>$car->id,
                 'vehicleidno'=>$car->vehicleidno,
-                'userid'=>Auth::user()->id
+                'userid'=>Auth::user()->id,
+                'actions'=>$actions
             ]);
             $this->dispatch('post-created');
         }

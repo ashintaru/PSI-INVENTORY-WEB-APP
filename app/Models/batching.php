@@ -12,7 +12,8 @@ class batching extends Model
     protected $fillable = [
         'vehicleid',
         'vehicleidno',
-        'userid'
+        'userid',
+        'actions'
     ];
     public $timestamps = false;
     public function car(){
