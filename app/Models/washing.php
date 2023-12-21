@@ -5,26 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class stencil extends Model
+class washing extends Model
 {
     use HasFactory;
-    protected $table = 'stencil';
+    protected $table = 'washing';
     protected $fillable = [
         'cars_id',
         'vehicleidno',
         'name',
-        'dateFinishStencil',
+        'dateFinishedWashing',
         'status',
         'selectedBy'
     ];
     public $timestamps = false;
-
-    public function car(){
-        return $this->belongsTo(cars::class,'id','cars_id');
-    }
-
-    public function washing(){
-        return $this->hasOne(washing::class,'car_id','cars_id');
-    }
-
 }

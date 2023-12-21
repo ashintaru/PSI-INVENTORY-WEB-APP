@@ -26,7 +26,7 @@ class Batchingg extends Component
 
 
     public function submit(){
-        $batches = batching::join('cars','cars.vehicleidno','batching.vehicleidno')->where('cars.status','!=',null)->where('cars.status','>',0)->where('batching.userid',Auth::user()->id)->get();
+        $batches = batching::join('cars','cars.vehicleidno','batching.vehicleidno')->where('cars.status','!=',null)->where('cars.status','>',0)->where('batching.userid',Auth::user()->id)->where('batching.actions',1)->get();
         $vinarray = $batches->pluck('vehicleidno');
         $cars = cars::whereIn('vehicleidno',$vinarray)->get();
         // return dd(count($vinarray));

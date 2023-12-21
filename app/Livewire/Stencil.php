@@ -5,19 +5,50 @@ use Livewire\Component;
 use App\Models\cars;
 use App\Models\inventory;
 use App\Models\batching;
-use Livewire\Attributes\On;
-use App\Events\unitSelected;
+use App\Models\stencil as ModelsStencil;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class Stencil extends Component
 {
     public $search = '';
     public $actions = 2;
+    public $name = '';
+    public $date = '';
+    public $userid = '';
 
-    public function isexsist($id = null){
-        return batching::where('vehicleid', $id)->where('actions', 1)->exists();
+
+    public function submitBatches(){
+
+        $validate = Validator::make(
+            ['name' => $this->name , 'date' => $this->name],
+            // Validation rules to apply...
+            ['name' => 'required|min:3' , 'date' => 'required'],
+            // Custom validation messages...
+        )->validate();
+        $batches = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();
+        $car_id = $batches->pluck('vehicleid');
+        $inventories = inventory::whereIn('car_id',$car_id)->get();
+        // return dd(count($vinarray));
+        foreach ($inventories as $inventory ) {
+            ModelsStencil::create([
+                'cars_id'=>$inventory->car_id,
+                'vehicleidno'=>$inventory->vehicleidno,
+                'name'=>$this->name,
+                'dateFinishStencil'=>$this->date,
+                'status'=>0,
+                'selectedBy'=>null
+            ]);
+        }
+        if(count($car_id) > 0 ){
+            batching::where('actions',$this->actions)->whereIn('vehicleid',$car_id)->delete();
+            request()->session()->flash('success','the unit have been selected !!');
+        }else{
+            request()->session()->flash('failed','the unit have been selected !!');
+        }
     }
+
     public function removeBatch($id){
         try {
             $batch = batching::find($id);
@@ -36,12 +67,12 @@ class Stencil extends Component
     public function select($id = null){
         $car  = inventory::where('car_id',$id)->first();
         if($car->selectBy==null){
-            $car->selectBy = Auth::user()->id;
+            $car->selectBy = $this->userid;
             $car->save();
             batching::create([
                 'vehicleid'=>$id,
                 'vehicleidno'=>$car->vehicleidno,
-                'userid'=>Auth::user()->id,
+                'userid'=>$this->userid,
                 'actions'=>$this->actions
             ]);
         }else{
@@ -51,11 +82,12 @@ class Stencil extends Component
     }
     public function render()
     {
+        $this->userid = Auth::user()->id;
         $inventory = inventory::where('status',0)
         ->with(['car','stencil'])
         ->where('vehicleidno', 'LIKE', "%{$this->search}%")->paginate(25);
         // dd($inventory);
-        $batching = batching::where('userid',Auth::user()->id)->where('actions',$this->actions)->get();
+        $batching = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();
         return view('livewire.stencil',['inventories'=>$inventory,'batches'=>$batching]);
     }
 }
