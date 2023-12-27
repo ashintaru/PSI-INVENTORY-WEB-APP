@@ -20,7 +20,7 @@ class stencil extends Model
     public $timestamps = false;
 
     public function car(){
-        return $this->belongsTo(cars::class,'id','cars_id');
+        return $this->belongsTo(cars::class,'cars_id','id');
     }
 
     public function washing(){

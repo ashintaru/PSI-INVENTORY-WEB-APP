@@ -10,7 +10,7 @@ class washing extends Model
     use HasFactory;
     protected $table = 'washing';
     protected $fillable = [
-        'cars_id',
+        'car_id',
         'vehicleidno',
         'name',
         'dateFinishedWashing',
@@ -18,4 +18,8 @@ class washing extends Model
         'selectedBy'
     ];
     public $timestamps = false;
+
+    public function car(){
+        return $this->belongsTo(cars::class,'id','car_id');
+    }
 }
