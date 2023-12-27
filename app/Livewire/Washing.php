@@ -16,7 +16,22 @@ class Washing extends Component
     public $name = '';
     public $date = '';
 
-
+    public function select($id = null){
+        $car  = stencil::where('cars_id',$id)->first();
+        if($car->selectedBy==null){
+            $car->selectedBy = $this->userid;
+            $car->save();
+            batching::create([
+                'vehicleid'=>$id,
+                'vehicleidno'=>$car->vehicleidno,
+                'userid'=>$this->userid,
+                'actions'=>$this->actions
+            ]);
+        }else{
+            request()->session()->flash('failed','the unit have been selected by other user !!');
+        }
+        // unitSelected::dispatch();
+    }
 
     public function render()
     {

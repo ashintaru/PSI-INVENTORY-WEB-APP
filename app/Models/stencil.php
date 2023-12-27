@@ -22,6 +22,9 @@ class stencil extends Model
     public function car(){
         return $this->belongsTo(cars::class,'cars_id','id');
     }
+    public function user(){
+        return $this->hasOne(User::class,'id','selectedBy');
+    }
 
     public function washing(){
         return $this->hasOne(washing::class,'car_id','cars_id');
