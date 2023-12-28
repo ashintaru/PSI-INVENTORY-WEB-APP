@@ -21,7 +21,7 @@ class Stencil extends Component
 
     public function submitBatches(){
 
-        $validate = Validator::make(
+        $validate = Validator::makle(
             ['name' => $this->name , 'date' => $this->name],
             // Validation rules to apply...
             ['name' => 'required|min:3' , 'date' => 'required'],
@@ -78,7 +78,6 @@ class Stencil extends Component
         }else{
             request()->session()->flash('failed','the unit have been selected by other user !!');
         }
-        // unitSelected::dispatch();
     }
     public function render()
     {

@@ -37,7 +37,7 @@
                     </thead>
                     <tbody>
                         @foreach($forWashing as $washing)
-                            {{-- @if (!isset($washing->washing)) --}}
+                            @if (!isset($washing->washing))
                                 <tr id="tablerow-{{$washing->id}}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="w-4 p-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <x-primary-button id="selectunit-{{$washing->cars_id}}" wire:click="select({{$washing->cars_id}})">
@@ -65,7 +65,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                            {{-- @endif --}}
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
