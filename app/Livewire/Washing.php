@@ -1,27 +1,26 @@
 <?php
 
 namespace App\Livewire;
+
 use Livewire\Component;
-use App\Models\cars;
-use App\Models\inventory;
-use App\Models\batching;
-use App\Models\stencil as ModelsStencil;
+use App\Models\stencil;
 use Illuminate\Support\Facades\Auth;
+use App\Models\batching;
+use App\Models\washing as ModelsWashing;
 use Illuminate\Support\Facades\Validator;
 
 
-class Stencil extends Component
+
+class Washing extends Component
 {
-    public $search = '';
-    public $actions = 2;
+    public $userid;
+    public $actions = 3;
     public $name = '';
     public $date = '';
-    public $userid = '';
-
 
     public function submitBatches(){
 
-        $validate = Validator::makle(
+        $validate = Validator::make(
             ['name' => $this->name , 'date' => $this->name],
             // Validation rules to apply...
             ['name' => 'required|min:3' , 'date' => 'required'],
@@ -29,14 +28,14 @@ class Stencil extends Component
         )->validate();
         $batches = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();
         $car_id = $batches->pluck('vehicleid');
-        $inventories = inventory::whereIn('car_id',$car_id)->get();
+        $forwashing = stencil::whereIn('cars_id',$car_id)->get();
         // return dd(count($vinarray));
-        foreach ($inventories as $inventory ) {
-            ModelsStencil::create([
-                'cars_id'=>$inventory->car_id,
-                'vehicleidno'=>$inventory->vehicleidno,
+        foreach ($forwashing as $washing ) {
+            ModelsWashing::create([
+                'car_id'=>$washing->cars_id,
+                'vehicleidno'=>$washing->vehicleidno,
                 'name'=>$this->name,
-                'dateFinishStencil'=>$this->date,
+                'dateFinishedWashing'=>$this->date,
                 'status'=>0,
                 'selectedBy'=>null
             ]);
@@ -49,11 +48,12 @@ class Stencil extends Component
         }
     }
 
+
     public function removeBatch($id){
         try {
             $batch = batching::find($id);
-            $car  = inventory::where('car_id',$batch->vehicleid)->first();
-            $car->selectBy = null;
+            $car  = stencil::where('cars_id',$batch->vehicleid)->first();
+            $car->selectedBy = null;
             $batch->delete();
             $car->save();
             request()->session()->flash('success','the unit have been selected !!');
@@ -64,10 +64,11 @@ class Stencil extends Component
         }
     }
 
+
     public function select($id = null){
-        $car  = inventory::where('car_id',$id)->first();
-        if($car->selectBy==null){
-            $car->selectBy = $this->userid;
+        $car  = stencil::where('cars_id',$id)->first();
+        if($car->selectedBy==null){
+            $car->selectedBy = $this->userid;
             $car->save();
             batching::create([
                 'vehicleid'=>$id,
@@ -78,15 +79,15 @@ class Stencil extends Component
         }else{
             request()->session()->flash('failed','the unit have been selected by other user !!');
         }
+        // unitSelected::dispatch();
     }
+
     public function render()
     {
+
         $this->userid = Auth::user()->id;
-        $inventory = inventory::where('status',0)
-        ->with(['car','stencil'])
-        ->where('vehicleidno', 'LIKE', "%{$this->search}%")->paginate(25);
-        // dd($inventory);
         $batching = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();
-        return view('livewire.stencil',['inventories'=>$inventory,'batches'=>$batching]);
+        $forWashing = stencil::with(['car','washing'])->paginate(25);
+        return view('livewire.washing',['forWashing'=>$forWashing,'batches'=>$batching]);
     }
 }

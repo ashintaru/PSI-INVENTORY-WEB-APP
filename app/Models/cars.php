@@ -83,6 +83,9 @@ class cars extends Model
     public function stencil(){
         return $this->hasOne(stencil::class,'cars_id','id');
     }
+    public function washing(){
+        return $this->hasOne(washing::class,'car_id','id');
+    }
     public function client(){
         return $this->hasOne(client::class,'id','tag');
     }

@@ -5,20 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class batching extends Model
+class washing extends Model
 {
     use HasFactory;
-    protected $table = 'batching';
+    protected $table = 'washing';
     protected $fillable = [
-        'vehicleid',
+        'car_id',
         'vehicleidno',
-        'userid',
-        'actions'
+        'name',
+        'dateFinishedWashing',
+        'status',
+        'selectedBy'
     ];
     public $timestamps = false;
+
     public function car(){
-        return $this->belongsTo(cars::class,'vehicleidno','vehicleidno');
+        return $this->belongsTo(cars::class,'id','car_id');
     }
-
-
 }

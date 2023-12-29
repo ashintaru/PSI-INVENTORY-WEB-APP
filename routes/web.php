@@ -37,6 +37,7 @@ use App\Livewire\Report as LivewireReport;
 use App\Livewire\Blockview as LivewireBlocks;
 use App\Livewire\Blockingview as LivewireBlockings;
 use App\Livewire\Stencil as LivewireStencil;
+use App\Livewire\Washing as LivewireWashing;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('block-list/{id}',LivewireBlocks::class);
         Route::get('blocking-list/{id}',LivewireBlockings::class);
         Route::get('stencil',LivewireStencil::class);
+        Route::get('washing',LivewireWashing::class);
 
         // Route::controller(report::class)->group(function(){
         //     Route::get('report','index');

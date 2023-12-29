@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Stencil') }}
+            {{ __('Washing and Drying') }}
         </h2>
     </x-slot>
     <div class="py-2 flex justify-evenly">
@@ -14,10 +14,10 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"/>
                         </svg>
                     </div>
-                    <input wire:model.live.debounce.500ms="search" type="text" id="inventory-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Vin number" required>
+                    <input wire:model.live.debounce.500ms="search" type="text" id="washing-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Vin number" required>
                 </div>
             </div>
-            @if (isset($inventories))
+            @if (isset($forWashing))
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -36,30 +36,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($inventories as $inventory)
-                            @if (!isset($inventory->stencil))
-                                <tr id="tablerow-{{$inventory->id}}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        @foreach($forWashing as $washing)
+                            @if (!isset($washing->washing))
+                                <tr id="tablerow-{{$washing->id}}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="w-4 p-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <x-primary-button id="selectunit-{{$inventory->car_id}}" wire:click="select({{$inventory->car_id}})">
+                                        <x-primary-button id="selectunit-{{$washing->cars_id}}" wire:click="select({{$washing->cars_id}})">
                                             Select
                                         </x-primary-button>
-                                        <a href="{{URL('unit/'.$inventory->car_id)}}">
-                                            {{$inventory->vehicleidno}}
+                                        <a href="{{URL('unit/'.$washing->cars_id)}}">
+                                            {{$washing->vehicleidno}}
                                         </a>
                                     </th>
                                     <td class="whitespace-nowrap w-4 p-4">
-                                        {{$inventory->car->csno}}
+                                        {{$washing->car->csno}}
                                     </td>
                                     <td class=" whitespace-nowrap w-4 p-4">
-                                        @if (isset($inventory->car))
-                                            {{$inventory->car->modeldescription}}
+                                        @if (isset($washing->car))
+                                            {{$washing->car->modeldescription}}
                                         @else
                                             -------
                                         @endif
                                     </td>
                                     <td class="whitespace-nowrap w-4 p-4">
-                                        @if (isset($inventory->user))
-                                            {{$inventory->user->name}}
+                                        @if (isset($washing->user))
+                                            {{$washing->user->name}}
                                         @else
                                             open
                                         @endif
@@ -73,8 +73,8 @@
                 table are empty.......
             @endif
             <div class="py-2">
-                @if (isset($cars))
-                    {{$cars->links()}}
+                @if (isset($forWashing))
+                    {{$forWashing->links()}}
                 @endif
             </div>
         </div>
