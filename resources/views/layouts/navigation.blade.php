@@ -282,6 +282,9 @@
                             <a wire:navigate href="{{URL('site')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Site Management</a>
                         </li>
                         <li>
+                            <a wire:navigate href="{{URL('tools-config')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Installation Tool/s Configuration</a>
+                        </li>
+                        <li>
                             <a wire:navigate href="{{URL('report')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
                         </li>
                     </ul>
