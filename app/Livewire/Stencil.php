@@ -21,7 +21,7 @@ class Stencil extends Component
 
     public function submitBatches(){
 
-        $validate = Validator::makle(
+        $validate = Validator::make(
             ['name' => $this->name , 'date' => $this->name],
             // Validation rules to apply...
             ['name' => 'required|min:3' , 'date' => 'required'],
