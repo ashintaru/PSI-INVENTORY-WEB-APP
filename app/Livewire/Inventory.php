@@ -106,15 +106,15 @@ class Inventory extends Component
     }
 
     public function updateBlocking(){
-        // $validatedData = $this->validate();
-        // $validate = Validator::make(
-        //     ['blockingselect'=> $this->blockingselect ,'movedBy'=>$this->movedBy],
-        //     // Validation rules to apply...
-        //     ['blockingselect'=>'required','movedBy'=>'required|min:3'],
-        //     // Custom validation messages...
-        //     ['required' => 'the Unit is required to give Blocking'],
-        // )->validate();
-        dd("click");
+        // $validatedData ?= $this->validate();
+        $validate = Validator::make(
+            ['blockingselect'=> $this->blockingselect ,'movedBy'=>$this->movedBy],
+            // Validation rules to apply...
+            ['blockingselect'=>'required','movedBy'=>'required|min:3'],
+            // Custom validation messages...
+            ['required' => 'the Unit is required to give Blocking'],
+        )->validate();
+        // dd("click");
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
         $car->movedBy = $this->movedBy;
         $oldBlocking = blockings::find($car->blockings);

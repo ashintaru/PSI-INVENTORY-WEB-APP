@@ -16,4 +16,7 @@ class carModel extends Model
     public function client(){
         return $this->belongsTo(client::class,'id','clientId');
     }
+    public function tools(){
+        return $this->hasOne(instaledTools::class,'model_id','id');
+    }
 }

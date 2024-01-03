@@ -10,7 +10,7 @@ class instaledTools extends Model
     use HasFactory;
     protected $table = 'installedtools';
     protected $fillable = [
-        'model',
+        'model_id',
         'tools',
     ];
 
