@@ -21,5 +21,14 @@ class washing extends Model
 
     public function car(){
         return $this->belongsTo(cars::class,'id','car_id');
+
     }
+    public function user(){
+        return $this->hasOne(User::class,'id','selectedBy');
+    }
+
+    public function instalation(){
+        return $this->hasOne(instalation::class,'car_id','car_id');
+    }
+
 }

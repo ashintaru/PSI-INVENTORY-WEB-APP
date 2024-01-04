@@ -41,23 +41,23 @@
                                     {{$model->modelName}}
                                 </td>
                                 <td scope="col" class="px-6 py-3">
-                                    <x-primary-button wire:click="addTools({{$model->id}},'add')">
+                                    <x-primary-button wire:click="selectTools({{$model->id}},'add')">
                                         @if (isset($model->tools))
                                             Update tool/s
                                         @else
                                             add tool/s
                                         @endif
                                     </x-primary-button>
-                                    <x-primary-button wire:click="addTools({{$model->id}},'add')">
+                                    <x-primary-button wire:click="selectTools({{$model->id}},'edit')">
                                         Edit Model Name
                                     </x-primary-button>
-                                    <button
+                                    <x-primary-button
                                         type="button"
                                         wire:click="delete"
                                         wire:confirm.prompt="Are you sure?\n\nType {{$model->modelName}} to confirm|{{$model->modelName}}"
                                     >
-                                        Delete account
-                                    </button>
+                                        Delete Model
+                                    </x-primary-button>
                                 </td>
                             </tr>
                         @endforeach
@@ -66,15 +66,19 @@
                 </tbody>
             </table>
         </div>
-        <div class="w-full mx-auto sm:px-6 lg:px-8 space-y-6 flex-row">
-
-            @if ($isAdding == true && $clientId != null )
-            <span class="text-sm">
-                @if (isset($name))
-                    {{$name}}
-                @endif
-            </span>
-                <div>
+        <div class="w-full mx-auto sm:px-6 lg:px-8 space-y-6 flex-row gap-4">
+            @if ($isAdding == true && $modelId != null )
+                <div class="bg-white shadow-sm p-2 inline-flex text-center">
+                    <span>
+                        Model Name:
+                    </span>
+                    <span class="text-sm font-light">
+                        @if (isset($name))
+                            {{$name}}
+                        @endif
+                    </span>
+                </div>
+                <div class="bg-white shadow-sm p-2">
                     <div class="inline-flex text-center gap-2">
                         <div>
                             <form>
@@ -103,7 +107,7 @@
                             <span class="text-xs text-red-700" >@error('clientName') {{ $message }} @enderror</span>
                         </div>
                     </div>
-                    <div>
+                    <div class="bg-white shadow-sm p-2">
                         @if (isset($list))
                             @foreach ($list as $key)
                             <div class="flex items-center mb-4">
@@ -116,6 +120,19 @@
                 </div>
             @endif
 
+            @if ($isEditing == true && $modelId != null )
+                <div class="bg-white shadow-sm p-2 inline-flex text-center">
+                    <div class="inline-flex text-center gap-2">
+                        <div>
+                            <input wire:model="updatedModelName" type="text" id="site" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Model Name">
+                            <span class="text-xs text-red-700" >@error('updatedModelName') {{ $message }} @enderror</span>
+                        </div>
+                        <x-primary-button wire:click="updateModel" type="button">
+                            Update
+                        </x-primary-button>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}

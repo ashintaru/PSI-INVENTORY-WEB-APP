@@ -100,7 +100,7 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('stencil',LivewireStencil::class);
         Route::get('washing',LivewireWashing::class);
         Route::get("tools-config",LivewireInstalledTools::class);
-        Route::get('client_management',LivewireClient::class);
+        Route::get('client',LivewireClient::class);
         Route::get('model_management/{id}',LivewireModel::class);
 
 
@@ -229,11 +229,11 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('health', HealthCheckResultsController::class);
 
 
-        Route::controller(client::class)->group(function(){
-            Route::get('client','index')->name('show-client');
-            Route::post('store-client','store');
-            Route::put('update-client-tag/{id}',"update");
-        });
+        // Route::controller(client::class)->group(function(){
+        //     Route::get('client','index')->name('show-client');
+        //     Route::post('store-client','store');
+        //     Route::put('update-client-tag/{id}',"update");
+        // });
 
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');
