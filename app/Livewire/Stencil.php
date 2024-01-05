@@ -12,16 +12,19 @@ use Illuminate\Support\Facades\Validator;
 
 class Stencil extends Component
 {
-    public $search = '';
-    public $actions = 2;
-    public $name = '';
+    public string  $search = '';
+    public int $actions = 2;
+    public string $name = '';
     public $date = '';
-    public $userid = '';
+    public int $userid;
 
 
     public function submitBatches(){
 
-        $validate = Validator::makle(
+        //local variable
+         $status = 1;
+
+        $validate = Validator::make(
             ['name' => $this->name , 'date' => $this->name],
             // Validation rules to apply...
             ['name' => 'required|min:3' , 'date' => 'required'],
@@ -40,6 +43,9 @@ class Stencil extends Component
                 'status'=>0,
                 'selectedBy'=>null
             ]);
+            $inventory->status = $status;
+            $inventory->selectBy = null;
+            $inventory->save();
         }
         if(count($car_id) > 0 ){
             batching::where('actions',$this->actions)->whereIn('vehicleid',$car_id)->delete();
@@ -83,7 +89,7 @@ class Stencil extends Component
     {
         $this->userid = Auth::user()->id;
         $inventory = inventory::where('status',0)
-        ->with(['car','stencil'])
+        ->with(['stencil'])
         ->where('vehicleidno', 'LIKE', "%{$this->search}%")->paginate(25);
         // dd($inventory);
         $batching = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();

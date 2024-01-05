@@ -106,15 +106,15 @@ class Inventory extends Component
     }
 
     public function updateBlocking(){
-        // $validatedData = $this->validate();
-        // $validate = Validator::make(
-        //     ['blockingselect'=> $this->blockingselect ,'movedBy'=>$this->movedBy],
-        //     // Validation rules to apply...
-        //     ['blockingselect'=>'required','movedBy'=>'required|min:3'],
-        //     // Custom validation messages...
-        //     ['required' => 'the Unit is required to give Blocking'],
-        // )->validate();
-        dd("click");
+        // $validatedData ?= $this->validate();
+        $validate = Validator::make(
+            ['blockingselect'=> $this->blockingselect ,'movedBy'=>$this->movedBy],
+            // Validation rules to apply...
+            ['blockingselect'=>'required','movedBy'=>'required|min:3'],
+            // Custom validation messages...
+            ['required' => 'the Unit is required to give Blocking'],
+        )->validate();
+        // dd("click");
         $car = cars::where('id',$this->selectedUnitforblocking)->first();
         $car->movedBy = $this->movedBy;
         $oldBlocking = blockings::find($car->blockings);
@@ -159,7 +159,7 @@ class Inventory extends Component
     public function render()
     {
         $clients = client::get();
-        $inventory = modelinventory::where('status',0)->get();
+        $inventory = modelinventory::whereIn('status',[0,1])->get();
         $vinArray = $inventory->pluck('vehicleidno');
         $cars = cars::with(['inventory','blocking','client'])
         ->whereIn('vehicleidno',$vinArray)

@@ -33,41 +33,81 @@ class carsImport implements ToModel,WithBatchInserts,WithValidation,WithUpserts
     {
             $bin = DB::table('cars')->get();
             $bin_number = $bin->pluck('vehicleidno');
+        switch ($row[2]) {
+            case 'WULING':
+                if ($bin_number->contains($row[1]) == false)
+                {
+                    return [
+                        new cars([
+                            'mmpcmodelcode'=> null,
+                            'mmpcmodelyear'=> $row[14] ,
+                            'mmpcoptioncode'=>null,
+                            'extcolorcode'=> null,
+                            'modeldescription'=> $row[3],
+                            'exteriorcolor'=> $row[10],
+                            'csno'=> $row[11],
+                            'tag'=>$this->tags,
+                            'bilingdate'=> null,
+                            'vehicleidno'=> $row[1],
+                            'engineno'=> $row[5],
+                            'productioncbunumber'=> null,
+                            'bilingdocuments'=> null,
+                            'vehiclestockyard'=> null,
+                            'blockings'=>null,
+                            'recieveBy'=>null,
+                            'dateIn'=>null,
+                            'dateEncode'=>null,
+                            'dateReleased'=>null,
+                            'releasedBy'=>null,
+                            'dealer'=>null,
+                            'remark'=>null,
+                            'status'=>null,
+                            'invoiceBlock'=>null,
+                            'movedBy'=>null,
+                            'touchBy'=>null
+                        ])
+                    ];
+                }
+                else null;
+            break;
 
-        if ($bin_number->contains($row[8]) == false)
-        {
-            return [
-                new cars([
-                    'mmpcmodelcode'=> $row[0],
-                    'mmpcmodelyear'=> $row[1] ,
-                    'mmpcoptioncode'=> $row[2],
-                    'extcolorcode'=> $row[3],
-                    'modeldescription'=> $row[4],
-                    'exteriorcolor'=> $row[5],
-                    'csno'=> $row[6],
-                    'tag'=>$this->tags,
-                    'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
-                    'vehicleidno'=> $row[8],
-                    'engineno'=> $row[9],
-                    'productioncbunumber'=> $row[10],
-                    'bilingdocuments'=> $row[11],
-                    'vehiclestockyard'=> $row[12],
-                    'blockings'=>null,
-                    'recieveBy'=>null,
-                    'dateIn'=>null,
-                    'dateEncode'=>null,
-                    'dateReleased'=>null,
-                    'releasedBy'=>null,
-                    'dealer'=>null,
-                    'remark'=>null,
-                    'status'=>null,
-                    'invoiceBlock'=>null,
-                    'movedBy'=>null,
-                    'touchBy'=>null
-                ])
-            ];
+            default:
+                if ($bin_number->contains($row[8]) == false)
+                {
+                    return [
+                        new cars([
+                            'mmpcmodelcode'=> $row[0],
+                            'mmpcmodelyear'=> $row[1] ,
+                            'mmpcoptioncode'=> $row[2],
+                            'extcolorcode'=> $row[3],
+                            'modeldescription'=> $row[4],
+                            'exteriorcolor'=> $row[5],
+                            'csno'=> $row[6],
+                            'tag'=>$this->tags,
+                            'bilingdate'=> Carbon::parse($row[7])->format('Y-m-d'),
+                            'vehicleidno'=> $row[8],
+                            'engineno'=> $row[9],
+                            'productioncbunumber'=> $row[10],
+                            'bilingdocuments'=> $row[11],
+                            'vehiclestockyard'=> $row[12],
+                            'blockings'=>null,
+                            'recieveBy'=>null,
+                            'dateIn'=>null,
+                            'dateEncode'=>null,
+                            'dateReleased'=>null,
+                            'releasedBy'=>null,
+                            'dealer'=>null,
+                            'remark'=>null,
+                            'status'=>null,
+                            'invoiceBlock'=>null,
+                            'movedBy'=>null,
+                            'touchBy'=>null
+                        ])
+                    ];
+                }
+                else null;
+            break;
         }
-        else null;
 
     }
     public function batchSize(): int

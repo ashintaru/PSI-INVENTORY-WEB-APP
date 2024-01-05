@@ -5,18 +5,18 @@ use App\Http\Controllers\CarsController;
 use App\Http\Controllers\receiving;
 use App\Http\Controllers\car;
 use App\Http\Controllers\indexcontroller;
-use App\Http\Controllers\invoicecontroller;
-use App\Http\Controllers\looseitems;
+// use App\Http\Controllers\invoicecontroller;
+// use App\Http\Controllers\looseitems;
 use App\Http\Controllers\ImportExportController;
-use App\Http\Controllers\settools;
-use App\Http\Controllers\damage;
+// use App\Http\Controllers\settools;
+// use App\Http\Controllers\damage;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\inventory;
+// use App\Http\Controllers\inventory;
 use App\Http\Controllers\invoice;
-use App\Http\Controllers\account;
+// use App\Http\Controllers\account;
 use App\Http\Controllers\blocks;
 use App\Http\Controllers\track;
-use App\Http\Controllers\report;
+// use App\Http\Controllers\report;
 use App\Http\Controllers\blockings;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\pdfcontroller;
@@ -24,6 +24,7 @@ use App\Http\Controllers\batching;
 use App\Http\Controllers\released;
 
 
+use App\Livewire\ClientManagement as LivewireClient;
 use App\Livewire\Inventory as LivewireInventory;
 use App\Livewire\Recieveing as LivewireRecieveing;
 use App\Livewire\Invoice as LivewireInvoice;
@@ -38,6 +39,8 @@ use App\Livewire\Blockview as LivewireBlocks;
 use App\Livewire\Blockingview as LivewireBlockings;
 use App\Livewire\Stencil as LivewireStencil;
 use App\Livewire\Washing as LivewireWashing;
+use App\Livewire\InstaledTools as LivewireInstalledTools;
+use App\Livewire\ModelManagement as LivewireModel;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +99,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('blocking-list/{id}',LivewireBlockings::class);
         Route::get('stencil',LivewireStencil::class);
         Route::get('washing',LivewireWashing::class);
+        Route::get("tools-config",LivewireInstalledTools::class);
+        Route::get('client',LivewireClient::class);
+        Route::get('model_management/{id}',LivewireModel::class);
+
 
         // Route::controller(report::class)->group(function(){
         //     Route::get('report','index');
@@ -222,11 +229,11 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('health', HealthCheckResultsController::class);
 
 
-        Route::controller(client::class)->group(function(){
-            Route::get('client','index')->name('show-client');
-            Route::post('store-client','store');
-            Route::put('update-client-tag/{id}',"update");
-        });
+        // Route::controller(client::class)->group(function(){
+        //     Route::get('client','index')->name('show-client');
+        //     Route::post('store-client','store');
+        //     Route::put('update-client-tag/{id}',"update");
+        // });
 
         Route::controller(blockings::class)->group(function(){
             Route::post('import-blockings','importBlockings');
