@@ -40,7 +40,8 @@
                             @if (!isset($unit->instalation))
                                 <tr id="tablerow-{{$unit->id}}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" class="w-4 p-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <x-primary-button id="selectunit-{{$unit->cars_id}}" wire:click="select({{$unit->cars_id}})">
+                                        <x-primary-button id="selectunit-{{$unit->cars_id}}"
+                                            wire:click="select('{{$unit->car_id}}')">
                                             Select
                                         </x-primary-button>
                                         <a href="{{URL('unit/'.$unit->cars_id)}}">
@@ -78,43 +79,34 @@
                 @endif
             </div>
         </div>
-        <div>
-            @if (isset($batches))
-                <div class="py-2 flex justify-start gap-2 ">
-                    <input wire:model="name" type="text" id="personel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Name" required>
+        <div class="">
+            @if (isset($toolsList))
+                <div class="py-2 flex-row space-y-2">
+                    <label>Vin {{$vin}}</label>
+                    <input wire:model="csno" type="text" id="csno" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="CS-NO" required>
+                    <input wire:model="personel" type="text" id="personel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Person" required>
                     <input wire:model="date" type="date" id="date-activities" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                    <x-primary-button wire:click="submitBatches">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tool List</label>
+                    <div class="grid grid-cols-2 gap-2 ">
+                        @if (count($toolsList)>0)
+                            @foreach ($toolsList as $tool )
+                                <div class="flex items-center mb-4">
+                                    <input wire:model="toolsList" checked id="default-checkbox" type="checkbox" value="{{$tool}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$tool}}</label>
+                                </div>
+                            @endforeach
+                        @else
+                            <span>NO Tools Found</span>
+                        @endif
+                    </div>
+
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Remark/s</label>
+                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+
+                    <x-primary-button wire:click="submit">
                         Submit
                     </x-primary-button>
                 </div>
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class=" px-6 py-3">
-                                VIN
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($batches as $batch)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" class=" w-4 p-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                       {{$batch->vehicleidno}}
-                                    </th>
-                                    <td class="w-1">
-                                        <button id="{{$batch->id}}-remove-button" wire:click="removeBatch({{$batch->id}})" type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
-                                              </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             @else
                 table are empty.......
             @endif

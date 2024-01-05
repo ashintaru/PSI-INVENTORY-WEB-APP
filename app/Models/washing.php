@@ -20,7 +20,7 @@ class washing extends Model
     public $timestamps = false;
 
     public function car(){
-        return $this->belongsTo(cars::class,'id','car_id');
+        return $this->belongsTo(cars::class,'car_id','id');
 
     }
     public function user(){

@@ -159,7 +159,7 @@ class Inventory extends Component
     public function render()
     {
         $clients = client::get();
-        $inventory = modelinventory::where('status',0)->get();
+        $inventory = modelinventory::whereIn('status',[0,1])->get();
         $vinArray = $inventory->pluck('vehicleidno');
         $cars = cars::with(['inventory','blocking','client'])
         ->whereIn('vehicleidno',$vinArray)

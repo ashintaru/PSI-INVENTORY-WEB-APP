@@ -20,6 +20,8 @@ class Washing extends Component
 
     public function submitBatches(){
 
+        $status = 1;
+
         $validate = Validator::make(
             ['name' => $this->name , 'date' => $this->name],
             // Validation rules to apply...
@@ -39,6 +41,9 @@ class Washing extends Component
                 'status'=>0,
                 'selectedBy'=>null
             ]);
+            $washing->status = $status;
+            $washing->selectedBy = null;
+            $washing->save();
         }
         if(count($car_id) > 0 ){
             batching::where('actions',$this->actions)->whereIn('vehicleid',$car_id)->delete();
@@ -87,7 +92,7 @@ class Washing extends Component
 
         $this->userid = Auth::user()->id;
         $batching = batching::where('userid',$this->userid)->where('actions',$this->actions)->get();
-        $forWashing = stencil::with(['car','washing'])->paginate(25);
+        $forWashing = stencil::where('status',0)->with(['car','washing'])->paginate(25);
         return view('livewire.washing',['forWashing'=>$forWashing,'batches'=>$batching]);
     }
 }

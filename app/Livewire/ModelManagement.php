@@ -80,9 +80,9 @@ class ModelManagement extends Component
 
     public function createTools(){
         $validate = Validator::make(
-            ['updatedModelName' => $this->updatedModelName],
+            ['strinfy' => $this->strinfy],
             // Validation rules to apply...
-            ['updatedModelName' => 'required|min:3' ],
+            ['strinfy' => 'required|min:3' ],
             // Custom validation messages...
             ['required' => 'The :attribute field is required'],
         )->validate();
@@ -94,7 +94,6 @@ class ModelManagement extends Component
                 'tools'=>$this->strinfy,
             ]
         );
-
         //the model is exsist
         $tool->tools = $this->strinfy;
         $tool->save();
