@@ -19,5 +19,6 @@ class instalation extends Model
         'dateFinishedinstallation',
         'selectedBy'
     ];
+    public $timestamps = false;
     use HasFactory;
 }
