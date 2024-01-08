@@ -201,6 +201,174 @@
                             </button>
                         @endif
                     </div>
+                    @if (isset($car))
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Activities
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Personel in Charge
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Date Finished
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($car->stencil))
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td class="px-6 py-4">
+                                                Stencil
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$car->stencil->name}}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$car->stencil->dateFinishStencil }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (isset($car->washing))
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td class="px-6 py-4">
+                                                Washing/Drying
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$car->washing->name}}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{$car->washing->dateFinishedWashing}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Activities
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            CSNO
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Personel in Charge
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Tool/s
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Remark/s
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Date Finish
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($car->installing))
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                Installation
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                {{$car->installing->csno}}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                {{$car->installing->personel}}
+                                            </td>
+                                            <td class="px-6 py-4 flex-wrap">
+                                                {{$car->installing->tools}}
+                                            </td>
+                                            <td class="px-6 py-4 flex-wrap">
+                                                {{$car->installing->remark}}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                {{$car->installing->dateFinishedinstallation}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                    <div class="py-2">
+                        {{-- @if (isset($findings))
+                            {{$findings->links()}}
+                        @endif --}}
+                    </div>
+                </div>
+
+
+                <div  id="findings" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="inline-flex items-center w-full justify-between">
+                        <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
+                            Finding/s History
+                        </p>
+                        @if ($car->receive)
+                            <button type="button" class="inline-flex items-center gap-1 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                                </svg>
+                                create new finding
+                            </button>
+                        @endif
+                    </div>
+                    @if (isset($findings))
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Finding/s
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Date Created
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($findings as $finding )
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="px-6 py-4">
+                                            {{$finding->findings}}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ $finding->created_at->format('M d Y ');}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php echo $findings->fragment('findings')->render(); ?>
+                    @endif
+                    <div class="py-2">
+                        {{-- @if (isset($findings))
+                            {{$findings->links()}}
+                        @endif --}}
+                    </div>
+                </div>
+
+
+                <div  id="findings" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="inline-flex items-center w-full justify-between">
+                        <p wire:model="vehicleidno" class="inline-flex items-center text-gray-500">
+                            Finding/s History
+                        </p>
+                        @if ($car->receive)
+                            <button type="button" class="inline-flex items-center gap-1 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                                </svg>
+                                create new finding
+                            </button>
+                        @endif
+                    </div>
                     @if (isset($findings))
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

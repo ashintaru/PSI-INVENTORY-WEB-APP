@@ -41,6 +41,8 @@ use App\Livewire\Stencil as LivewireStencil;
 use App\Livewire\Washing as LivewireWashing;
 use App\Livewire\InstaledTools as LivewireInstalledTools;
 use App\Livewire\ModelManagement as LivewireModel;
+use App\Livewire\Pdi as LivewirePdi;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -99,9 +101,10 @@ Route::middleware(['auth','web','areAdmin'])->group(function() {
         Route::get('blocking-list/{id}',LivewireBlockings::class);
         Route::get('stencil',LivewireStencil::class);
         Route::get('washing',LivewireWashing::class);
-        Route::get("tools-config",LivewireInstalledTools::class);
+        Route::get("installation",LivewireInstalledTools::class);
         Route::get('client',LivewireClient::class);
         Route::get('model_management/{id}',LivewireModel::class);
+        Route::get('pdi',LivewirePdi::class);
 
 
         // Route::controller(report::class)->group(function(){

@@ -80,12 +80,21 @@ class cars extends Model
     public function invoice(){
         return $this->hasOne(invoce::class,'vehicleidno','vehicleidno');
     }
+    //actibvities
     public function stencil(){
         return $this->hasOne(stencil::class,'cars_id','id');
     }
     public function washing(){
         return $this->hasOne(washing::class,'car_id','id');
     }
+    public function installing(){
+        return $this->hasOne(instalation::class,'car_id','id');
+    }
+    public function pdi(){
+        return $this->hasOne(pdi::class,'car_id','id');
+    }
+
+
     public function client(){
         return $this->hasOne(client::class,'id','tag');
     }

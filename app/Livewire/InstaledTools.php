@@ -16,7 +16,7 @@ class InstaledTools extends Component
  {
     public int $userid ;
     public string $vin ='';
-    public int $car_id ;
+    public $car_id = null;
     public string $csno = '';
     public string $personel = '';
     public $date;
@@ -39,57 +39,70 @@ class InstaledTools extends Component
             return [];
     }
 
-    public function submit($id = null){
+    public function submit(){
         $status = 0;
         $stringtify = '';
-        $forInstalation = modelWashing::find($id);
-
         $validate = Validator::make(
-            ['csno'=> $this->csno ,'personel'=>$this->personel,'date'=>$this->date , 'toolsList'=>$this->toolsList ],
+            ['csno'=> $this->csno ,'personel'=>$this->personel,'date'=>$this->date , 'toolsList'=>$this->toolsList],
             // Validation rules to apply...
             ['csno'=>'required|min:3','personel'=>'required|min:3','date'=>'required','toolsList'=>'required'],
-            // Custom validation messages...
-            ['required' => 'the Unit is required to give Blocking'],
         )->validate();
-
+        $forInstalation = modelWashing::Where('car_id',$this->car_id)->first();
         foreach ($this->toolsList as $tool ) {
             $stringtify .= $tool.', ';
         }
-
         modelInstaldation::create([
             'car_id'=>$this->car_id,
-            'vehicleidno'=>1,
+            'vehicleidno'=>$this->vin,
             'status'=>$status,
             'csno'=>$this->csno,
             'personel'=>$this->personel,
             'tools'=>$stringtify,
             'remark'=>$this->remark,
             'dateFinishedinstallation'=>$this->date,
-            'selectedBy'=>0
+            'selectedBy'=>null
         ]);
-
+        // dd($forInstalation);
         $forInstalation->status = 1;
         $forInstalation->selectedBy = null;
         $forInstalation->save();
-        $this->reset(['csno','personel','date']);
+        $this->reset(['vin','car_id','csno','personel','date','toolsList']);
         request()->session()->flash('success','the data have been save');
         array_pop($this->batch);
 
+    }
+
+    public function selectAction(modelWashing $unit){
+        if($unit->selectedBy == null){
+            $this->car_id = $unit->car_id;
+            $this->vin = $unit->vehicleidno;
+            $unit->selectedBy = Auth::user()->id;
+            $unit->save();
+            //Generate tool/s
+            $this->toolsList = $this->generateToolList($unit->car->modeldescription);
+        }else
+            if($unit->selectedBy == Auth::user()->id){
+                $this->car_id = $unit->car_id;
+                $this->vin = $unit->vehicleidno;
+                $unit->selectedBy = Auth::user()->id;
+                $unit->save();
+                //Generate tool/s
+                $this->toolsList = $this->generateToolList($unit->car->modeldescription);
+            }
+            else
+                request()->session()->flash('failed','the unit have been selected by somone');
 
     }
 
-    public function selectAction(int $id = null){
-        $forInstalation = modelWashing::with('car')->where('car_id',$id)->first();
-        if(isset($forInstalation->id)){
-            $this->car_id = $forInstalation->car_id;
-            $this->vin = $forInstalation->vehicleidno;
-            $forInstalation->selectedBy = Auth::user()->id;
+    public function cancelSelectedUnit(){
+        if($this->car_id){
+            $forInstalation = modelWashing::Where('car_id',$this->car_id)->first();
+            $forInstalation->selectedBy = null;
             $forInstalation->save();
-            //Generate tool/s
-            $this->toolsList = $this->generateToolList($forInstalation->car->modeldescription);
-        }else
-        request()->session()->flash('failed','the data have been save');
+            $this->reset(['vin','car_id','toolsList']);
+            request()->session()->flash('success','the unit have been clear');
 
+        }
     }
 
     public function checkUser(int $id , int $userId):bool{
@@ -99,22 +112,17 @@ class InstaledTools extends Component
 
 
     public function select(int $id = null){
-        // dd($id);
-        if(count($this->batch) == 0){
-            array_push($this->batch,$id);
-            $this->selectAction($id);
-        }else{
-            if(in_array($id,$this->batch)){
-                if($this->checkUser($id,Auth::user()->id))
-                    $this->selectAction($id);
-                else
-                request()->session()->flash('failed','the data have been save');
-            }else{
-
-            }
-        }
-
+        $forInstalation = modelWashing::with(['car'])->Where('car_id',$id)->first();
+        $this->selectAction($forInstalation);
+        request()->session()->flash('success','the unit have been selected');
     }
+
+    public function cancelSelected(int $id = null){
+        $forInstalation = modelWashing::with('car')->where('car_id',$id)->first();
+    }
+
+
+
 
     public function render()
     {
