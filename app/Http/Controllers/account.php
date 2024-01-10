@@ -58,7 +58,6 @@ class account extends Controller
         }catch (Exception $message) {
             return redirect()->back()->with(['msg'=>$message]);
         }
-
     }
 
 
