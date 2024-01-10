@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        Schema::create('receiving', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('car_id');
             $table->foreign('vehicleidno')->references('vehicleidno')->on('cars')->onDelete('cascade');
-            $table->tinyInteger('status');
-            $table->integer('selectedVy')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('receiving');
     }
 };

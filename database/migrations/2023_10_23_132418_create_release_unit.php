@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('release_unit', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno')->unique();
-            $table->boolean('status');
+            $table->bigInteger('vehicleid');
+            $table->foreign('vehicleidno')->references('vehicleidno')->on('cars')->onDelete('cascade');
+            $table->string('photo');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

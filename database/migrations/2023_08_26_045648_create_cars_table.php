@@ -12,25 +12,31 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cars', function (Blueprint $table) {
-            $table->string('mmpcmodelcode');
-            $table->year('mmpcmodelyear');
-            $table->string('mmpcoptioncode');
-            $table->string('extcolorcode');
-            $table->string('modeldescription');
-            $table->string('exteriorcolor');
+            $table->id();
+            $table->string('mmpcmodelcode')->nullable();
+            $table->year('mmpcmodelyear')->nullable();
+            $table->string('mmpcoptioncode')->nullable();
+            $table->string('extcolorcode')->nullable();
+            $table->string('modeldescription')->nullable();
+            $table->string('exteriorcolor')->nullable();
             $table->string('csno');
-            $table->date('bilingdate');
+            $table->date('bilingdate')->nullable();
             $table->string('vehicleidno')->primary();
             $table->string('engineno');
-            $table->integer('productioncbunumber');
-            $table->bigInteger('bilingdocuments');
-            $table->string('vehiclestockyard');
-            $table->string('blockings');
+            $table->integer('productioncbunumber')->nullable();
+            $table->bigInteger('bilingdocuments')->nullable();
+            $table->string('vehiclestockyard')->nullable();
+            $table->string('blockings')->nullable();
             $table->timestamps('dateIn');
-            $table->date('dateEncode');
-            $table->date('dateReleased');
-            $table->string('blockings');
-            $table->string('blockings');
+            $table->date('dateEncode')->nullable();
+            $table->date('dateReleased')->nullable();
+            $table->string('releasedBy')->nullable();
+            $table->string('dealer')->nullable();
+            $table->longText('remark')->nullable();
+            $table->int('status');
+            $table->int('invoiceBlock')->nullable();
+            $table->string('movedBy')->nullable();
+            $table->integer('touchBy')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,9 @@ return new class extends Migration
     {
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
+            $table->foreign('siteid')->references('id')->on('site')->onDelete('cascade');
             $table->string('blockname');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

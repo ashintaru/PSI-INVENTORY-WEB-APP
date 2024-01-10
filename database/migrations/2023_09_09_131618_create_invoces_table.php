@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoces', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicleidno')->unique();
-            $table->boolean('status');
+            $table->foreign('vehicleidno')->references('vehicleidno')->on('cars')->onDelete('cascade');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }
