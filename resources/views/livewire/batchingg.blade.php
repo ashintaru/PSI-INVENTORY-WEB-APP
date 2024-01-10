@@ -25,7 +25,7 @@
                     Blocking
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Encoder
+                    Action
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Action

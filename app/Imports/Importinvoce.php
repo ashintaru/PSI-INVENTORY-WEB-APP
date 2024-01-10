@@ -14,14 +14,14 @@ class Importinvoce implements ToModel,WithBatchInserts
 {
     public function model(array $row)
     {
-        $bin = inventory::whereIn('status',[0,1])->get();
+        $bin = inventory::where('status',0)->get();
         $bin_number = $bin->pluck('vehicleidno');
         $invoice = invoice::where('status',0)->get();
         $invoice_number = $invoice->pluck('vehicleidno');
         if ($bin_number->contains($row[11]) == true && $invoice_number->contains($row[11]) != true)
         {
             $car = inventory::where('vehicleidno',$row[11])->first();
-            $car->status = 2;
+            $car->status = 1;
             $car->update();
             return new invoice([
                 'vehicleidno'=> $car->vehicleidno,
